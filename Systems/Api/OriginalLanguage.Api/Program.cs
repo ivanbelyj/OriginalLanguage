@@ -1,8 +1,17 @@
+using OriginalLanguage.Api;
 using OriginalLanguage.Api.Configuration;
+using OriginalLanguage.Services.Settings;
+using OriginalLanguage.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddAppLogger();
+
+MainSettings? mainSettings = Settings.Load<MainSettings>("Main",
+    builder.Configuration);
+OpenApiSettings? openApiSettings = Settings.Load<OpenApiSettings>("OpenApi",
+    builder.Configuration);
+
 
 var services = builder.Services;
 
@@ -11,8 +20,10 @@ services.AddAppHealthChecks();
 services.AddHttpContextAccessor();
 services.AddAppCors();
 services.AddAppVersioning();
-services.AddAppOpenApi();
+services.AddAppOpenApi(openApiSettings);
 services.AddAppControllersAndViews();
+
+services.AddAppServices();
 
 var app = builder.Build();
 

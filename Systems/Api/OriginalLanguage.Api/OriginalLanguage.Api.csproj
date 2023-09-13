@@ -28,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Settings\OriginalLanguage.Services.Settings.csproj" />
     <ProjectReference Include="..\..\..\Shared\OriginalLanguage.Common\OriginalLanguage.Common.csproj" />
+    <ProjectReference Include="..\OriginalLanguage.Api.Settings\OriginalLanguage.Api.Settings.csproj" />
   </ItemGroup>
 
 </Project>

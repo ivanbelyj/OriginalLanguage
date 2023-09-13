@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
+using OriginalLanguage.Services.Settings;
 
 /// <summary>
 /// Swagger configuration
@@ -16,11 +17,11 @@ public static class SwaggerConfiguration
 {
     private static string AppTitle = "OriginalLanguage Api";
 
-    public static IServiceCollection AddAppOpenApi(this IServiceCollection services)
-        //IdentitySettings identitySettings, SwaggerSettings swaggerSettings)
+    public static IServiceCollection AddAppOpenApi(this IServiceCollection services,
+        OpenApiSettings openApiSettings)
     {
-        //if (!swaggerSettings.Enabled)
-        //    return services;
+        if (!openApiSettings.Enabled)
+            return services;
 
         services
             .AddOptions<SwaggerGenOptions>()
@@ -107,10 +108,10 @@ public static class SwaggerConfiguration
     /// </summary>
     public static void UseAppSwagger(this WebApplication app)
     {
-        //var swaggerSettings = app.Services.GetService<SwaggerSettings>();
+        var openApiSettings = app.Services.GetService<OpenApiSettings>();
 
-        //if (!swaggerSettings?.Enabled ?? false)
-        //    return;
+        if (!openApiSettings?.Enabled ?? false)
+            return;
 
         var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
@@ -133,8 +134,8 @@ public static class SwaggerConfiguration
                 options.DefaultModelsExpandDepth(-1);
                 options.OAuthAppName(AppTitle);
 
-                //options.OAuthClientId(swaggerSettings?.OAuthClientId ?? "");
-                //options.OAuthClientSecret(swaggerSettings?.OAuthClientSecret ?? "");
+                options.OAuthClientId(openApiSettings?.OAuthClientId ?? "");
+                options.OAuthClientSecret(openApiSettings?.OAuthClientSecret ?? "");
             }
         );
     }
