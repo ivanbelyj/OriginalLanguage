@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "OriginalLanguage.Api": {
+    "OriginalLanguage.Systems.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

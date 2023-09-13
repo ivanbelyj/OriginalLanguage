@@ -23,7 +23,6 @@ public static class HealthCheckHelper
                 Description = x.Value.Description ?? "",
                 Duration = x.Value.Duration.TotalSeconds.ToString("0:0.00")
             }),
-
         };
 
         await context.Response.WriteAsync(text: JsonSerializer.Serialize(response,
