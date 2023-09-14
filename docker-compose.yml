@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+
+  originallanguage_postgresql:
+    image: postgres:14.1
+
+  originallanguage_redis:
+    image: redis
+
+  originallanguage_api:
+    image: ${DOCKER_REGISTRY-}originallanguageapi
+    build:
+      context: .
+      dockerfile: Systems/Api/OriginalLanguage.Api/Dockerfile
+    depends_on:
+      - originallanguage_postgresql
+      - originallanguage_redis
