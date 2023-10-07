@@ -13,7 +13,8 @@ public static class ControllersAndViewsConfiguration
         services
             .AddControllers()
             .AddNewtonsoftJson(options
-                => options.SerializerSettings.SetDefaultSettings());
+                => options.SerializerSettings.SetDefaultSettings())
+            .AddValidator();
 
         return services;
     }

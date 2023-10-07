@@ -3,9 +3,9 @@ version: '3.8'
 services:
     originallanguage_postgresql:
         environment:
-            - POSTGRES_NAME=postgres
+            - POSTGRES_DB=OriginalLanguage
             - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=Passw0rd
+            - POSTGRES_PASSWORD=off0zga
         ports:
             - "5432:5432"
         networks:

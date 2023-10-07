@@ -2,15 +2,16 @@
 
 using Microsoft.Extensions.Configuration;
 
-public static class SettingsFactory
+public static class ConfigurationFactory
 {
     public static IConfiguration Create()
     {
-        return new ConfigurationBuilder()
+        var res = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false)
             .AddJsonFile("appsettings.development.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
+        return res;
     }
 }

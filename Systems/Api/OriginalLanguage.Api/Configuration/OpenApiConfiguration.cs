@@ -10,10 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
 using OriginalLanguage.Services.Settings;
 
-/// <summary>
-/// Swagger configuration
-/// </summary>
-public static class SwaggerConfiguration
+public static class OpenApiConfiguration
 {
     private static string AppTitle = "OriginalLanguage Api";
 
@@ -106,7 +103,7 @@ public static class SwaggerConfiguration
     /// <summary>
     /// Start OpenAPI UI
     /// </summary>
-    public static void UseAppSwagger(this WebApplication app)
+    public static void UseAppOpenApi(this WebApplication app)
     {
         var openApiSettings = app.Services.GetService<OpenApiSettings>();
 

@@ -14,12 +14,7 @@
             Add logger
             </summary>
         </member>
-        <member name="T:OriginalLanguage.Api.Configuration.SwaggerConfiguration">
-            <summary>
-            Swagger configuration
-            </summary>
-        </member>
-        <member name="M:OriginalLanguage.Api.Configuration.SwaggerConfiguration.UseAppSwagger(Microsoft.AspNetCore.Builder.WebApplication)">
+        <member name="M:OriginalLanguage.Api.Configuration.OpenApiConfiguration.UseAppOpenApi(Microsoft.AspNetCore.Builder.WebApplication)">
             <summary>
             Start OpenAPI UI
             </summary>

@@ -15,7 +15,7 @@ public static class Bootstrapper
     public static IServiceCollection AddMainSettings(this IServiceCollection services,
         IConfiguration? configuration = null)
     {
-        MainSettings? settings = Settings.Load<MainSettings>("Main", configuration);
+        MainSettings? settings = Configuration.Load<MainSettings>("Main", configuration);
         services.AddSingleton(settings);
 
         return services;
@@ -25,7 +25,7 @@ public static class Bootstrapper
     public static IServiceCollection AddOpenApiSettings(this IServiceCollection services,
         IConfiguration? configuration = null)
     {
-        var settings = Settings.Load<OpenApiSettings>("OpenApi", configuration);
+        var settings = Configuration.Load<OpenApiSettings>("OpenApi", configuration);
         services.AddSingleton(settings);
 
         return services;
