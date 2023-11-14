@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Context.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context;
-public class MainDbContext : DbContext
+public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Article> Articles { get; set; }
     public DbSet<Language> Languages { get; set; }
@@ -26,6 +29,14 @@ public class MainDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<IdentityRole<Guid>>().ToTable("user_roles");
+        modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
+        modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("user_role_owners");
+        modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("user_role_claims");
+        modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
+        modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
 
         modelBuilder.Entity<Article>(entity =>
         {

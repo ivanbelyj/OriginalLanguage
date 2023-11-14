@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Context.Mi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Context.MigrationsPostgreSQL", "Data\Migrations\OriginalLanguage.Context.MigrationsPostgreSQL\OriginalLanguage.Context.MigrationsPostgreSQL.csproj", "{FC80BF64-7078-481A-8557-1DD3BD8C75B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.Articles", "Services\OriginalLanguage.Services.Articles\OriginalLanguage.Services.Articles.csproj", "{0CA83BAE-D702-4097-B692-E157B5283B91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.Articles", "Services\OriginalLanguage.Services.Articles\OriginalLanguage.Services.Articles.csproj", "{0CA83BAE-D702-4097-B692-E157B5283B91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Identity", "Systems\Identity\OriginalLanguage.Identity\OriginalLanguage.Identity.csproj", "{57D5F703-7A80-4318-BF20-3FAA232F5556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{0CA83BAE-D702-4097-B692-E157B5283B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CA83BAE-D702-4097-B692-E157B5283B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CA83BAE-D702-4097-B692-E157B5283B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D5F703-7A80-4318-BF20-3FAA232F5556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D5F703-7A80-4318-BF20-3FAA232F5556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D5F703-7A80-4318-BF20-3FAA232F5556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D5F703-7A80-4318-BF20-3FAA232F5556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{70ECA487-2DF0-48B2-876F-EE4E3CCACB36} = {AAE7C525-012E-42E8-B19C-2085DC125E24}
 		{FC80BF64-7078-481A-8557-1DD3BD8C75B5} = {AAE7C525-012E-42E8-B19C-2085DC125E24}
 		{0CA83BAE-D702-4097-B692-E157B5283B91} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{57D5F703-7A80-4318-BF20-3FAA232F5556} = {19D88C27-9470-4652-8128-145199867C2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E569FD64-91AF-46F9-909C-127A3B963F11}

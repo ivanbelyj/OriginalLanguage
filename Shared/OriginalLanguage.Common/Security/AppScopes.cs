@@ -2,6 +2,6 @@
 
 public static class AppScopes
 {
-    //public const string BooksRead = "books_read";
-    //public const string BooksWrite = "books_write";
+    public const string ArticlesRead = "articles_read";
+    public const string ArticlesWrite = "articles_write";
 }

@@ -3,15 +3,31 @@ version: '3.8'
 services:
     originallanguage_postgresql:
         environment:
-            - POSTGRES_DB=OriginalLanguage
+            - POSTGRES_NAME=postgres
             - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=off0zga
+            - POSTGRES_PASSWORD=Passw0rd
+            #- POSTGRES_DB=postgres
         ports:
             - "5432:5432"
         networks:
             - shared_originallanguage_net
         volumes:      
             - ~/.docker-conf/postgresql/data/:/var/lib/postgresql/data
+
+    #originallanguage_mssql:
+    #    #container_name: mssql
+    #    environment:
+    #      - ACCEPT_EULA=Y
+    #      - MSSQL_SA_PASSWORD=off0zgaA
+    #      - SA_PASSWORD=off0zgaA
+    #      - MSSQL_PID=Developer
+    #    ports:
+    #      - 1433:1433
+    #    volumes:
+    #      #- ~/.docker-conf/mssql/data/:/var/opt/dtemp
+    #      - ~/.docker-conf/mssql/data/:/var/opt/mssql/data
+    #    networks:
+    #      - shared_originallanguage_net
 
     originallanguage_redis:
         ports:
@@ -22,14 +38,25 @@ services:
             - ~/.docker-conf/redis/data/:/data
 
     originallanguage_api:
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
         ports:
-            - "80:80"
+            - "10000:80"
+        networks:
+            - shared_originallanguage_net
         env_file:
             - env.api
 
+    originallanguage_identity:
+        ports:
+            - "10001:80"
+        networks:
+            - shared_originallanguage_net
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+        env_file:
+            - env.identity
+
 networks:
     shared_originallanguage_net:
-        name: shared_originallanguage_net
+        name: original_language
         driver: bridge
+

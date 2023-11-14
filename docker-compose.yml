@@ -4,6 +4,10 @@ services:
 
   originallanguage_postgresql:
     image: postgres:14.1
+    #image: postgres
+
+  #originallanguage_mssql:
+  #  image: mcr.microsoft.com/mssql/server:2022-latest
 
   originallanguage_redis:
     image: redis
@@ -15,4 +19,16 @@ services:
       dockerfile: Systems/Api/OriginalLanguage.Api/Dockerfile
     depends_on:
       - originallanguage_postgresql
+      #- originallanguage_mssql
       - originallanguage_redis
+
+  originallanguage_identity:
+    image: ${DOCKER_REGISTRY-}originallanguageidentity
+    build:
+      context: .
+      dockerfile: Systems/Identity/OriginalLanguage.Identity/Dockerfile
+    depends_on:
+      - originallanguage_postgresql
+      #- originallanguage_mssql
+      - originallanguage_redis
+      - originallanguage_api
