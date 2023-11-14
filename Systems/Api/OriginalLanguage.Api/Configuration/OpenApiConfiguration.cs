@@ -15,7 +15,7 @@ public static class OpenApiConfiguration
     private static string AppTitle = "OriginalLanguage Api";
 
     public static IServiceCollection AddAppOpenApi(this IServiceCollection services,
-        OpenApiSettings openApiSettings)
+        OpenApiSettings openApiSettings, IdentitySettings identitySettings)
     {
         if (!openApiSettings.Enabled)
             return services;
@@ -59,15 +59,15 @@ public static class OpenApiConfiguration
                 In = ParameterLocation.Header,
                 Flows = new OpenApiOAuthFlows
                 {
-                    //Password = new OpenApiOAuthFlow
-                    //{
-                    //    TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
-                    //    Scopes = new Dictionary<string, string>
-                    //    {
-                    //        {AppScopes.BooksRead, "BooksRead"},
-                    //        {AppScopes.BooksWrite, "BooksWrite"}
-                    //    }
-                    //}
+                    Password = new OpenApiOAuthFlow
+                    {
+                        TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            {AppScopes.ArticlesRead, "ArticlesRead"},
+                            {AppScopes.ArticlesWrite, "ArticlesWrite"}
+                        }
+                    }
                 }
             });
 

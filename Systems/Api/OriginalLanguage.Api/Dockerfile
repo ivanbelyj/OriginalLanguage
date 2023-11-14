@@ -15,6 +15,7 @@ COPY ["Data/Migrations/OriginalLanguage.Context.MigrationsPostgreSQL/OriginalLan
 COPY ["Services/OriginalLanguage.Services.Articles/OriginalLanguage.Services.Articles.csproj", "Services/OriginalLanguage.Services.Articles/"]
 COPY ["Shared/OriginalLanguage.Common/OriginalLanguage.Common.csproj", "Shared/OriginalLanguage.Common/"]
 COPY ["Services/OriginalLanguage.Services.Settings/OriginalLanguage.Services.Settings.csproj", "Services/OriginalLanguage.Services.Settings/"]
+COPY ["Services/OriginalLanguage.Services.UserAccount/OriginalLanguage.Services.UserAccount.csproj", "Services/OriginalLanguage.Services.UserAccount/"]
 COPY ["Systems/Api/OriginalLanguage.Api.Settings/OriginalLanguage.Api.Settings.csproj", "Systems/Api/OriginalLanguage.Api.Settings/"]
 RUN dotnet restore "Systems/Api/OriginalLanguage.Api/OriginalLanguage.Api.csproj"
 COPY . .

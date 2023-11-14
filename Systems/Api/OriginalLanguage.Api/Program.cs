@@ -14,7 +14,10 @@ MainSettings? mainSettings = Configuration.Load<MainSettings>("Main",
     builder.Configuration);
 OpenApiSettings? openApiSettings = Configuration.Load<OpenApiSettings>("OpenApi",
     builder.Configuration);
+IdentitySettings? identitySettings = Configuration.Load<IdentitySettings>("Identity",
+    builder.Configuration);
 ArgumentNullException.ThrowIfNull(openApiSettings);
+ArgumentNullException.ThrowIfNull(identitySettings);
 
 
 var services = builder.Services;
@@ -22,10 +25,13 @@ var services = builder.Services;
 // Add services to the container.
 services.AddAppHealthChecks();
 services.AddHttpContextAccessor();
+
 services.AddAppDbContext(builder.Configuration);
+services.AddAppAuth(identitySettings);
+
 services.AddAppCors();
 services.AddAppVersioning();
-services.AddAppOpenApi(openApiSettings);
+services.AddAppOpenApi(openApiSettings, identitySettings);
 services.AddAppAutoMappers();
 services.AddAppControllersAndViews();
 
@@ -46,6 +52,7 @@ app.UseAppHealthChecks();
 app.UseAppCors();
 
 app.UseAppOpenApi();
+app.UseAppAuth();
 
 app.UseStaticFiles();
 

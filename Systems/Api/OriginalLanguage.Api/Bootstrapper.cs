@@ -3,6 +3,7 @@
 using OriginalLanguage.Services.Settings;
 using OriginalLanguage.Api.Settings;
 using OriginalLanguage.Services.Articles;
+using OriginalLanguage.Services.UserAccount;
 
 public static class Bootstrapper
 {
@@ -11,8 +12,10 @@ public static class Bootstrapper
         services
             .AddMainSettings()
             .AddOpenApiSettings()
+            .AddIdentitySettings()
             .AddApiSpecialSettings()
-            .AddArticleService();
+            .AddArticleService()
+            .AddUserAccountService();
 
         return services;
     }

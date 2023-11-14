@@ -23,6 +23,7 @@
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -48,6 +49,7 @@
     <ProjectReference Include="..\..\..\Data\OriginalLanguage.Context\OriginalLanguage.Context.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Articles\OriginalLanguage.Services.Articles.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Settings\OriginalLanguage.Services.Settings.csproj" />
+    <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.UserAccount\OriginalLanguage.Services.UserAccount.csproj" />
     <ProjectReference Include="..\..\..\Shared\OriginalLanguage.Common\OriginalLanguage.Common.csproj" />
     <ProjectReference Include="..\OriginalLanguage.Api.Settings\OriginalLanguage.Api.Settings.csproj" />
   </ItemGroup>
