@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OriginalLanguage.Context.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Context.Entities;
 public class Course : EntityBase
 {
-    public int AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
+    public AppUser Author { get; set; }
+
     public int? LanguageId { get; set; }
     public virtual Language? Language { get; set; }
     public string? Title { get; set; }

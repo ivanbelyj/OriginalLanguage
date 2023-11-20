@@ -12,8 +12,8 @@ using OriginalLanguage.Context;
 namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20231024175921_add-identity")]
-    partial class addidentity
+    [Migration("20231118102120_migration-2")]
+    partial class migration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,8 +163,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .HasColumnType("text");
@@ -181,6 +181,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("articles", (string)null);
                 });
 
@@ -192,8 +194,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateTimeAdded")
                         .HasColumnType("timestamp with time zone");
@@ -206,6 +208,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("LanguageId");
 
@@ -220,8 +224,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateTimeAdded")
                         .HasColumnType("timestamp with time zone");
@@ -240,6 +244,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -288,12 +294,14 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.Property<int>("ProgressLevel")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LessonId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("lesson_progresses", (string)null);
                 });
@@ -392,7 +400,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.ToTable("static_pages", (string)null);
                 });
 
-            modelBuilder.Entity("OriginalLanguage.Context.Entities.User.User", b =>
+            modelBuilder.Entity("OriginalLanguage.Context.Entities.User.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -475,7 +483,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("OriginalLanguage.Context.Entities.User.User", null)
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -484,7 +492,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("OriginalLanguage.Context.Entities.User.User", null)
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,7 +507,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OriginalLanguage.Context.Entities.User.User", null)
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,21 +516,51 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("OriginalLanguage.Context.Entities.User.User", null)
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OriginalLanguage.Context.Entities.Article", b =>
+                {
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
+                        .WithMany("Articles")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("OriginalLanguage.Context.Entities.Course", b =>
                 {
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
+                        .WithMany("Courses")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OriginalLanguage.Context.Entities.Language", "Language")
                         .WithMany("Courses")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("Author");
+
                     b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("OriginalLanguage.Context.Entities.Language", b =>
+                {
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
+                        .WithMany("Languages")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("OriginalLanguage.Context.Entities.Lesson", b =>
@@ -551,7 +589,15 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "User")
+                        .WithMany("LessonProgresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Lesson");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OriginalLanguage.Context.Entities.LessonSample", b =>
@@ -607,6 +653,17 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
             modelBuilder.Entity("OriginalLanguage.Context.Entities.LessonSample", b =>
                 {
                     b.Navigation("SentenceVariants");
+                });
+
+            modelBuilder.Entity("OriginalLanguage.Context.Entities.User.AppUser", b =>
+                {
+                    b.Navigation("Articles");
+
+                    b.Navigation("Courses");
+
+                    b.Navigation("Languages");
+
+                    b.Navigation("LessonProgresses");
                 });
 #pragma warning restore 612, 618
         }

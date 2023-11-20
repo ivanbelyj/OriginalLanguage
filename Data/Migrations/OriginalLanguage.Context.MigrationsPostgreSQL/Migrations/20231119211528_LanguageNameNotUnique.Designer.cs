@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OriginalLanguage.Context;
@@ -11,9 +12,11 @@ using OriginalLanguage.Context;
 namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231119211528_LanguageNameNotUnique")]
+    partial class LanguageNameNotUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,7 +163,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("AuthorId")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -522,7 +525,8 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
                         .WithMany("Articles")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
                 });
@@ -532,7 +536,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
                         .WithMany("Courses")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OriginalLanguage.Context.Entities.Language", "Language")
@@ -550,7 +554,7 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.HasOne("OriginalLanguage.Context.Entities.User.AppUser", "Author")
                         .WithMany("Languages")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");

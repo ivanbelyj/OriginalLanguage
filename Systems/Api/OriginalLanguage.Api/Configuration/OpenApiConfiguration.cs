@@ -64,8 +64,8 @@ public static class OpenApiConfiguration
                         TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
                         Scopes = new Dictionary<string, string>
                         {
-                            {AppScopes.ArticlesRead, "ArticlesRead"},
-                            {AppScopes.ArticlesWrite, "ArticlesWrite"}
+                            { AppScopes.ArticlesRead, "ArticlesRead" },
+                            { AppScopes.ArticlesWrite, "ArticlesWrite" }
                         }
                     }
                 }
@@ -131,8 +131,8 @@ public static class OpenApiConfiguration
                 options.DefaultModelsExpandDepth(-1);
                 options.OAuthAppName(AppTitle);
 
-                options.OAuthClientId(openApiSettings?.OAuthClientId ?? "");
-                options.OAuthClientSecret(openApiSettings?.OAuthClientSecret ?? "");
+                //options.OAuthClientId(openApiSettings?.OAuthClientId ?? "");
+                //options.OAuthClientSecret(openApiSettings?.OAuthClientSecret ?? "");
             }
         );
     }

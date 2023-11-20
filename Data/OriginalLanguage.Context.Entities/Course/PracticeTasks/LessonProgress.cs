@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OriginalLanguage.Context.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Context.Entities;
 public class LessonProgress : EntityBase
 {
-    public int UserId { get; set; }
-    // Todo: navigation property
+    public Guid UserId { get; set; }
+    public AppUser User { get; set; }
 
     public int LessonId { get; set; }
     public virtual Lesson Lesson { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OriginalLanguage.Context.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ public class Language : EntityBase
         Name = name;
         NativeName = nativeName;
     }
-    public int AuthorId { get; set; }
-    // Todo: navigation property
+    public Guid AuthorId { get; set; }
+    public AppUser Author { get; set; }
 
     public string Name { get; set; }
     public string NativeName { get; set; }

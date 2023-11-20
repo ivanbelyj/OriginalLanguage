@@ -11,7 +11,7 @@ public static class IS4Configuration
         this IServiceCollection services)
     {
         services
-            .AddIdentity<User, IdentityRole<Guid>>(opts =>
+            .AddIdentity<AppUser, IdentityRole<Guid>>(opts =>
             {
                 opts.Password.RequiredLength = 8;
                 opts.Password.RequireDigit = true;
@@ -20,20 +20,20 @@ public static class IS4Configuration
                 opts.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<MainDbContext>()
-            .AddUserManager<UserManager<User>>()
+            .AddUserManager<UserManager<AppUser>>()
             .AddDefaultTokenProviders();
 
         services
             .AddIdentityServer()
 
-            .AddAspNetIdentity<User>()
+            .AddAspNetIdentity<AppUser>()
 
             .AddInMemoryApiScopes(AppApiScopes.ApiScopes)
             .AddInMemoryClients(AppClients.Clients)
             .AddInMemoryApiResources(AppResources.Resources)
             .AddInMemoryIdentityResources(AppIdentityResources.Resources)
 
-            .AddTestUsers(AppApiTestUsers.ApiTestUsers)
+            //.AddTestUsers(AppApiTestUsers.ApiTestUsers)
 
             .AddDeveloperSigningCredential();
 

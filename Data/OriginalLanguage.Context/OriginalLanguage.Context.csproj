@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\OriginalLanguage.Services.UserAccount\OriginalLanguage.Services.UserAccount.csproj" />
     <ProjectReference Include="..\..\Shared\OriginalLanguage.Settings\OriginalLanguage.Settings.csproj" />
     <ProjectReference Include="..\OriginalLanguage.Context.Entities\OriginalLanguage.Context.Entities.csproj" />
   </ItemGroup>

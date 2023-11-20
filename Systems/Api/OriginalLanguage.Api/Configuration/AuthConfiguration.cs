@@ -17,7 +17,7 @@ public static class AuthConfiguration
         IdentityModelEventSource.ShowPII = true;
 
         services
-            .AddIdentity<User, IdentityRole<Guid>>(opt =>
+            .AddIdentity<AppUser, IdentityRole<Guid>>(opt =>
             {
                 // Todo: normal password requirements
                 opt.Password.RequiredLength = 0;
@@ -27,7 +27,7 @@ public static class AuthConfiguration
                 opt.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<MainDbContext>()
-            .AddUserManager<UserManager<User>>()
+            .AddUserManager<UserManager<AppUser>>()
             .AddDefaultTokenProviders();
 
         services

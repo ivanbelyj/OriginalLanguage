@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OriginalLanguage.Context.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,8 @@ public class Article : PageBase
 {
     public string? ShortDescription { get; set; }
 
-    public int AuthorId { get; set; }
-    // Todo: navigation property
+    public Guid? AuthorId { get; set; }
+    public AppUser? Author { get; set; }
 
-    //public bool IsLessonTheory { get; set; }
     public virtual Lesson? Lesson { get; set; }
 }

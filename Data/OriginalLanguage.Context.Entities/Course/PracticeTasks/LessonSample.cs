@@ -21,7 +21,6 @@ public class LessonSample : EntityBase
     public virtual Sentence? MainSentenceVariant { get; set; }
 
     public virtual ICollection<Sentence> SentenceVariants { get; set; }
-    //public ICollection<Sentence> TranslationVariants { get; set; }
 
     public int LessonId { get; set; }
     public virtual Lesson Lesson { get; set; }

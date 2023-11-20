@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context;
-public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Article> Articles { get; set; }
     public DbSet<Language> Languages { get; set; }
@@ -30,7 +30,7 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<AppUser>().ToTable("users");
         modelBuilder.Entity<IdentityRole<Guid>>().ToTable("user_roles");
         modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("user_role_owners");
@@ -42,8 +42,14 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
         {
             entity.ToTable("articles");
             entity.Property(x => x.Title).IsRequired();
-            //entity.Property(x => x.IsLessonTheory).IsRequired();
-            entity.Property(x => x.AuthorId).IsRequired();
+
+            //entity.Property(x => x.AuthorId).IsRequired();
+            entity
+                .HasOne(x => x.Author)
+                .WithMany(author => author.Articles)
+                .HasForeignKey(x => x.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+                //.IsRequired();
         });
 
         modelBuilder.Entity<Language>(entity =>
@@ -51,10 +57,16 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.ToTable("languages");
             entity.Property(x => x.Name).IsRequired();
             entity.Property(x => x.Name).HasMaxLength(50);
-            entity.HasIndex(x => x.Name).IsUnique();
             entity.Property(x => x.NativeName).HasMaxLength(50);
             entity.Property(x => x.IsConlang).IsRequired();
-            // Todo: author id
+
+            //entity.Property(x => x.AuthorId).IsRequired();
+            entity
+                .HasOne(x => x.Author)
+                .WithMany(x => x.Languages)
+                .HasForeignKey(x => x.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+                //.IsRequired();
         });
 
         modelBuilder.Entity<StaticPage>(entity =>
@@ -74,7 +86,15 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
                 .HasForeignKey(course => course.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
             entity.Property(x => x.Title).HasMaxLength(50);
-            // Todo: author id
+
+
+            //entity.Property(x => x.AuthorId).IsRequired();
+            entity
+                .HasOne(x => x.Author)
+                .WithMany(x => x.Courses)
+                .HasForeignKey(x => x.AuthorId)
+                //.IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Lesson>(entity =>
@@ -90,23 +110,29 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity
                 .HasOne(lesson => lesson.Course)
                 .WithMany(course => course.Lessons)
-                .HasForeignKey(lesson => lesson.CourseId);
+                .HasForeignKey(lesson => lesson.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
-
 
         modelBuilder.Entity<LessonProgress>(entity =>
         {
             entity.ToTable("lesson_progresses");
             entity.Property(x => x.LessonId).IsRequired();
             entity.Property(x => x.ProgressLevel).IsRequired();
-            // Todo: user id
             entity
                 .HasOne(x => x.Lesson)
                 .WithMany(lesson => lesson.LessonProgresses)
                 .HasForeignKey(x => x.LessonId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //entity.Property(x => x.UserId).IsRequired();
+            entity
+                .HasOne(x => x.User)
+                .WithMany(x => x.LessonProgresses)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                //.IsRequired();
         });
-            
 
         modelBuilder.Entity<LessonSample>(entity =>
         {
@@ -114,7 +140,8 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.Property(x => x.MinimalProgressLevel).IsRequired();
             entity.HasMany(l => l.SentenceVariants)
                 .WithOne(v => v.LessonSample)
-                .HasForeignKey(v => v.LessonSampleId);
+                .HasForeignKey(v => v.LessonSampleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity
                 .HasOne(l => l.MainSentenceVariant)
@@ -125,12 +152,15 @@ public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity
                 .HasOne(ls => ls.Lesson)
                 .WithMany(lesson => lesson.LessonSamples)
-                .HasForeignKey(ls => ls.LessonId);
+                .HasForeignKey(ls => ls.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Sentence>(entity =>
         {
             entity.ToTable("sentences");
+            //entity.HasOne(s => s.LessonSample)
+            //    .WithMany(ls => ls.SentenceVariants);
         });
     }
 }
