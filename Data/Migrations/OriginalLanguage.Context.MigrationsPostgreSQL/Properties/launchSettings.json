@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "OriginalLanguage.Context.MigrationsPostgreSQL": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53433;http://localhost:53434"
+    }
+  }
+}

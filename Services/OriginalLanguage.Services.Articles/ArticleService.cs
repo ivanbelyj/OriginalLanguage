@@ -57,7 +57,7 @@ public class ArticleService : IArticleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         Article? article = await context.Articles
-            .Include(x => x.Lesson)
+            //.Include(x => x.Lesson)
             .FirstOrDefaultAsync(x => x.Id == articleId);
 
         ArticleModel articleModel = mapper.Map<ArticleModel>(article);

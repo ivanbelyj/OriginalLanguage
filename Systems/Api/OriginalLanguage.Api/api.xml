@@ -24,5 +24,11 @@
             Add version support for API
             </summary>
         </member>
+        <member name="T:OriginalLanguage.Api.Controllers.Languages.LanguagesController">
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Not Found</response>
+        </member>
     </members>
 </doc>
