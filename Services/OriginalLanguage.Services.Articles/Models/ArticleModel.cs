@@ -10,14 +10,13 @@ namespace OriginalLanguage.Services.Articles.Models;
 public class ArticleModel
 {
     public int Id { get; set; }
+    public Guid AuthorId { get; set; }
+
     public virtual string? Title { get; set; }
     public virtual string? Content { get; set; }
 
     public DateTime DateTimeAdded { get; set; }
     public string? ShortDescription { get; set; }
-
-    public int AuthorId { get; set; }
-    //public bool IsLessonTheory { get; set; }
 }
 
 public class ArticleModelProfile : Profile

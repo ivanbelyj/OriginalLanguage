@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Articles;
 public static class Bootstrapper
 {
-    public static IServiceCollection AddArticleService(this IServiceCollection services)
+    public static IServiceCollection AddArticlesService(
+        this IServiceCollection services)
     {
         services.AddSingleton<IArticleService, ArticleService>();
         return services;

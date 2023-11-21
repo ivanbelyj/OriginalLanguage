@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Articles.Models;
 public class AddArticleModel
 {
+    public Guid AuthorId { get; set; }
+
     public virtual string? Title { get; set; }
     public virtual string? Content { get; set; }
 
     public string? ShortDescription { get; set; }
-
-    public int AuthorId { get; set; }
-    //public bool IsLessonTheory { get; set; }
 }
 
 public class AddArticleModelValidator : AbstractValidator<AddArticleModel>
