@@ -36,5 +36,17 @@
             <response code="403">Forbidden</response>
             <response code="404">Not Found</response>
         </member>
+        <member name="T:OriginalLanguage.Api.Controllers.LessonProgresses.LessonProgressesController">
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="T:OriginalLanguage.Api.Controllers.Lessons.LessonsController">
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Not Found</response>
+        </member>
     </members>
 </doc>

@@ -37,7 +37,7 @@ public class ArticlesController : ControllerBase
 
     [ProducesResponseType(typeof(ArticleResponse), 200)]
     [HttpGet("{id}")]
-    public async Task<ArticleResponse> GetArticleById([FromRoute] int id)
+    public async Task<ArticleResponse> GetArticle([FromRoute] int id)
     {
         ArticleModel articleModel = await articleService.GetArticle(id);
         ArticleResponse response = mapper.Map<ArticleResponse>(articleModel);

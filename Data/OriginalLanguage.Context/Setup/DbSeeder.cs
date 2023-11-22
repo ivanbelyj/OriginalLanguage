@@ -163,7 +163,7 @@ public static class DbSeeder
                     LessonId = addedLessons[i].Id,
                     UserId = userId,
                 };
-                dbContext.LessonProgress.Add(entity);
+                dbContext.LessonProgresses.Add(entity);
             }
         }
         dbContext.SaveChanges();

@@ -7,13 +7,10 @@ namespace OriginalLanguage.Api.Controllers.Articles.Models;
 
 public class AddArticleRequest
 {
+    public Guid AuthorId { get; set; }
     public virtual string? Title { get; set; }
     public virtual string? Content { get; set; }
-
     public string? ShortDescription { get; set; }
-
-    public int AuthorId { get; set; }
-    //public bool IsLessonTheory { get; set; }
 }
 
 public class AddArticleRequestValidator : AbstractValidator<AddArticleRequest>

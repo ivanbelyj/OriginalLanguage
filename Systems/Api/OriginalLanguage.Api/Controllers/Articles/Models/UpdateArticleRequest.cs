@@ -10,9 +10,6 @@ public class UpdateArticleRequest
     public virtual string? Content { get; set; }
 
     public string? ShortDescription { get; set; }
-
-    //public int AuthorId { get; set; }
-    //public bool IsLessonTheory { get; set; }
 }
 
 

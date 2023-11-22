@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OriginalLanguage.Context;
@@ -11,9 +12,11 @@ using OriginalLanguage.Context;
 namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122205543_Add LessonProgress unique index")]
+    partial class AddLessonProgressuniqueindex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,9 +296,9 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("LessonId", "UserId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("LessonId", "UserId");
 
                     b.ToTable("lesson_progresses", (string)null);
                 });

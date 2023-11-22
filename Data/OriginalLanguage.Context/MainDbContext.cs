@@ -17,7 +17,7 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
     public DbSet<StaticPage> StaticPages { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
-    public DbSet<LessonProgress> LessonProgress { get; set; }
+    public DbSet<LessonProgress> LessonProgresses { get; set; }
     public DbSet<LessonSample> LessonSamples { get; set; }
     public DbSet<Sentence> Sentences { get; set; }
 
@@ -119,6 +119,13 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
             entity.ToTable("lesson_progresses");
             entity.Property(x => x.LessonId).IsRequired();
             entity.Property(x => x.ProgressLevel).IsRequired();
+
+            // Unique constraint to ensure that each user
+            // has only one progress per lesson
+            entity
+                .HasAlternateKey(lp => new { lp.LessonId, lp.UserId });
+                //.HasKey(x => new { x.UserId, x.LessonId });
+
             entity
                 .HasOne(x => x.Lesson)
                 .WithMany(lesson => lesson.LessonProgresses)
