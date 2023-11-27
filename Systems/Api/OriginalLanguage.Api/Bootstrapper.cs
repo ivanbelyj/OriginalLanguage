@@ -8,6 +8,8 @@ using OriginalLanguage.Services.Languages;
 using OriginalLanguage.Services.Courses;
 using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.LessonProgresses;
+using OriginalLanguage.Services.LessonSamples;
+using OriginalLanguage.Services.Sentences;
 
 public static class Bootstrapper
 {
@@ -24,7 +26,9 @@ public static class Bootstrapper
             .AddLanguagesService()
             .AddCoursesService()
             .AddLessonsService()
-            .AddLessonProgressesService();
+            .AddLessonProgressesService()
+            .AddLessonSamplesService()
+            .AddSentencesService();
 
         return services;
     }

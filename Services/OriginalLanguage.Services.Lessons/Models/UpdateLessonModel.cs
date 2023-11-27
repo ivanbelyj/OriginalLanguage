@@ -15,9 +15,9 @@ public class UpdateLessonModel
     public int CourseId { get; set; }
 }
 
-public class UpdateLanguageModelValidator : AbstractValidator<UpdateLessonModel>
+public class UpdateLessonModelValidator : AbstractValidator<UpdateLessonModel>
 {
-    public UpdateLanguageModelValidator()
+    public UpdateLessonModelValidator()
     {
         RuleFor(x => x.Number)
             .NotEmpty()

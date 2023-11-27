@@ -8,7 +8,7 @@ namespace OriginalLanguage.Api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        [ProducesResponseType(typeof(IEnumerable<string>), 200)]  // For OpenApi
+        [ProducesResponseType(typeof(IEnumerable<string>), 200)]  // For Open Api
         [ApiVersion("1.0")]
         [HttpGet("")]
         public async Task<IEnumerable<string>> GetData1()
@@ -23,7 +23,7 @@ namespace OriginalLanguage.Api.Controllers
             return res;
         }
 
-        [ProducesResponseType(typeof(IEnumerable<string>), 200)]  // For OpenApi
+        [ProducesResponseType(typeof(IEnumerable<string>), 200)]  // For Open Api
         [ApiVersion("2.0")]
         [HttpGet("")]
         public async Task<IEnumerable<string>> GetData2(string? prefix)

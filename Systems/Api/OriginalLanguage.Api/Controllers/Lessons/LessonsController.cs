@@ -52,7 +52,6 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(IActionResult), 200)]
     public async Task<IActionResult> UpdateLesson(
         [FromRoute] int id,
         [FromBody] UpdateLessonRequest request)
@@ -62,7 +61,6 @@ public class LessonsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(IActionResult), 200)]
     public async Task<IActionResult> DeleteLesson([FromRoute] int id)
     {
         await lessonsService.DeleteLesson(id);
