@@ -15,7 +15,7 @@ public static class Bootstrapper
     public static IServiceCollection AddAppDbContext(this IServiceCollection services,
         IConfiguration? configuration = null)
     {
-        DbSettings? dbSettings = Configuration.Load<DbSettings>("Database",
+        DbSettings? dbSettings = ConfigurationUtils.Load<DbSettings>("Database",
             configuration);
         if (dbSettings == null)
             throw new Exception("Database configuration cannot be null");

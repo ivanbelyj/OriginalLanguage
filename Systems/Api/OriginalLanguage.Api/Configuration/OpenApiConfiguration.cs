@@ -1,7 +1,6 @@
 ﻿namespace OriginalLanguage.Api.Configuration;
 
-using OriginalLanguage.Common.Security;
-//using OriginalLanguage.Services.Settings;
+using OriginalLanguage.Consts;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;

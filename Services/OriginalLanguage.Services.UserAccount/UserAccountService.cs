@@ -9,6 +9,9 @@ using Microsoft.Extensions.Logging;
 using OriginalLanguage.Common.Exceptions;
 using OriginalLanguage.Common.Validator;
 using OriginalLanguage.Context.Entities.User;
+using OriginalLanguage.Services.Actions;
+using OriginalLanguage.Services.EmailSender;
+using OriginalLanguage.Services.EmailSender.Models;
 
 namespace OriginalLanguage.Services.UserAccount;
 public class UserAccountService : IUserAccountService
@@ -16,14 +19,19 @@ public class UserAccountService : IUserAccountService
     private readonly IModelValidator<RegisterUserAccountModel> registerModelValidator;
     private readonly UserManager<AppUser> userManager;
     private readonly IMapper mapper;
+    private readonly ISendEmailAction sendEmailAction;
+
     //private readonly ILogger logger;
     public UserAccountService(UserManager<AppUser> userManager,
         IModelValidator<RegisterUserAccountModel> validator,
-        IMapper mapper)
+        IMapper mapper,
+        ISendEmailAction sendEmailAction
+        )
     {
         this.userManager = userManager;
         registerModelValidator = validator;
         this.mapper = mapper;
+        this.sendEmailAction = sendEmailAction;
         //this.logger = logger;
     }
 
@@ -47,6 +55,11 @@ public class UserAccountService : IUserAccountService
             PhoneNumber = null,
             PhoneNumberConfirmed = false,
         };
+
+        await sendEmailAction.SendEmail(new EmailModel
+        {
+            Content = $"Test email for user {user.Email}"
+        });
 
         IdentityResult createRes = await userManager.CreateAsync(user, model.Password);
         if (!createRes.Succeeded)

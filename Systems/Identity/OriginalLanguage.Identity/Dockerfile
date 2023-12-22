@@ -8,9 +8,11 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Systems/Identity/OriginalLanguage.Identity/OriginalLanguage.Identity.csproj", "Systems/Identity/OriginalLanguage.Identity/"]
 COPY ["Data/OriginalLanguage.Context/OriginalLanguage.Context.csproj", "Data/OriginalLanguage.Context/"]
-COPY ["Shared/OriginalLanguage.Settings/OriginalLanguage.Settings.csproj", "Shared/OriginalLanguage.Settings/"]
+COPY ["Services/OriginalLanguage.Services.UserAccount/OriginalLanguage.Services.UserAccount.csproj", "Services/OriginalLanguage.Services.UserAccount/"]
 COPY ["Data/OriginalLanguage.Context.Entities/OriginalLanguage.Context.Entities.csproj", "Data/OriginalLanguage.Context.Entities/"]
 COPY ["Shared/OriginalLanguage.Common/OriginalLanguage.Common.csproj", "Shared/OriginalLanguage.Common/"]
+COPY ["Shared/OriginalLanguage.Settings/OriginalLanguage.Settings.csproj", "Shared/OriginalLanguage.Settings/"]
+COPY ["Shared/OriginalLanguage.Consts/OriginalLanguage.Consts.csproj", "Shared/OriginalLanguage.Consts/"]
 RUN dotnet restore "Systems/Identity/OriginalLanguage.Identity/OriginalLanguage.Identity.csproj"
 COPY . .
 WORKDIR "/src/Systems/Identity/OriginalLanguage.Identity"

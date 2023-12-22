@@ -10,11 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddAppLogger();
 
-MainSettings? mainSettings = Configuration.Load<MainSettings>("Main",
+MainSettings? mainSettings = ConfigurationUtils.Load<MainSettings>("Main",
     builder.Configuration);
-OpenApiSettings? openApiSettings = Configuration.Load<OpenApiSettings>("OpenApi",
+OpenApiSettings? openApiSettings = ConfigurationUtils.Load<OpenApiSettings>("OpenApi",
     builder.Configuration);
-IdentitySettings? identitySettings = Configuration.Load<IdentitySettings>("Identity",
+IdentitySettings? identitySettings = ConfigurationUtils.Load<IdentitySettings>("Identity",
     builder.Configuration);
 ArgumentNullException.ThrowIfNull(openApiSettings);
 ArgumentNullException.ThrowIfNull(identitySettings);
@@ -32,7 +32,7 @@ services.AddAppAuth(identitySettings);
 services.AddAppCors();
 services.AddAppVersioning();
 services.AddAppOpenApi(openApiSettings, identitySettings);
-services.AddAppAutoMappers();
+services.AddAppAutoMapper();
 services.AddAppControllersAndViews();
 
 services.AddAppServices();

@@ -12,6 +12,9 @@ services:
   originallanguage_redis:
     image: redis
 
+  originallanguage_rabbitmq:
+    image: rabbitmq:management
+
   originallanguage_api:
     image: ${DOCKER_REGISTRY-}originallanguageapi
     build:
@@ -32,3 +35,10 @@ services:
       #- originallanguage_mssql
       - originallanguage_redis
       - originallanguage_api
+
+  originallanguage_emailworker:
+    image: ${DOCKER_REGISTRY-}originallanguageemailworker
+    build:
+      context: .
+      dockerfile: Systems/Workers/OriginalLanguage.EmailWorker/Dockerfile
+

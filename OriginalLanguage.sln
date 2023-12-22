@@ -53,7 +53,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.LessonSamples", "Services\OriginalLanguage.Services.LessonSamples\OriginalLanguage.Services.LessonSamples.csproj", "{E01164FE-1111-41B3-B8CB-9F0A8F126AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.Sentences", "Services\OriginalLanguage.Services.Sentences\OriginalLanguage.Services.Sentences.csproj", "{725586F3-1291-445E-A750-66D3FA3E5213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.Sentences", "Services\OriginalLanguage.Services.Sentences\OriginalLanguage.Services.Sentences.csproj", "{725586F3-1291-445E-A750-66D3FA3E5213}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.Cache", "Services\OriginalLanguage.Services.Cache\OriginalLanguage.Services.Cache.csproj", "{6D708BB2-E337-4CFF-B656-585CE76B525A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.RabbitMq", "Services\OriginalLanguage.Services.RabbitMq\OriginalLanguage.Services.RabbitMq.csproj", "{8323E643-78FA-459F-A48E-854BD5AC5526}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.EmailSender", "Services\OriginalLanguage.Services.EmailSender\OriginalLanguage.Services.EmailSender.csproj", "{ADBA492B-E296-4959-91B8-E59E21B64E95}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{70C7BF8B-EAE2-4D76-A33C-7354140F23EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Consts", "Shared\OriginalLanguage.Consts\OriginalLanguage.Consts.csproj", "{6883BD22-0B22-49B0-8431-7D024EB152C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.EmailWorker", "Systems\Workers\OriginalLanguage.EmailWorker\OriginalLanguage.EmailWorker.csproj", "{B16EBD44-60C0-4594-B1A0-3C12DA85085F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.Actions", "Services\OriginalLanguage.Services.Actions\OriginalLanguage.Services.Actions.csproj", "{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +151,30 @@ Global
 		{725586F3-1291-445E-A750-66D3FA3E5213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{725586F3-1291-445E-A750-66D3FA3E5213}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{725586F3-1291-445E-A750-66D3FA3E5213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D708BB2-E337-4CFF-B656-585CE76B525A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D708BB2-E337-4CFF-B656-585CE76B525A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D708BB2-E337-4CFF-B656-585CE76B525A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D708BB2-E337-4CFF-B656-585CE76B525A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8323E643-78FA-459F-A48E-854BD5AC5526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8323E643-78FA-459F-A48E-854BD5AC5526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8323E643-78FA-459F-A48E-854BD5AC5526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8323E643-78FA-459F-A48E-854BD5AC5526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBA492B-E296-4959-91B8-E59E21B64E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBA492B-E296-4959-91B8-E59E21B64E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBA492B-E296-4959-91B8-E59E21B64E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBA492B-E296-4959-91B8-E59E21B64E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6883BD22-0B22-49B0-8431-7D024EB152C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6883BD22-0B22-49B0-8431-7D024EB152C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6883BD22-0B22-49B0-8431-7D024EB152C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6883BD22-0B22-49B0-8431-7D024EB152C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16EBD44-60C0-4594-B1A0-3C12DA85085F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16EBD44-60C0-4594-B1A0-3C12DA85085F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16EBD44-60C0-4594-B1A0-3C12DA85085F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16EBD44-60C0-4594-B1A0-3C12DA85085F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +201,13 @@ Global
 		{C085FE42-A4D0-4C9B-96B6-CF9F09EAADC3} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 		{E01164FE-1111-41B3-B8CB-9F0A8F126AB5} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 		{725586F3-1291-445E-A750-66D3FA3E5213} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{6D708BB2-E337-4CFF-B656-585CE76B525A} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{8323E643-78FA-459F-A48E-854BD5AC5526} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{ADBA492B-E296-4959-91B8-E59E21B64E95} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{70C7BF8B-EAE2-4D76-A33C-7354140F23EE} = {AE74620A-AF5E-41F5-8BD1-952FD1FD281A}
+		{6883BD22-0B22-49B0-8431-7D024EB152C9} = {4B287EDD-9DFC-4344-A4DB-459CE6763AAA}
+		{B16EBD44-60C0-4594-B1A0-3C12DA85085F} = {70C7BF8B-EAE2-4D76-A33C-7354140F23EE}
+		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E569FD64-91AF-46F9-909C-127A3B963F11}

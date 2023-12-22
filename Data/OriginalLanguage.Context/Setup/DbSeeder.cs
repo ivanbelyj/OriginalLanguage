@@ -33,11 +33,14 @@ public static class DbSeeder
                 .GetRequiredService<UserManager<AppUser>>();
 
             string testUserEmail = "test@tst.com";
-            int i = 0;
-            while (await userManager.FindByEmailAsync(testUserEmail) != null)
-            {
-                testUserEmail = $"test{++i}@tst.com";
-            }
+            //int i = 0;
+            //while (await userManager.FindByEmailAsync(testUserEmail) != null)
+            //{
+            //    testUserEmail = $"test{++i}@tst.com";
+            //}
+
+            if (userManager.FindByEmailAsync(testUserEmail) != null)
+                return;
 
             var accModel = await userAccountService.Create(new RegisterUserAccountModel()
             {

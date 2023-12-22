@@ -1,5 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
-using OriginalLanguage.Common.Security;
+using OriginalLanguage.Consts;
 
 namespace OriginalLanguage.Identity.Configuration;
 

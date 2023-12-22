@@ -37,6 +37,16 @@ services:
         volumes:      
             - ~/.docker-conf/redis/data/:/data
 
+    originallanguage_rabbitmq:
+        ports:
+          - "5672:5672"
+          - "5673:5673"
+          - "15672:15672" 
+        networks:
+          - shared_originallanguage_net
+        volumes:      
+          - ./rabbitmq:/var/lib/rabbitmq
+
     originallanguage_api:
         ports:
             - "10000:80"
@@ -55,8 +65,15 @@ services:
         env_file:
             - env.identity
 
+    originallanguage_emailworker:
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+        networks:
+          - shared_originallanguage_net
+        env_file:
+          - env.email-worker
+
 networks:
     shared_originallanguage_net:
         name: original_language
         driver: bridge
-

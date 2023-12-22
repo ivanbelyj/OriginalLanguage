@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\OriginalLanguage.Context\OriginalLanguage.Context.csproj" />
     <ProjectReference Include="..\..\..\Shared\OriginalLanguage.Common\OriginalLanguage.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\OriginalLanguage.Consts\OriginalLanguage.Consts.csproj" />
   </ItemGroup>
 
 </Project>

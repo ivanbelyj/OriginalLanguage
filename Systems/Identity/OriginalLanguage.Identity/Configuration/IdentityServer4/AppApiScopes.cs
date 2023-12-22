@@ -1,6 +1,6 @@
 ﻿namespace OriginalLanguage.Identity.Configuration;
 using Duende.IdentityServer.Models;
-using OriginalLanguage.Common.Security;
+using OriginalLanguage.Consts;
 
 public static class AppApiScopes
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Logging;
-using OriginalLanguage.Common.Security;
+using OriginalLanguage.Consts;
 using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Context;
 using OriginalLanguage.Services.Settings;

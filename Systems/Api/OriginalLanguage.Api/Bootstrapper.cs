@@ -10,6 +10,10 @@ using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.LessonProgresses;
 using OriginalLanguage.Services.LessonSamples;
 using OriginalLanguage.Services.Sentences;
+using OriginalLanguage.Services.EmailSender;
+using OriginalLanguage.Services.RabbitMq;
+using OriginalLanguage.Services.Cache;
+using OriginalLanguage.Services.Actions;
 
 public static class Bootstrapper
 {
@@ -28,7 +32,11 @@ public static class Bootstrapper
             .AddLessonsService()
             .AddLessonProgressesService()
             .AddLessonSamplesService()
-            .AddSentencesService();
+            .AddSentencesService()
+            
+            .AddActions()
+            .AddCacheService()
+            .AddAppRabbitMq();
 
         return services;
     }

@@ -1,12 +1,12 @@
-﻿using OriginalLanguage.Common.Helpers;
+﻿using OriginalLanguage.Common.Utils;
 
 namespace OriginalLanguage.Api.Configuration;
 
 public static class AutoMapperConfiguration
 {
-    public static IServiceCollection AddAppAutoMappers(this IServiceCollection services)
+    public static IServiceCollection AddAppAutoMapper(this IServiceCollection services)
     {
-        AutoMappersRegisterHelper.Register(services);
+        AutoMapperUtils.AddAppAutoMapper(services, "originallanguage.");
 
         return services;
     }
