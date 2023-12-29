@@ -63,15 +63,40 @@ public class LanguagesService : ILanguagesService
     public async Task<IEnumerable<LanguageModel>> GetLanguages(int offset = 0,
         int limit = 10)
     {
+        return await GetLanguages(x => x, offset, limit);  // No processing
+    }
+
+    private async Task<IEnumerable<LanguageModel>> GetLanguages(
+        Func<IQueryable<Language>, IQueryable<Language>> processBeforePaging,
+        int offset = 0,
+        int limit = 10)
+    {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
-        var languages = dbContext
-            .Languages
+        var languages = processBeforePaging(dbContext.Languages)
             .Skip(Math.Max(0, offset))
             .Take(Math.Min(Math.Max(0, limit), 1000));
 
         return (await languages.ToListAsync())
             .Select(mapper.Map<LanguageModel>);
+    }
+
+    public async Task<IEnumerable<LanguageModel>> GetLanguagesFiltered(
+        LanguagesFilterModel languagesFilterModel,
+        int offset = 0, int limit = 10)
+    {
+        return await GetLanguages(lang => ApplyFilter(lang, languagesFilterModel),
+            offset, limit);
+    }
+
+    private IQueryable<Language> ApplyFilter(IQueryable<Language> languages,
+        LanguagesFilterModel filter)
+    {
+        var res = languages;
+        if (filter.IsConlang != null)
+            res = res.Where(lang => lang.IsConlang == filter.IsConlang);
+        
+        return res;
     }
 
     public async Task UpdateLanguage(int id, UpdateLanguageModel model)

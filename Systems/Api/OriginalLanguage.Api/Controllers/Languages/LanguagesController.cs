@@ -36,11 +36,22 @@ public class LanguagesController : ControllerBase
 
     [ProducesResponseType(typeof(IEnumerable<LanguageResponse>), 200)]
     [HttpGet("")]
-    public async Task<IEnumerable<LanguageResponse>> GetLanguages(
+    public async Task<IEnumerable<LanguageResponse>> GetLanguages(  
         [FromQuery] int offset = 0,
         [FromQuery] int limit = 10)
     {
         return (await languageService.GetLanguages(offset, limit))
+            .Select(mapper.Map<LanguageResponse>);
+    }
+
+    [ProducesResponseType(typeof(IEnumerable<LanguageResponse>), 200)]
+    [HttpGet("filtered")]
+    public async Task<IEnumerable<LanguageResponse>> GetLanguagesFiltered(
+        [FromQuery] LanguagesFilterModel filterModel,
+        [FromQuery] int offset = 0,
+        [FromQuery] int limit = 10)
+    {
+        return (await languageService.GetLanguagesFiltered(filterModel, offset, limit))
             .Select(mapper.Map<LanguageResponse>);
     }
 

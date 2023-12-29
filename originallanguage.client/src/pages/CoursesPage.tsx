@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { CourseCard } from "../components/courses/course-card";
+import { useCourses } from "../hooks/courses";
+import { CreateCourse } from "../components/courses/create-course";
 import { ICourse } from "../models/ICourse";
-import { CourseCard } from "../components/course-card";
 
 const CoursesList: React.FC = () => {
-  const [courses, setCourses] = useState<ICourse[]>([]);
+  const { courses, addCourse } = useCourses();
 
-  useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + "courses")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => setCourses(data))
-      .catch((error) => {
-        console.error("There has been a problem with courses fetch:", error);
-      });
-  }, []);
+  function handleCreateCourse(newCourse: ICourse) {
+    addCourse(newCourse);
+  }
 
   return (
     <div>
       <h1>Courses</h1>
+      <h2>Create course</h2>
+      <CreateCourse onCreate={handleCreateCourse} />
+      <h2>Courses</h2>
       {courses.map((course) => {
         return <CourseCard course={course} key={course.id} />;
       })}
