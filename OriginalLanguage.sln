@@ -67,7 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Consts", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.EmailWorker", "Systems\Workers\OriginalLanguage.EmailWorker\OriginalLanguage.EmailWorker.csproj", "{B16EBD44-60C0-4594-B1A0-3C12DA85085F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.Actions", "Services\OriginalLanguage.Services.Actions\OriginalLanguage.Services.Actions.csproj", "{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.Actions", "Services\OriginalLanguage.Services.Actions\OriginalLanguage.Services.Actions.csproj", "{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "originallanguage.client", "originallanguage.client\originallanguage.client.esproj", "{D6064432-76BE-4F8C-8EBC-716CF0317082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +177,12 @@ Global
 		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10733EF0-7D0C-4CD4-ABBE-71710AB5A461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6064432-76BE-4F8C-8EBC-716CF0317082}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
