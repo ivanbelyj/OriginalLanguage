@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { ILanguage } from "../../models/ILanguage";
+import { Form, Input, Checkbox, Button } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 interface ICreateLanguageProps {
   onCreate: (newLanguage: ILanguage) => void;
@@ -19,15 +21,11 @@ export function CreateLanguage({ onCreate }: ICreateLanguageProps) {
   ) => {
     setNativeName(event.target.value);
   };
-  const handleIsConlangChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleIsConlangChange = (event: CheckboxChangeEvent) => {
     setIsConlang(event.target.checked);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit = async (_: React.FormEvent) => {
     const response = await axios.post<ILanguage>(
       import.meta.env.VITE_API_URL + "languages",
       {
@@ -39,42 +37,43 @@ export function CreateLanguage({ onCreate }: ICreateLanguageProps) {
     );
 
     console.log("Language created: ", response);
-    setName("");
-    setNativeName("");
-    setIsConlang(true);
+    // setName("");
+    // setNativeName("");
+    // setIsConlang(true);
 
     onCreate(response.data);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="text"
-          value={name}
-          onChange={handleNameChange}
-          placeholder="Language name"
-          required
-        />
-      </div>
-      <div>
-        <input
+    <Form onFinish={handleSubmit} style={{ maxWidth: "300px" }}>
+      <Form.Item
+        label="Language name"
+        name="name"
+        rules={[{ required: true, message: "Please enter the language name" }]}
+      >
+        <Input type="text" value={name} onChange={handleNameChange} />
+      </Form.Item>
+      <Form.Item
+        label="Language native name"
+        name="native-name"
+        rules={[
+          { required: true, message: "Please enter the language native name" },
+        ]}
+      >
+        <Input
           type="text"
           value={nativeName}
           onChange={handleNativeNameChange}
-          placeholder="Language native name"
-          required
         />
-      </div>
-      <div>
-        <label>Is conlang</label>
-        <input
-          type="checkbox"
-          checked={isConlang}
-          onChange={handleIsConlangChange}
-        />
-      </div>
-      <button>Create</button>
-    </form>
+      </Form.Item>
+      <Form.Item label="Is conlang" name="is-conlang">
+        <Checkbox checked={isConlang} onChange={handleIsConlangChange} />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Create
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }

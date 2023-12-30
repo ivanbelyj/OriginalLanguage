@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { ILanguage } from "../models/ILanguage";
-import { CreateLanguage } from "../components/languages/create-language";
-import { useLanguages } from "../hooks/languages";
-import { LanguageCard } from "../components/languages/language-card";
+import { CreateLanguage } from "../components/languages/CreateLanguage";
+import { LanguageCard } from "../components/languages/LanguageCard";
+import { useLanguages } from "../hooks/Languages";
+import { Typography, Select, Card, List } from "antd";
 
 const conlangOptionValue = "conlang";
 const notConlangOptionValue = "not conlang";
@@ -29,30 +30,37 @@ const LanguagesPage: React.FC = () => {
       : null;
   }
 
+  const { Title } = Typography;
+  const { Option } = Select;
+
   return (
-    <div>
-      <h1>Languages</h1>
-      <h2>Create language</h2>
+    <Card>
+      <Title level={2}>Languages</Title>
+      <Title level={3}>Create language</Title>
       <CreateLanguage onCreate={handleCreateLanguage} />
 
-      <h2>Languages</h2>
-      <label>
-        Artificiality
-        <select
-          value={toArtificialityOptionValue(isConlang)}
-          onChange={(event) => {
-            setIsConlang(fromArtificialityOptionValue(event.target.value));
-          }}
-        >
-          <option value="">Any</option>
-          <option value={conlangOptionValue}>Conlang</option>
-          <option value={notConlangOptionValue}>Not Conlang</option>
-        </select>
-      </label>
-      {languages.map((language) => {
-        return <LanguageCard language={language} key={language.id} />;
-      })}
-    </div>
+      <Title level={3}>Languages</Title>
+      <Select
+        value={toArtificialityOptionValue(isConlang)}
+        onChange={(value) => {
+          setIsConlang(fromArtificialityOptionValue(value));
+        }}
+        style={{ width: "100%" }}
+      >
+        <Option value="">Any</Option>
+        <Option value={conlangOptionValue}>Conlang</Option>
+        <Option value={notConlangOptionValue}>Not Conlang</Option>
+      </Select>
+
+      <List
+        dataSource={languages}
+        renderItem={(language) => (
+          <List.Item>
+            <LanguageCard language={language} />
+          </List.Item>
+        )}
+      />
+    </Card>
   );
 };
 

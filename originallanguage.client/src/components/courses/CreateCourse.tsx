@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { ICourse } from "../../models/ICourse";
+import { Form, Input, Button } from "antd";
 
 interface ICreateCourseProps {
   onCreate: (newCourse: ICourse) => void;
@@ -12,9 +13,7 @@ export function CreateCourse({ onCreate }: ICreateCourseProps) {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit = async (_: React.FormEvent) => {
     const response = await axios.post<ICourse>(
       import.meta.env.VITE_API_URL + "courses",
       {
@@ -24,21 +23,30 @@ export function CreateCourse({ onCreate }: ICreateCourseProps) {
     );
 
     console.log("Course created: ", response);
-    setTitle("");
+    // setTitle("");
 
     onCreate(response.data);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={title}
-        onChange={handleTitleChange}
-        placeholder="Course title"
-        required
-      />
-      <button>Create</button>
-    </form>
+    <Form onFinish={handleSubmit} style={{ maxWidth: "300px" }}>
+      <Form.Item
+        label="Course title"
+        name="title"
+        rules={[{ required: true, message: "Please input the course title!" }]}
+      >
+        <Input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          placeholder="Course title"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Create
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }

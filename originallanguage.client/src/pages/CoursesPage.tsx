@@ -1,10 +1,14 @@
 import React from "react";
-import { CourseCard } from "../components/courses/course-card";
-import { useCourses } from "../hooks/courses";
-import { CreateCourse } from "../components/courses/create-course";
-import { ICourse } from "../models/ICourse";
 
-const CoursesList: React.FC = () => {
+import { useCourses } from "../hooks/Courses";
+
+import { ICourse } from "../models/ICourse";
+import { Card, List } from "antd";
+import Title from "antd/es/typography/Title";
+import { CreateCourse } from "../components/courses/CreateCourse";
+import { CourseCard } from "../components/courses/CourseCard";
+
+const CoursesPage: React.FC = () => {
   const { courses, addCourse } = useCourses();
 
   function handleCreateCourse(newCourse: ICourse) {
@@ -12,16 +16,24 @@ const CoursesList: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Courses</h1>
-      <h2>Create course</h2>
+    <Card>
+      <Title level={2}>Courses</Title>
+      <Title level={3}>Create course</Title>
       <CreateCourse onCreate={handleCreateCourse} />
-      <h2>Courses</h2>
-      {courses.map((course) => {
-        return <CourseCard course={course} key={course.id} />;
-      })}
-    </div>
+
+      <Title level={3}>Courses</Title>
+      <List
+        itemLayout="vertical"
+        pagination={{ pageSize: 5 }}
+        dataSource={courses}
+        renderItem={(course) => (
+          <List.Item>
+            <CourseCard course={course} />
+          </List.Item>
+        )}
+      />
+    </Card>
   );
 };
 
-export default CoursesList;
+export default CoursesPage;

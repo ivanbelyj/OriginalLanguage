@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using OriginalLanguage.Services.UserAccount;
+using OriginalLanguage.Services.UserAccount.Models;
 
 namespace OriginalLanguage.Api.Controllers.Accounts;
 

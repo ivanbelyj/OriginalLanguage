@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Services.UserAccount;
+using OriginalLanguage.Services.UserAccount.Models;
 
 namespace OriginalLanguage.Api.Controllers.Accounts;
 
@@ -22,7 +23,7 @@ public class AccountsController : Controller
         [FromBody] RegisterAccountRequest request)
     {
         UserAccountModel userAccountModel = await userAccountService
-            .Create(mapper.Map<RegisterUserAccountModel>(request));
+            .CreateUser(mapper.Map<RegisterUserAccountModel>(request));
         var response = mapper.Map<UserAccountResponse>(userAccountModel);
         return response;
     }

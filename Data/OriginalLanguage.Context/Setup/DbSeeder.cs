@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OriginalLanguage.Context.Entities;
 using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Services.UserAccount;
+using OriginalLanguage.Services.UserAccount.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ public static class DbSeeder
             if (userManager.FindByEmailAsync(testUserEmail) != null)
                 return;
 
-            var accModel = await userAccountService.Create(new RegisterUserAccountModel()
+            var accModel = await userAccountService.CreateUser(new RegisterUserAccountModel()
             {
                 Email = testUserEmail,
                 Name = testUserEmail,
