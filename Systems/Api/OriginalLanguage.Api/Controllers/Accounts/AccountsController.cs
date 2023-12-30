@@ -19,7 +19,7 @@ public class AccountsController : Controller
 
     [HttpPost("")]
     public async Task<UserAccountResponse> Register(
-        [FromQuery] RegisterAccountRequest request)
+        [FromBody] RegisterAccountRequest request)
     {
         UserAccountModel userAccountModel = await userAccountService
             .Create(mapper.Map<RegisterUserAccountModel>(request));

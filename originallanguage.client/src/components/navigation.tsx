@@ -9,6 +9,7 @@ export function Navigation() {
         <Link to="/about">About</Link>
         <Link to="/courses">Courses</Link>
         <Link to="/languages">Languages</Link>
+        <Link to="/login">Login</Link>
       </span>
     </nav>
   );

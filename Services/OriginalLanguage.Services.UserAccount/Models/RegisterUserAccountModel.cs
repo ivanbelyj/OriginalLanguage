@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OriginalLanguage.Services.UserAccount;
+namespace OriginalLanguage.Services.UserAccount.Models;
 public class RegisterUserAccountModel
 {
     public string Name { get; set; }
