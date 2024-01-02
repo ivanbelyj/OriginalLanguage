@@ -24,6 +24,12 @@
             Add version support for API
             </summary>
         </member>
+        <member name="T:OriginalLanguage.Api.Controllers.Accounts.AccountsController">
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Not Found</response>
+        </member>
         <member name="T:OriginalLanguage.Api.Controllers.Courses.CoursesController">
             <response code="400">Bad Request</response>
             <response code="401">Unauthorized</response>

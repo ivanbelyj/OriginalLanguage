@@ -19,6 +19,7 @@ services.AddAppIS4Configuration();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseAppCors();
 app.UseAppHealthChecks();
 app.UseAppIS4();
 

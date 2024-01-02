@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ICourse } from "../models/ICourse";
+import ICourse from "../models/ICourse";
 
 export function useCourses() {
   const [courses, setCourses] = useState<ICourse[]>([]);

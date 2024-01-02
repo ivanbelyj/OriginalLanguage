@@ -24,12 +24,16 @@ public class UserAccountService : IUserAccountService
     private readonly ISendEmailAction sendEmailAction;
 
     private readonly ILogger logger;
+    private readonly SignInManager<AppUser> signInManager;
+
     public UserAccountService(UserManager<AppUser> userManager,
         IModelValidator<RegisterUserAccountModel> registerValidator,
         IModelValidator<UpdateUserAccountModel> updateModelValidator,
         IMapper mapper,
         ISendEmailAction sendEmailAction,
-        ILogger logger)
+        ILogger logger,
+        SignInManager<AppUser> signInManager
+        )
     {
         this.userManager = userManager;
         this.registerValidator = registerValidator;
@@ -37,6 +41,7 @@ public class UserAccountService : IUserAccountService
         this.mapper = mapper;
         this.sendEmailAction = sendEmailAction;
         this.logger = logger;
+        this.signInManager = signInManager;
     }
 
     public async Task<UserAccountModel> CreateUser(RegisterUserAccountModel model)
@@ -163,5 +168,4 @@ public class UserAccountService : IUserAccountService
     //        Content = $"Click here to reset your password: {passwordResetLink}"
     //    });
     //}
-
 }

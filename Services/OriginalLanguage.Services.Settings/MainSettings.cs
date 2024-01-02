@@ -8,4 +8,5 @@ namespace OriginalLanguage.Services.Settings;
 public class MainSettings
 {
     public string? MainUrl { get; private set; }
+    public string? AllowedOrigins {  get; private set; }
 }

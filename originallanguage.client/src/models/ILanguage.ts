@@ -1,4 +1,4 @@
-export interface ILanguage {
+export default interface ILanguage {
   id: string;
   authorId: string;
   name: string;

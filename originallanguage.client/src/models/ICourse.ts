@@ -1,4 +1,4 @@
-export interface ICourse {
+export default interface ICourse {
   id: number;
   authorId: string;
   languageId?: number;

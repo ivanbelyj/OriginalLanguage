@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { ICourse } from "../../models/ICourse";
+import ICourse from "../../models/ICourse";
 import { Form, Input, Button } from "antd";
 
 interface ICreateCourseProps {
@@ -13,7 +13,7 @@ export function CreateCourse({ onCreate }: ICreateCourseProps) {
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  const handleSubmit = async (_: React.FormEvent) => {
+  const handleFinish = async (_: React.FormEvent) => {
     const response = await axios.post<ICourse>(
       import.meta.env.VITE_API_URL + "courses",
       {
@@ -29,7 +29,7 @@ export function CreateCourse({ onCreate }: ICreateCourseProps) {
   };
 
   return (
-    <Form onFinish={handleSubmit} style={{ maxWidth: "300px" }}>
+    <Form onFinish={handleFinish} style={{ maxWidth: "300px" }}>
       <Form.Item
         label="Course title"
         name="title"

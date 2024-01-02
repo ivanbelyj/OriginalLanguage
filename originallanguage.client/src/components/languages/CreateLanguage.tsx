@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { ILanguage } from "../../models/ILanguage";
+import ILanguage from "../../models/ILanguage";
 import { Form, Input, Checkbox, Button } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
@@ -25,7 +25,7 @@ export function CreateLanguage({ onCreate }: ICreateLanguageProps) {
     setIsConlang(event.target.checked);
   };
 
-  const handleSubmit = async (_: React.FormEvent) => {
+  const handleFinish = async (_: React.FormEvent) => {
     const response = await axios.post<ILanguage>(
       import.meta.env.VITE_API_URL + "languages",
       {
@@ -45,7 +45,7 @@ export function CreateLanguage({ onCreate }: ICreateLanguageProps) {
   };
 
   return (
-    <Form onFinish={handleSubmit} style={{ maxWidth: "300px" }}>
+    <Form onFinish={handleFinish} style={{ maxWidth: "300px" }}>
       <Form.Item
         label="Language name"
         name="name"

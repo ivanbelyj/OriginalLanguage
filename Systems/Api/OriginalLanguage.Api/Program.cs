@@ -23,13 +23,14 @@ ArgumentNullException.ThrowIfNull(identitySettings);
 var services = builder.Services;
 
 // Add services to the container.
+services.AddAppCors();
+
 services.AddAppHealthChecks();
 services.AddHttpContextAccessor();
 
 services.AddAppDbContext(builder.Configuration);
 services.AddAppAuth(identitySettings);
 
-services.AddAppCors();
 services.AddAppVersioning();
 services.AddAppOpenApi(openApiSettings, identitySettings);
 services.AddAppAutoMapper();
@@ -43,13 +44,13 @@ DbInitializer.Initialize(app.Services);
 DbSeeder.SeedDb(app.Services, true);
 
 // Configure the HTTP request pipeline.
+app.UseAppCors();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.UseAppHealthChecks();
-
-app.UseAppCors();
 
 app.UseAppOpenApi();
 app.UseAppAuth();
