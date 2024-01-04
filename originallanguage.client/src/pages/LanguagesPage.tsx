@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ILanguage } from "../models/ILanguage";
-import { CreateLanguage } from "../components/languages/CreateLanguage";
+import { EditLanguage } from "../components/languages/EditLanguage";
 import { LanguageCard } from "../components/languages/LanguageCard";
-import { useLanguages } from "../hooks/Languages";
+import { useLanguages } from "../hooks/languages";
 import { Typography, Select, Card, List } from "antd";
 
 const conlangOptionValue = "conlang";
@@ -37,7 +37,7 @@ const LanguagesPage: React.FC = () => {
     <Card>
       <Title level={2}>Languages</Title>
       <Title level={3}>Create language</Title>
-      <CreateLanguage onCreate={handleCreateLanguage} />
+      <EditLanguage onCreate={handleCreateLanguage} />
 
       <Title level={3}>Languages</Title>
       <Select

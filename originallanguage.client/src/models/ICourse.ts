@@ -1,5 +1,5 @@
 export default interface ICourse {
-  id: number;
+  id: string;
   authorId: string;
   languageId?: number;
   title?: string;

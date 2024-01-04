@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Center from "../components/common/Center";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../auth/AuthProvider";
 
 const LoginPage: React.FC = () => {
   const { setToken } = useAuth();

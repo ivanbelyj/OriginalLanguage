@@ -1,12 +1,12 @@
 import React from "react";
 
-import { useCourses } from "../hooks/Courses";
+import { useCourses } from "../hooks/courses";
 
-import { ICourse } from "../models/ICourse";
 import { Card, List } from "antd";
 import Title from "antd/es/typography/Title";
-import { CreateCourse } from "../components/courses/CreateCourse";
+import { EditCourse } from "../components/courses/EditCourse";
 import { CourseCard } from "../components/courses/CourseCard";
+import ICourse from "../models/ICourse";
 
 const CoursesPage: React.FC = () => {
   const { courses, addCourse } = useCourses();
@@ -19,7 +19,7 @@ const CoursesPage: React.FC = () => {
     <Card>
       <Title level={2}>Courses</Title>
       <Title level={3}>Create course</Title>
-      <CreateCourse onCreate={handleCreateCourse} />
+      <EditCourse onCreate={handleCreateCourse} />
 
       <Title level={3}>Courses</Title>
       <List

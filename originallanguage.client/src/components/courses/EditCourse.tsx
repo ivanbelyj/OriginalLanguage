@@ -1,31 +1,26 @@
 import { useState } from "react";
-import axios from "axios";
 import ICourse from "../../models/ICourse";
 import { Form, Input, Button } from "antd";
+import { useCourses } from "../../hooks/courses";
 
 interface ICreateCourseProps {
-  onCreate: (newCourse: ICourse) => void;
+  onCreate?: (newCourse: ICourse) => void;
 }
 
-export function CreateCourse({ onCreate }: ICreateCourseProps) {
+export function EditCourse({ onCreate }: ICreateCourseProps) {
   const [title, setTitle] = useState("");
+  const { postCourse } = useCourses();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
   const handleFinish = async (_: React.FormEvent) => {
-    const response = await axios.post<ICourse>(
-      import.meta.env.VITE_API_URL + "courses",
-      {
-        authorId: "a765ff05-813b-4a63-adf6-c3697ed77037", // Todo: actual author
-        title,
-      }
-    );
+    const course = await postCourse({
+      authorId: "a765ff05-813b-4a63-adf6-c3697ed77037", // Todo: actual author
+      title,
+    });
 
-    console.log("Course created: ", response);
-    // setTitle("");
-
-    onCreate(response.data);
+    onCreate?.(course);
   };
 
   return (

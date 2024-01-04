@@ -1,4 +1,4 @@
-import { ICourse } from "../../models/ICourse";
+import ICourse from "../../models/ICourse";
 import { Card, Typography } from "antd";
 
 const { Text, Paragraph } = Typography;

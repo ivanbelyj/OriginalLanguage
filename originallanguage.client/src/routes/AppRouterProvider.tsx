@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../auth/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../pages/MainPage";
 import AboutPage from "../pages/AboutPage";
@@ -7,7 +7,14 @@ import CoursesPage from "../pages/CoursesPage";
 import LanguagesPage from "../pages/LanguagesPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import AppLayout from "../AppLayout";
+import AppLayout from "../app-layout/AppLayout";
+import ContactPage from "../pages/ContactPage";
+import LanguagePage from "../pages/LanguagePage";
+import ArticlesPage from "../pages/ArticlesPage";
+import ArticlePage from "../pages/ArticlePage";
+import UserProfilePage from "../pages/UserProfilePage";
+import EditCoursePage from "../pages/EditCoursePage";
+import EditLanguagePage from "../pages/EditLanguagePage";
 
 const AppRouterProvider = () => {
   const { token } = useAuth();
@@ -29,13 +36,29 @@ const AppRouterProvider = () => {
       path: "/languages",
       element: <LanguagesPage />,
     },
+    {
+      path: "/language",
+      element: <LanguagePage />,
+    },
     // {
     //   path: "/login",
     //   element: <LoginPage />,
     // },
     {
+      path: "/contact",
+      element: <ContactPage />,
+    },
+    {
       path: "/register",
       element: <RegisterPage />,
+    },
+    {
+      path: "/articles",
+      element: <ArticlesPage />,
+    },
+    {
+      path: "/article",
+      element: <ArticlePage />,
     },
   ];
 
@@ -46,11 +69,19 @@ const AppRouterProvider = () => {
       children: [
         {
           path: "/profile",
-          element: <div>User Profile</div>,
+          element: <UserProfilePage />,
         },
         {
           path: "/logout",
           element: <div>Logout</div>,
+        },
+        {
+          path: "/edit-course/:id",
+          element: <EditCoursePage />,
+        },
+        {
+          path: "/edit-language/:id",
+          element: <EditLanguagePage />,
         },
       ],
     },

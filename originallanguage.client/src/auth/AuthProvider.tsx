@@ -20,7 +20,7 @@ const AuthContext = createContext<AuthContextType>({
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken_] = useState<string | null>(
-    localStorage.getItem("token")
+    localStorage.getItem("token") // Todo: don't use local storage?
   );
   const setToken = (newToken: string) => {
     setToken_(newToken);
