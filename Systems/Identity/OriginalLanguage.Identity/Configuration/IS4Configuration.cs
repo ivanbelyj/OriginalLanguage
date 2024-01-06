@@ -1,7 +1,7 @@
 ﻿using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using OriginalLanguage.Context;
-using OriginalLanguage.Context.Entities.User;
+using OriginalLanguage.Context.Entities;
 
 namespace OriginalLanguage.Identity.Configuration;
 

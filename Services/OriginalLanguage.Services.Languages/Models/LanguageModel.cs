@@ -1,5 +1,5 @@
 using AutoMapper;
-using OriginalLanguage.Context.Entities.Language;
+using OriginalLanguage.Context.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +16,24 @@ public class LanguageModel
     public string Name { get; set; }
     public string NativeName { get; set; }
 
-    public bool IsConlang { get; set; }
-    public DateTime DateTimeAdded { get; set; }
+    public string? About { get; set; }
+    public string? AboutNativeSpeakers { get; set; }
+    public string? Links { get; set; }
+
+    public string? FlagUrl { get; set; }
+
+    public ConlangDataModel? ConlangData { get; set; }
+
+    public DateTime DateTimeCreated { get; set; }
+    public DateTime DateTimeUpdated { get; set; }
 }
 
 public class LanguageModelProfile : Profile
 {
     public LanguageModelProfile()
     {
-        CreateMap<Language, LanguageModel>();
+        CreateMap<Language, LanguageModel>()
+            .ForMember(dest => dest.ConlangData,
+                opt => opt.MapFrom(src => src.ConlangData));
     }
 }

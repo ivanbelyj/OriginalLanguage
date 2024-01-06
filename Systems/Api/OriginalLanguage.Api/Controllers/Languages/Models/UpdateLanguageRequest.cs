@@ -10,7 +10,13 @@ public class UpdateLanguageRequest
     public string Name { get; set; }
     public string NativeName { get; set; }
 
-    public bool IsConlang { get; set; }
+    public string? About { get; set; }
+    public string? AboutNativeSpeakers { get; set; }
+    public string? Links { get; set; }
+
+    public string? FlagUrl { get; set; }
+
+    public ConlangDataModel? ConlangData { get; set; }
 }
 
 public class UpdateLanguageRequestProfile : Profile

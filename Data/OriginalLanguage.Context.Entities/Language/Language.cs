@@ -13,13 +13,11 @@ public class Language : EntityBase
     public string Name { get; set; }
     public string? NativeName { get; set; }
 
-    public string About { get; set; }
+    public string? About { get; set; }
     public string? AboutNativeSpeakers { get; set; }
     public string? Links { get; set; }
 
     public string? FlagUrl { get; set; }
-
-    //public bool IsConlang { get; set; }
 
     public int? ConlangDataId { get; set; }
     public virtual ConlangData? ConlangData { get; set; }

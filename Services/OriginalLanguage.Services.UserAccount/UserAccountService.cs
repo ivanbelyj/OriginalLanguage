@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Serilog;
 using OriginalLanguage.Common.Exceptions;
 using OriginalLanguage.Common.Validator;
-using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Services.Actions;
 using OriginalLanguage.Services.EmailSender;
 using OriginalLanguage.Services.EmailSender.Models;
 using OriginalLanguage.Services.UserAccount.Models;
+using OriginalLanguage.Context.Entities;
 
 namespace OriginalLanguage.Services.UserAccount;
 public class UserAccountService : IUserAccountService
@@ -58,8 +58,7 @@ public class UserAccountService : IUserAccountService
         AppUser user = new AppUser()
         {
             Status = UserStatus.Active,
-            FullName = model.Name,
-            UserName = model.Email,
+            UserName = model.Name,
             Email = model.Email,
             EmailConfirmed = true, // Todo: email confirmation
             PhoneNumber = null,

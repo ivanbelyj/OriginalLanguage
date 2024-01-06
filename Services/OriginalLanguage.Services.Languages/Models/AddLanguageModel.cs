@@ -1,6 +1,6 @@
 using AutoMapper;
 using FluentValidation;
-using OriginalLanguage.Context.Entities.Language;
+using OriginalLanguage.Context.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ public class AddLanguageModel
     public string Name { get; set; }
     public string NativeName { get; set; }
 
-    public bool IsConlang { get; set; }
+    public ConlangDataModel? ConlangData { get; set; }
 }
 
 public class AddLanguageModelValidator : AbstractValidator<AddLanguageModel>
@@ -40,6 +40,8 @@ public class AddLanguageModelProfile : Profile
 {
     public AddLanguageModelProfile()
     {
-        CreateMap<AddLanguageModel, Language>();
+        CreateMap<AddLanguageModel, Language>()
+            .ForMember(dest => dest.ConlangData,
+                opt => opt.MapFrom(x => x.ConlangData));
     }
 }

@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OriginalLanguage.Context.Entities;
-using OriginalLanguage.Context.Entities.Language;
-using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Services.UserAccount;
 using OriginalLanguage.Services.UserAccount.Models;
 using System;
@@ -21,7 +19,8 @@ public static class DbSeeder
         => GetServiceScope(serviceProvider).ServiceProvider
             .GetRequiredService<IDbContextFactory<MainDbContext>>().CreateDbContext();
 
-    public async static void SeedDb(IServiceProvider serviceProvider, bool addDemoData)
+    public async static void SeedDb(IServiceProvider serviceProvider,
+        bool addDemoData)
     {
         if (addDemoData)
         {
@@ -41,14 +40,15 @@ public static class DbSeeder
             //    testUserEmail = $"test{++i}@tst.com";
             //}
 
-            if (userManager.FindByEmailAsync(testUserEmail) != null)
+            var userByEmail = await userManager.FindByEmailAsync(testUserEmail);
+            if (userByEmail != null)
                 return;
 
             var accModel = await userAccountService.CreateUser(new RegisterUserAccountModel()
             {
                 Email = testUserEmail,
                 Name = testUserEmail,
-                Password = testUserEmail
+                Password = testUserEmail,
             });
 
             await AddDemoDataForUser(serviceProvider, accModel.Id);
@@ -74,11 +74,23 @@ public static class DbSeeder
         var addedLanguages = new List<Language>();
         for (int i = 0; i < maxLanguagesCount; i++)
         {
+            var conlangData = new ConlangData()
+            {
+                Type = ConlangType.Artistic,
+                Articulation = ArticulationType.InhumanSounds,
+                DevelopmentStatus = DevelopmentStatus.Progressing,
+                Origin = ConlangOrigin.Apriori,
+                SettingOrigin = SettingOrigin.Apriori,
+                SubjectiveComplexity = SubjectiveComplexity.Complicated,
+                FurrySpeakers = true,
+                NotHumanoidSpeakers = false,
+            };
             var entity = new Language()
             {
                 Name = $"Language {i}",
                 NativeName = $"Lang native name {i}",
-                IsConlang = true,
+                //ConlangDataId = conlangData.Id,
+                ConlangData = conlangData,
                 AuthorId = userId
             };
             addedLanguages.Add(entity);
@@ -107,14 +119,15 @@ public static class DbSeeder
             {
                 var entity = new Lesson()
                 {
-                        Number = i,
+                    Number = i,
                     Course = addedCourses[i],
                     //CourseId = addedCourses[i].Id,
                     TheoryArticle = new Article()
                     {
                         Title = $"Lesson Theory {i}",
                         Content = "Test content",
-                        AuthorId = userId
+                        AuthorId = userId,
+                        LanguageId = addedCourses[i].LanguageId
                     },
                 };
                 addedLessons.Add(entity);

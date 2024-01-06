@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OriginalLanguage.Context.Entities;
-using OriginalLanguage.Context.Entities.Language;
-using OriginalLanguage.Context.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +13,7 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
 {
     public DbSet<Article> Articles { get; set; }
     public DbSet<Language> Languages { get; set; }
+    public DbSet<ConlangData> ConlangDataEntities { get; set; }
     public DbSet<StaticPage> StaticPages { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
@@ -51,6 +50,12 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
                 .HasForeignKey(x => x.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
                 //.IsRequired();
+
+            entity
+                .HasOne(x => x.Language)
+                .WithMany(lang => lang.Articles)
+                .HasForeignKey(a => a.LanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Language>(entity =>
@@ -59,7 +64,9 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
             entity.Property(x => x.Name).IsRequired();
             entity.Property(x => x.Name).HasMaxLength(50);
             entity.Property(x => x.NativeName).HasMaxLength(50);
-            entity.Property(x => x.IsConlang).IsRequired();
+            entity.Property(x => x.About).HasMaxLength(3000);
+            entity.Property(x => x.AboutNativeSpeakers).HasMaxLength(3000);
+            //entity.Property(x => x.IsConlang).IsRequired();
 
             //entity.Property(x => x.AuthorId).IsRequired();
             entity
@@ -68,6 +75,17 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
                 .HasForeignKey(x => x.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
                 //.IsRequired();
+
+            entity
+                .HasOne(lang => lang.ConlangData)
+                .WithOne(x => x.Language)
+                .HasForeignKey<Language>(lang => lang.ConlangDataId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ConlangData>(entity =>
+        {
+            entity.ToTable("conlang_data");
         });
 
         modelBuilder.Entity<StaticPage>(entity =>

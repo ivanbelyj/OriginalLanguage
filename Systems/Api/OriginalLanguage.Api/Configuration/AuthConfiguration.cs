@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Logging;
 using OriginalLanguage.Consts;
-using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Context;
 using OriginalLanguage.Services.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.IdentityModel.Tokens;
+using OriginalLanguage.Context.Entities;
 
 namespace OriginalLanguage.Api.Configuration;
 

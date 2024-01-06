@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OriginalLanguage.Common.Exceptions;
 using OriginalLanguage.Common.Validator;
 using OriginalLanguage.Context;
-using OriginalLanguage.Context.Entities.Language;
+using OriginalLanguage.Context.Entities;
 using OriginalLanguage.Services.Languages.Models;
 using System;
 using System.Collections.Generic;
@@ -33,9 +33,14 @@ public class LanguagesService : ILanguagesService
     public async Task<LanguageModel> AddLanguage(AddLanguageModel model)
     {
         addLanguageModelValidator.Check(model);
-        using MainDbContext dbContext = await dbContextFactory.CreateDbContextAsync();
+
+        using MainDbContext dbContext = await dbContextFactory
+            .CreateDbContextAsync();
+
         Language language = mapper.Map<Language>(model);
-        await dbContext.Languages.AddAsync(language);
+        await dbContext
+            .Languages
+            .AddAsync(language);
         dbContext.SaveChanges();
 
         return mapper.Map<LanguageModel>(language);
@@ -55,7 +60,10 @@ public class LanguagesService : ILanguagesService
     public async Task<LanguageModel> GetLanguage(int id)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        Language? language = dbContext.Languages.FirstOrDefault(x => x.Id == id);
+        Language? language = dbContext
+            .Languages
+            .Include(x => x.ConlangData)
+            .FirstOrDefault(x => x.Id == id);
 
         return mapper.Map<LanguageModel>(language);
     }
@@ -73,9 +81,10 @@ public class LanguagesService : ILanguagesService
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
-        var languages = processBeforePaging(dbContext.Languages)
-            .Skip(Math.Max(0, offset))
-            .Take(Math.Min(Math.Max(0, limit), 1000));
+        var languages = processBeforePaging(dbContext.Languages
+            .Include(x => x.ConlangData))
+                .Skip(Math.Max(0, offset))
+                .Take(Math.Min(Math.Max(0, limit), 1000));
 
         return (await languages.ToListAsync())
             .Select(mapper.Map<LanguageModel>);
@@ -94,7 +103,7 @@ public class LanguagesService : ILanguagesService
     {
         var res = languages;
         if (filter.IsConlang != null)
-            res = res.Where(lang => lang.IsConlang == filter.IsConlang);
+            res = res.Where(lang => (lang.ConlangDataId != null) == filter.IsConlang);
         
         return res;
     }
@@ -106,10 +115,13 @@ public class LanguagesService : ILanguagesService
 
         Language? language = await dbContext
             .Languages
+            .Include(lang => lang.ConlangData)
             .FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new ProcessException($"The language (id: {id}) was not found");
 
-        dbContext.Languages.Update(mapper.Map(model, language));
+        Language updatedLanguage = mapper.Map(model, language);
+        updatedLanguage.DateTimeUpdated = DateTime.UtcNow;
+        dbContext.Languages.Update(updatedLanguage);
         dbContext.SaveChanges();
     }
 }

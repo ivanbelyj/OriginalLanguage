@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using OriginalLanguage.Context.Entities.User;
+using OriginalLanguage.Context.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OriginalLanguage.Context.Entities.User;
+using OriginalLanguage.Context.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ public class UserAccountModelProfile : Profile
     {
         CreateMap<AppUser, UserAccountModel>()
             .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
-            .ForMember(d => d.Name, o => o.MapFrom(s => s.FullName))
+            .ForMember(d => d.Name, o => o.MapFrom(s => s.UserName))
             .ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
             ;
     }
