@@ -1,5 +1,4 @@
-﻿using OriginalLanguage.Context.Entities.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,4 +13,7 @@ public class Article : PageBase
     public AppUser? Author { get; set; }
 
     public virtual Lesson? Lesson { get; set; }
+
+    // Todo: update OnModelCreating and remove this comment
+    public virtual Language? Language { get; set; }
 }

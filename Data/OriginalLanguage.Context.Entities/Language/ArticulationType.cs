@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
-public enum UserStatus
+public enum ArticulationType
 {
-    Active = 0,
-    Blocked = 1
+    Common = 0,
+    InhumanSounds = 1,
+    TotallyAlien = 2,
+    Other = 3,
 }

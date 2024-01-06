@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OriginalLanguage.Common.Exceptions;
 using OriginalLanguage.Common.Validator;
 using OriginalLanguage.Context;
-using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Context.Entities.Language;
 using OriginalLanguage.Services.Languages.Models;
 using System;
 using System.Collections.Generic;

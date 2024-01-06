@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OriginalLanguage.Context.Entities.User;
+namespace OriginalLanguage.Context.Entities;
 public class AppUser : IdentityUser<Guid>
 {
     public string FullName { get; set; }

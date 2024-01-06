@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
-public enum UserStatus
+public enum ConlangOrigin
 {
-    Active = 0,
-    Blocked = 1
+    NotSpecified = 0,
+    Apriori = 1,
+    Aposteriori = 2,
 }

@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
-public enum UserStatus
+public enum SettingOrigin
 {
-    Active = 0,
-    Blocked = 1
+    NotSpecified = 0,
+    AlternativeEarth = 1,
+    Apriori = 2
 }

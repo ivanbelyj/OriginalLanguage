@@ -3,7 +3,6 @@ import { Layout } from "antd";
 import AppHeader from "./AppHeader";
 import { Link, Outlet } from "react-router-dom";
 import AppSider from "./AppSider";
-import { relative } from "path";
 
 const { Footer, Content } = Layout;
 // const { Text, Paragraph } = Typography;

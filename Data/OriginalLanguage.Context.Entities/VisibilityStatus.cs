@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
-public enum UserStatus
+public enum VisibilityStatus
 {
-    Active = 0,
-    Blocked = 1
+    Private = 0,
+    Announced = 1,
+    Public = 2,
 }

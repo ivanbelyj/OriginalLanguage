@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Context.Entities.Language;
 using OriginalLanguage.Context.Entities.User;
 using OriginalLanguage.Services.UserAccount;
 using OriginalLanguage.Services.UserAccount.Models;
@@ -73,8 +74,10 @@ public static class DbSeeder
         var addedLanguages = new List<Language>();
         for (int i = 0; i < maxLanguagesCount; i++)
         {
-            var entity = new Language($"Language {i}", $"Lang native name {i}")
+            var entity = new Language()
             {
+                Name = $"Language {i}",
+                NativeName = $"Lang native name {i}",
                 IsConlang = true,
                 AuthorId = userId
             };

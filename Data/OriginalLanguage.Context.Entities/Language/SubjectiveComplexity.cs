@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
-public enum UserStatus
+public enum SubjectiveComplexity
 {
-    Active = 0,
-    Blocked = 1
+    NotSpecified = 0,
+    Easy = 10,
+    Moderate = 100,
+    Complicated = 1000,
 }
