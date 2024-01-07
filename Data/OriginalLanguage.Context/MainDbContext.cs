@@ -79,6 +79,7 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
             entity
                 .HasOne(lang => lang.ConlangData)
                 .WithOne(x => x.Language)
+                //.HasPrincipalKey<ConlangData>(x => x.Id)
                 .HasForeignKey<Language>(lang => lang.ConlangDataId)
                 .OnDelete(DeleteBehavior.Cascade);
         });

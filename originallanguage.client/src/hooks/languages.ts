@@ -2,21 +2,16 @@ import { useEffect, useState } from "react";
 import ILanguage from "../models/ILanguage";
 import axios from "axios";
 
-export interface ICreateLanguage {
-  authorId: string;
-  name: string;
-  nativeName: string;
-  isConlang: boolean;
+export type ICreateLanguage = Partial<ILanguage>;
+export type IUpdateLanguage = Partial<ILanguage>;
+
+export interface ILanguagesFilter {
+  isConlang: boolean | null;
 }
 
-export interface IUpdateLanguage {
-  authorId: string;
-  name: string;
-  nativeName: string;
-  isConlang: boolean;
-}
-
-export function useLanguages(isConlang?: boolean) {
+export function useLanguages(
+  { isConlang }: ILanguagesFilter = { isConlang: null }
+) {
   const [languages, setLanguages] = useState<ILanguage[]>([]);
 
   // function addLanguage(language: ILanguage) {
@@ -91,7 +86,12 @@ export function useLanguages(isConlang?: boolean) {
     const response = await axios.get<ILanguage>(
       import.meta.env.VITE_API_URL + "languages/" + id
     );
-    return response.data;
+
+    return {
+      ...response.data,
+      dateTimeCreated: new Date(response.data.dateTimeCreated),
+      dateTimeUpdated: new Date(response.data.dateTimeUpdated),
+    };
   }
 
   useEffect(() => {

@@ -10,7 +10,7 @@ public class LanguageResponse
     public Guid AuthorId { get; set; }
 
     public string Name { get; set; }
-    public string NativeName { get; set; }
+    public string? NativeName { get; set; }
 
     public string? About { get; set; }
     public string? AboutNativeSpeakers { get; set; }

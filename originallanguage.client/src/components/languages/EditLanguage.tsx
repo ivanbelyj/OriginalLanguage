@@ -1,29 +1,41 @@
-import { useEffect } from "react";
-import { Form, Input, Checkbox, Button, Typography, Tooltip } from "antd";
-import { useLanguages } from "../../hooks/languages";
+import { useEffect, useState } from "react";
+import {
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+  Tooltip,
+  Select,
+} from "antd";
+import { IUpdateLanguage, useLanguages } from "../../hooks/languages";
 import { useParams } from "react-router-dom";
 import React from "react";
 
-const { Title, Text } = Typography;
+import "./edit-language.css";
+
+const { Title } = Typography;
+const { Option } = Select;
+const { useWatch } = Form;
 
 export function EditLanguage() {
-  // const [name, setName] = useState("");
-  // const [nativeName, setNativeName] = useState("");
-  // const [isConlang, setIsConlang] = useState(true);
   const { updateLanguage, getLanguage } = useLanguages();
-
   const { id: languageId } = useParams();
-
   const [form] = Form.useForm();
+  const languageName = useWatch("name", form);
+  const [isConlang, setIsConlang] = useState(false);
 
-  const handleFinish = async (_: React.FormEvent) => {
+  const handleFinish = async (values: React.FormEvent) => {
+    console.log("Handle finish. values", values);
+
     if (!languageId) return;
 
-    const lang = await updateLanguage(languageId, {
+    const langData: IUpdateLanguage = {
       ...form.getFieldsValue(),
-      authorId: "a765ff05-813b-4a63-adf6-c3697ed77037", // Todo: actual author
-    });
-    console.log("language updated", lang);
+      authorId: "09ae2b14-2900-490d-91ff-6d887018c6fc", // Todo: actual author
+    };
+    if (!isConlang) delete langData.conlangData;
+    await updateLanguage(languageId, langData);
   };
 
   useEffect(() => {
@@ -31,18 +43,15 @@ export function EditLanguage() {
       getLanguage(languageId).then((language) => {
         console.log("language (use effect)", language);
 
-        form.setFieldsValue({
-          name: language.name,
-          nativeName: language.nativeName,
-          isConlang: language.isConlang,
-        });
+        setIsConlang(language.conlangData !== undefined);
+        form.setFieldsValue(language);
       });
     }
   }, [languageId]);
 
   return (
-    <Form form={form} onFinish={handleFinish} style={{ maxWidth: "300px" }}>
-      <Title level={3}>{form.getFieldValue("name")}</Title>
+    <Form form={form} onFinish={handleFinish}>
+      <Title level={3}>{languageName}</Title>
 
       <Form.Item
         label="Language name"
@@ -51,45 +60,163 @@ export function EditLanguage() {
       >
         <Input type="text" />
       </Form.Item>
-      <Form.Item
-        label="Language native name"
-        name="nativeName"
-        rules={[
-          { required: true, message: "Please enter the language native name" },
-        ]}
-      >
+      <Form.Item label="Language native name" name="nativeName">
         <Input type="text" />
       </Form.Item>
-      <Form.Item label="Is conlang" name="isConlang" valuePropName="checked">
-        <Checkbox />
+      <Form.Item label="About" name="about">
+        <Input.TextArea placeholder="About language"></Input.TextArea>
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Save
-        </Button>
+      <Form.Item label="About native speakers" name="aboutNativeSpeakers">
+        <Input.TextArea placeholder="About native speakers"></Input.TextArea>
       </Form.Item>
-      <Form.Item>
-        <Title level={5}>Native speakers</Title>
-        <Checkbox.Group>
-          <Checkbox value="A">Not humanoid</Checkbox>
-          <Tooltip title="Check if there are any sounds that are not naturally produced by humans">
-            <Checkbox value="B">Inhuman sounds</Checkbox>
-          </Tooltip>
-          <Tooltip title="Check if the spoken language has a completely alien articulation compared to humans">
-            <Checkbox value="C">Alien articulation</Checkbox>
-          </Tooltip>
+      <Form.Item label="Links" name="links">
+        <Input.TextArea placeholder="Links"></Input.TextArea>
+      </Form.Item>
+
+      <Form.Item label="Is constructed language">
+        <Checkbox
+          onChange={() => setIsConlang(!isConlang)}
+          checked={isConlang}
+        />
+      </Form.Item>
+
+      <div
+        className={`conlang-data conlang-data_${
+          isConlang ? "showing" : "hidden"
+        }`}
+      >
+        <Form.Item>
+          <Title level={4}>Constructed language</Title>
+        </Form.Item>
+        <Form.Item label="Type" name={["conlangData", "type"]}>
+          <Select>
+            <Option value="notSpecified">Not Specified</Option>
+            <Option value="artistic">Artistic</Option>
+            <Option value="auxiliary">Auxiliary</Option>
+            <Option value="engineered">Engineered</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Origin" name={["conlangData", "origin"]}>
+          <Select>
+            <Option value="notSpecified">Not Specified</Option>
+            <Option value="apriori">Apriori</Option>
+            <Option value="aposteriori">Aposteriori</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Articulation" name={["conlangData", "articulation"]}>
+          <Select>
+            <Option value="common">
+              <Tooltip
+                title={
+                  "Select if all sounds are found " +
+                  " in human languages and can be represented using IPA"
+                }
+              >
+                Common
+              </Tooltip>
+            </Option>
+            <Option value="inhumanSounds">
+              <Tooltip
+                title={
+                  "Select if there are any sounds that are " +
+                  "not naturally produced by humans"
+                }
+              >
+                Inhuman Sounds
+              </Tooltip>
+            </Option>
+            <Option value="totallyAlien">
+              <Tooltip
+                title={
+                  "Select if the spoken language has a completely " +
+                  "alien articulation compared to humans"
+                }
+              >
+                Totally Alien
+              </Tooltip>
+            </Option>
+
+            <Option value="other">
+              <Tooltip
+                title={
+                  "Select if the language uses some other symbolic system " +
+                  "that is not related to sound producing"
+                }
+              >
+                Other
+              </Tooltip>
+            </Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Subjective Complexity"
+          name={["conlangData", "subjectiveComplexity"]}
+        >
+          <Select>
+            <Option value="notSpecified">Not Specified</Option>
+            <Option value="easy">Easy</Option>
+            <Option value="moderate">Moderate</Option>
+            <Option value="complicated">Complicated</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Development Status"
+          name={["conlangData", "developmentStatus"]}
+        >
+          <Select>
+            <Option value="notSpecified">Not Specified</Option>
+            <Option value="new">New</Option>
+            <Option value="progressing">Progressing</Option>
+            <Option value="functional">Functional</Option>
+            <Option value="complete">Complete</Option>
+            <Option value="onHold">On Hold</Option>
+            <Option value="abandoned">Abandoned</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item>
+          <Title level={4}>Native speakers</Title>
+          <Form.Item
+            label="Setting Origin"
+            name={["conlangData", "settingOrigin"]}
+          >
+            <Select>
+              <Option value="notSpecified">Not Specified</Option>
+              <Option value="alternativeEarth">Alternative Earth</Option>
+              <Option value="apriori">Apriori</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Not Humanoid"
+            name={["conlangData", "notHumanoidSpeakers"]}
+            valuePropName="checked"
+          >
+            <Checkbox />
+          </Form.Item>
 
           <Tooltip
+            placement="bottomLeft"
             title={
               "Check if native speakers combine anthropomorphic and some " +
               "animal traits (or they can be considered as furry, if you want)"
             }
           >
-            <Checkbox value="D">Furry</Checkbox>
+            <Form.Item
+              label="Furry"
+              name={["conlangData", "furrySpeakers"]}
+              valuePropName="checked"
+            >
+              <Checkbox />
+            </Form.Item>
           </Tooltip>
-          <Checkbox value="E">D</Checkbox>
-          <Checkbox value="F">E</Checkbox>
-        </Checkbox.Group>
+        </Form.Item>
+      </div>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Save
+        </Button>
       </Form.Item>
     </Form>
   );

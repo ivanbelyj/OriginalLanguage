@@ -42,10 +42,18 @@ const AppSider = () => {
 
   async function onAddLanguageClick() {
     const lang = await postLanguage({
-      authorId: "a765ff05-813b-4a63-adf6-c3697ed77037", // Todo: actual author
-      name: "New language",
-      nativeName: "",
-      isConlang: true,
+      authorId: "09ae2b14-2900-490d-91ff-6d887018c6fc",
+      name: "New Language",
+      conlangData: {
+        type: "notSpecified",
+        origin: "notSpecified",
+        articulation: "common",
+        subjectiveComplexity: "notSpecified",
+        developmentStatus: "notSpecified",
+        settingOrigin: "notSpecified",
+        notHumanoidSpeakers: false,
+        furrySpeakers: false,
+      },
     });
 
     navigate(`/edit-language/${lang.id}`);

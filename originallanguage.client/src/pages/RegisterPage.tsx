@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React from "react";
 import { Form, Input, Button, Card, Select } from "antd";
 import { Link } from "react-router-dom";
 import Center from "../components/common/Center";
@@ -7,26 +7,27 @@ import IUser from "../models/IUser";
 const { Option } = Select;
 
 const RegisterPage: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [gender, setGender] = useState<string>("not-specified");
+  // const [name, setName] = useState<string>("");
+  // const [email, setEmail] = useState<string>("");
+  // const [password, setPassword] = useState<string>("");
+  // const [confirmPassword, setConfirmPassword] = useState<string>("");
+  // const [gender, setGender] = useState<string>("not-specified");
+  const [form] = Form.useForm();
 
-  const handleFinish = async (_: FormEvent) => {
-    if (password !== confirmPassword) {
+  const handleFinish = async (values: any) => {
+    console.log("Handle register. values", values);
+    if (values.password !== values.confirmPassword) {
       alert("Passwords do not match"); // Todo: validation
       return;
     }
 
-    console.log(import.meta.env.VITE_API_URL + "accounts");
-
     const response = await axios.post<IUser>(
       import.meta.env.VITE_API_URL + "accounts",
       {
-        name,
-        email,
-        password,
+        ...form.getFieldsValue(),
+        // name,
+        // email,
+        // password,
       }
     );
     console.log("response: ");
@@ -37,10 +38,14 @@ const RegisterPage: React.FC = () => {
   return (
     <Center>
       <Card title="Register" style={{ width: "300px", margin: "0 auto" }}>
-        <Form onFinish={handleFinish} initialValues={{ gender }}>
+        <Form
+          form={form}
+          onFinish={handleFinish}
+          initialValues={{ gender: "notSpecified" }}
+        >
           <Form.Item
             label="Username"
-            name="username"
+            name="name"
             rules={[
               {
                 required: true,
@@ -48,11 +53,7 @@ const RegisterPage: React.FC = () => {
               },
             ]}
           >
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input type="text" />
           </Form.Item>
           <Form.Item
             label="Email"
@@ -68,7 +69,7 @@ const RegisterPage: React.FC = () => {
               },
             ]}
           >
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input />
           </Form.Item>
           <Form.Item
             label="Password"
@@ -80,14 +81,11 @@ const RegisterPage: React.FC = () => {
               },
             ]}
           >
-            <Input.Password
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <Input.Password />
           </Form.Item>
           <Form.Item
             label="Confirm Password"
-            name="confirm-password"
+            name="confirmPassword"
             rules={[
               {
                 required: true,
@@ -95,18 +93,12 @@ const RegisterPage: React.FC = () => {
               },
             ]}
           >
-            <Input.Password
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+            <Input.Password />
           </Form.Item>
 
           <Form.Item name="gender" label="Gender">
-            <Select
-              placeholder="Select your gender"
-              onChange={(value) => setGender(value)}
-            >
-              <Option value="not-specified">Not specified</Option>
+            <Select>
+              <Option value="notSpecified">Not specified</Option>
               <Option value="male">Male</Option>
               <Option value="female">Female</Option>
             </Select>

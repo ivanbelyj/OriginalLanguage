@@ -1,0 +1,9 @@
+.conlang-data {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: opacity 500ms, max-height 500ms;
+}
+.conlang-data_hidden {
+  opacity: 0;
+  max-height: 0;
+}

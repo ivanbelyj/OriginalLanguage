@@ -119,8 +119,21 @@ public class LanguagesService : ILanguagesService
             .FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new ProcessException($"The language (id: {id}) was not found");
 
+        if (model.ConlangData == null && language.ConlangData != null)
+        {
+            // Todo: fix
+
+            ConlangData conlangData = dbContext
+                .ConlangDataEntities
+                .First(x => x.Id == language.ConlangDataId);
+            dbContext.ConlangDataEntities.Remove(conlangData);
+            //language.ConlangData = null;
+            //language.ConlangDataId = null;
+        }
+
         Language updatedLanguage = mapper.Map(model, language);
         updatedLanguage.DateTimeUpdated = DateTime.UtcNow;
+
         dbContext.Languages.Update(updatedLanguage);
         dbContext.SaveChanges();
     }

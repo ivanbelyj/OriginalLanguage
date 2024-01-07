@@ -9,7 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import AppLayout from "../app-layout/AppLayout";
 import ContactPage from "../pages/ContactPage";
-import LanguagePage from "../pages/LanguagePage";
+import LanguageFullInfo from "../components/languages/LanguageFullInfo";
 import ArticlesPage from "../pages/ArticlesPage";
 import ArticlePage from "../pages/ArticlePage";
 import UserProfilePage from "../pages/UserProfilePage";
@@ -37,8 +37,8 @@ const AppRouterProvider = () => {
       element: <LanguagesPage />,
     },
     {
-      path: "/language",
-      element: <LanguagePage />,
+      path: "/language/:id",
+      element: <LanguageFullInfo />,
     },
     // {
     //   path: "/login",
