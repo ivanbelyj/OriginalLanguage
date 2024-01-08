@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguages } from "../hooks/languages";
+import { useCourses } from "../hooks/courses";
 
 const { Header, Content, Sider } = Layout;
 
@@ -38,11 +39,13 @@ const AppSider = () => {
   //   } = theme.useToken();
 
   const { postLanguage } = useLanguages();
+  const { postCourse } = useCourses();
+
   const navigate = useNavigate();
 
   async function onAddLanguageClick() {
     const lang = await postLanguage({
-      authorId: "09ae2b14-2900-490d-91ff-6d887018c6fc",
+      authorId: import.meta.env.VITE_DEBUG_USER_ID,
       name: "New Language",
       conlangData: {
         type: "notSpecified",
@@ -57,6 +60,17 @@ const AppSider = () => {
     });
 
     navigate(`/edit-language/${lang.id}`);
+  }
+
+  async function onAddCourseClick() {
+    const course = await postCourse({
+      authorId: import.meta.env.VITE_DEBUG_USER_ID, // Todo: actual author
+      title: "New Course",
+    });
+
+    console.log("course added: ", course);
+
+    navigate(`/edit-course/${course.id}`);
   }
 
   const items: MenuItem[] = [
@@ -74,9 +88,9 @@ const AppSider = () => {
     ]),
     createItem("Courses", "sub2", <BookOutlined />, [
       createItem(
-        <Link to="/edit-course">
+        <div onClick={onAddCourseClick}>
           <PlusCircleOutlined /> Add Course
-        </Link>,
+        </div>,
         "5b"
       ),
       createItem("Course 1", "6"),

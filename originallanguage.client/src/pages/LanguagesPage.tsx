@@ -51,7 +51,7 @@ const LanguagesPage: React.FC = () => {
         dataSource={languages}
         renderItem={(language) => (
           <List.Item>
-            <LanguageCard language={language} />
+            <LanguageCard language={language} style={{ width: "100%" }} />
           </List.Item>
         )}
       />

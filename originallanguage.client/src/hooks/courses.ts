@@ -74,9 +74,21 @@ export function useCourses() {
       });
   }
 
+  async function getCourse(id: string): Promise<ICourse> {
+    const response = await axios.get<ICourse>(
+      import.meta.env.VITE_API_URL + "courses/" + id
+    );
+
+    return {
+      ...response.data,
+      dateTimeAdded: new Date(response.data.dateTimeAdded),
+      // dateTimeUpdated: new Date(response.data.dateTimeUpdated),
+    };
+  }
+
   useEffect(() => {
     fetchCourses();
   }, []);
 
-  return { courses, postCourse, updateCourse, deleteCourse };
+  return { courses, getCourse, postCourse, updateCourse, deleteCourse };
 }
