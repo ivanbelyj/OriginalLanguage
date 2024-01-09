@@ -29,6 +29,7 @@ public class LessonsService : ILessonsService
         this.dbContextFactory = dbContextFactory;
     }
 
+    // Todo: adding limit
     public async Task<LessonModel> AddLesson(AddLessonModel model)
     {
         addLessonModelValidator.Check(model);
@@ -49,6 +50,16 @@ public class LessonsService : ILessonsService
         
         dbContext.Lessons.Remove(lesson);
         dbContext.SaveChanges();
+    }
+
+    public async Task<IEnumerable<LessonModel>> GetCourseLessons(int courseId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+        var lessons = dbContext
+            .Lessons
+            .Where(lesson => lesson.CourseId == courseId);
+        return (await lessons.ToListAsync())
+            .Select(mapper.Map<LessonModel>);
     }
 
     public async Task<LessonModel> GetLesson(int id)

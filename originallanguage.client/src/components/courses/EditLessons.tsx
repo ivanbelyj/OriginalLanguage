@@ -7,6 +7,7 @@ import {
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
 import ILesson from "../../models/ILesson";
+import EditLesson from "./EditLesson";
 
 export interface EditLessonsProps {
   lessons: ILesson[];
@@ -43,7 +44,7 @@ const EditLessons: React.FC<EditLessonsProps> = ({
   const ItemRenderer = ({ item, index }: { item: ILesson; index: number }) => {
     return (
       <div style={{ paddingBottom: "1rem", cursor: "move" }}>
-        <Card title={item.id}>This is lesson card. {item.number}</Card>
+        <EditLesson lesson={item} />
       </div>
     );
   };
@@ -55,7 +56,6 @@ const EditLessons: React.FC<EditLessonsProps> = ({
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {sortedLessons.map((item, index) => {
-                console.log(item);
                 return (
                   <Draggable
                     key={item.id}

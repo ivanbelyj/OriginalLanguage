@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Courses.Models;
+using OriginalLanguage.Api.Controllers.Lessons.Models;
 using OriginalLanguage.Common.Responses;
 using OriginalLanguage.Services.Courses;
 using OriginalLanguage.Services.Courses.Models;
+using OriginalLanguage.Services.Lessons;
 
 namespace OriginalLanguage.Api.Controllers.Courses;
 
@@ -19,11 +21,24 @@ namespace OriginalLanguage.Api.Controllers.Courses;
 public class CoursesController : ControllerBase
 {
     private readonly ICoursesService coursesService;
+    private readonly ILessonsService lessonsService;
     private readonly IMapper mapper;
-    public CoursesController(ICoursesService coursesService, IMapper mapper)
+    public CoursesController(IMapper mapper,
+        ICoursesService coursesService,
+        ILessonsService lessonsService)
     {
-        this.coursesService = coursesService;
         this.mapper = mapper;
+        this.coursesService = coursesService;
+        this.lessonsService = lessonsService;
+    }
+
+    [ProducesResponseType(typeof(IEnumerable<LessonResponse>), 200)]
+    [HttpGet("{courseId}/lessons")]
+    public async Task<IEnumerable<LessonResponse>>
+        GetCourseLessons([FromRoute] int courseId)
+    {
+        var lessons = await lessonsService.GetCourseLessons(courseId);
+        return mapper.Map<IEnumerable<LessonResponse>>(lessons);
     }
 
     [ProducesResponseType(typeof(CourseResponse), 200)]

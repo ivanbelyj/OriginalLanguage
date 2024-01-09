@@ -3,18 +3,22 @@ import EditCourse from "../components/courses/EditCourse";
 import EditLessons from "../components/courses/EditLessons";
 import ILesson from "../models/ILesson";
 import { useLessons } from "../hooks/lessons";
+import { useParams } from "react-router-dom";
 
 const EditCoursePage = () => {
-  const { lessons } = useLessons();
-  const [editedLessons, setEditedLessons] = useState<ILesson[]>(lessons);
+  const { id: courseId } = useParams();
+  if (!courseId) return <div>Todo: handle empty course id</div>;
+
+  const { courseLessons } = useLessons(courseId);
+  const [editedLessons, setEditedLessons] = useState<ILesson[]>(courseLessons);
 
   const onAddLesson = () => {
     console.log("Todo: Add lesson");
   };
 
   useEffect(() => {
-    setEditedLessons(lessons);
-  }, [lessons]);
+    setEditedLessons(courseLessons);
+  }, [courseLessons]);
 
   return (
     <>

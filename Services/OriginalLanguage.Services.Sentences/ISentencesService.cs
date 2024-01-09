@@ -10,6 +10,7 @@ public interface ISentencesService
 {
     Task<SentenceModel> GetSentence(int id);
     Task<IEnumerable<SentenceModel>> GetSentences(int offset = 0, int limit = 10);
+    Task<IEnumerable<SentenceModel>> GetLessonSampleSentences(int lessonSampleId);
     Task<SentenceModel> AddSentence(AddSentenceModel model);
     Task UpdateSentence(int id, UpdateSentenceModel model);
     Task DeleteSentence(int id);

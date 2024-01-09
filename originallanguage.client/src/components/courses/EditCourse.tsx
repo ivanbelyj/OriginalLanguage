@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 const { Title } = Typography;
 
 export default function EditCourse() {
-  const { updateCourse, getCourse } = useCourses();
   const [form] = Form.useForm();
   const courseTitle = Form.useWatch("title", form);
   const { id: courseId } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
+
+  const { updateCourse, getCourse } = useCourses();
 
   // const [course, setCourse] = useState<ICourse>();
 

@@ -14,8 +14,8 @@ export interface IUpdateLesson {
   courseId: string;
 }
 
-export function useLessons() {
-  const [lessons, setLessons] = useState<ILesson[]>([]);
+export function useLessons(courseId: string) {
+  const [courseLessons, setCourseLessons] = useState<ILesson[]>([]);
 
   async function postLesson(lesson: ICreateLesson): Promise<ILesson> {
     const response = await axios.post<ILesson>(
@@ -24,7 +24,7 @@ export function useLessons() {
     );
 
     console.log("Lesson post response: ", response);
-    setLessons((prev) => {
+    setCourseLessons((prev) => {
       return [...prev, response.data];
     });
 
@@ -40,7 +40,7 @@ export function useLessons() {
       updateLesson
     );
 
-    setLessons((prev) => {
+    setCourseLessons((prev) => {
       return prev.map((lesson) =>
         lesson.id === id ? { ...lesson, ...updateLesson } : lesson
       );
@@ -50,20 +50,20 @@ export function useLessons() {
   async function deleteLesson(id: string): Promise<void> {
     await axios.delete(import.meta.env.VITE_API_URL + "lessons/" + id);
 
-    setLessons((prev) => {
+    setCourseLessons((prev) => {
       return prev.filter((lesson) => lesson.id !== id);
     });
   }
 
   function fetchLessons() {
-    fetch(import.meta.env.VITE_API_URL + "lessons")
+    fetch(import.meta.env.VITE_API_URL + `courses/${courseId}/lessons`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then((data) => setLessons(data))
+      .then((data) => setCourseLessons(data))
       .catch((error) => {
         console.error("There has been a problem with lessons fetch:", error);
       });
@@ -81,5 +81,12 @@ export function useLessons() {
     fetchLessons();
   }, []);
 
-  return { lessons, getLesson, postLesson, updateLesson, deleteLesson };
+  return {
+    courseLessons,
+
+    getLesson,
+    postLesson,
+    updateLesson,
+    deleteLesson,
+  };
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Lessons.Models;
+using OriginalLanguage.Api.Controllers.LessonSamples.Models;
 using OriginalLanguage.Common.Responses;
 using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.Lessons.Models;
+using OriginalLanguage.Services.LessonSamples;
 
 namespace OriginalLanguage.Api.Controllers.Lessons;
 
@@ -19,10 +21,14 @@ namespace OriginalLanguage.Api.Controllers.Lessons;
 public class LessonsController : ControllerBase
 {
     private readonly ILessonsService lessonsService;
+    private readonly ILessonSamplesService lessonSamplesService;
     private readonly IMapper mapper;
-    public LessonsController(IMapper mapper, ILessonsService lessonsService)
+    public LessonsController(IMapper mapper,
+        ILessonsService lessonsService,
+        ILessonSamplesService lessonSamplesService)
     {
         this.lessonsService = lessonsService;
+        this.lessonSamplesService = lessonSamplesService;
         this.mapper = mapper;
     }
 
@@ -35,12 +41,22 @@ public class LessonsController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<LessonResponse>), 200)]
-    public async Task<IEnumerable<LessonResponse>> GetLesson(
+    public async Task<IEnumerable<LessonResponse>> GetLessons(
         [FromQuery] int offset = 0,
         [FromQuery] int limit = 10)
     {
         return mapper.Map<IEnumerable<LessonResponse>>(
             await lessonsService.GetLessons(offset, limit));
+    }
+
+    [HttpGet("{lessonId}/lesson-samples")]
+    [ProducesResponseType(typeof(IEnumerable<LessonSampleResponse>), 200)]
+    public async Task<IEnumerable<LessonSampleResponse>> GetSamplesOfLesson(
+        [FromRoute] int lessonId)
+    {
+        var lessonSamples = await lessonSamplesService
+            .GetSamplesOfLesson(lessonId);
+        return mapper.Map<IEnumerable<LessonSampleResponse>>(lessonSamples);
     }
 
     [HttpPost("")]

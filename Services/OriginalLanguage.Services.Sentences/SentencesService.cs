@@ -52,9 +52,19 @@ public class SentencesService : ISentencesService
         dbContext.SaveChanges();
     }
 
+    public async Task<IEnumerable<SentenceModel>> GetLessonSampleSentences(
+        int lessonSampleId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+
+        return mapper.Map<IEnumerable<SentenceModel>>(await dbContext
+            .Sentences
+            .Where(sent => sent.LessonSampleId == lessonSampleId)
+            .ToListAsync());
+    }
+
     public async Task<SentenceModel> GetSentence(int id)
     {
-        // Todo: null safety
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
         return mapper.Map<SentenceModel>(
             dbContext.Sentences.FirstOrDefault(x => x.Id == id));

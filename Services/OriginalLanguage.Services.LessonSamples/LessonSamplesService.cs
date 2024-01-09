@@ -77,6 +77,17 @@ public class LessonSamplesService : ILessonSamplesService
             .Select(mapper.Map<LessonSampleModel>);
     }
 
+    public async Task<IEnumerable<LessonSampleModel>> GetSamplesOfLesson(
+        int lessonId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+        return (await dbContext
+            .LessonSamples
+            .Where(sample => sample.LessonId == lessonId)
+            .ToListAsync())
+            .Select(mapper.Map<LessonSampleModel>);
+    }
+
     public async Task UpdateLessonSample(int id, UpdateLessonSampleModel model)
     {
         updateLessonSampleValidator.Check(model);
