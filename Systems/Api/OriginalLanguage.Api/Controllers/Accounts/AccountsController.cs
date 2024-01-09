@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OriginalLanguage.Api.Controllers.Courses.Models;
+using OriginalLanguage.Api.Controllers.Languages.Models;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Services.Courses;
+using OriginalLanguage.Services.Languages;
 using OriginalLanguage.Services.UserAccount;
 using OriginalLanguage.Services.UserAccount.Models;
 
@@ -18,11 +22,18 @@ namespace OriginalLanguage.Api.Controllers.Accounts;
 public class AccountsController : ControllerBase
 {
     private readonly IUserAccountService userAccountService;
+    private readonly ICoursesService coursesService;
+    private readonly ILanguagesService languagesService;
     private readonly IMapper mapper;
-    public AccountsController(IUserAccountService userAccountService, IMapper mapper)
+    public AccountsController(IMapper mapper, 
+        IUserAccountService userAccountService,
+        ICoursesService coursesService,
+        ILanguagesService languagesService)
     {
-        this.userAccountService = userAccountService;
         this.mapper = mapper;
+        this.userAccountService = userAccountService;
+        this.coursesService = coursesService;
+        this.languagesService = languagesService;
     }
 
     [HttpPost("")]
@@ -33,5 +44,21 @@ public class AccountsController : ControllerBase
             .CreateUser(mapper.Map<RegisterUserAccountModel>(request));
         var response = mapper.Map<UserAccountResponse>(userAccountModel);
         return response;
+    }
+
+    [HttpGet("{authorId}/courses")]
+    public async Task<IEnumerable<CourseResponse>> GetUserCourses(
+        [FromRoute] Guid authorId)
+    {
+        var courses = await coursesService.GetUserCourses(authorId);
+        return mapper.Map<IEnumerable<CourseResponse>>(courses);
+    }
+
+    [HttpGet("{authorId}/languages")]
+    public async Task<IEnumerable<LanguageResponse>> GetUserLanguages(
+        [FromRoute] Guid authorId)
+    {
+        var courses = await languagesService.GetUserLanguages(authorId);
+        return mapper.Map<IEnumerable<LanguageResponse>>(courses);
     }
 }

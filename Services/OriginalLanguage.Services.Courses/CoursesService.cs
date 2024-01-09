@@ -71,6 +71,18 @@ public class CoursesService : ICoursesService
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<CourseModel>> GetUserCourses(Guid authorId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+
+        var courses = dbContext
+            .Courses
+            .Where(lang => lang.AuthorId == authorId);
+
+        return (await courses.ToListAsync())
+            .Select(mapper.Map<CourseModel>);
+    }
+
     public async Task UpdateCourse(int id, UpdateCourseModel model)
     {
         updateCourseModelValidator.Check(model);

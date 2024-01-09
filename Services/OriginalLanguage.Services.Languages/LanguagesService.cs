@@ -68,6 +68,18 @@ public class LanguagesService : ILanguagesService
         return mapper.Map<LanguageModel>(language);
     }
 
+    public async Task<IEnumerable<LanguageModel>> GetUserLanguages(Guid userId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+
+        var languages = dbContext.Languages
+            .Where(lang => lang.AuthorId == userId)
+            .Include(x => x.ConlangData);
+
+        return (await languages.ToListAsync())
+            .Select(mapper.Map<LanguageModel>);
+    }
+
     public async Task<IEnumerable<LanguageModel>> GetLanguages(int offset = 0,
         int limit = 10)
     {

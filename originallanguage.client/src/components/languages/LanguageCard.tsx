@@ -1,11 +1,11 @@
-import { Card, Descriptions, Typography } from "antd";
+import { Avatar, Card, Descriptions, Typography } from "antd";
 import ILanguage from "../../models/ILanguage";
 import LanguageFlag from "./LanguageFlag";
 import { Link } from "react-router-dom";
 import React from "react";
 
 const { Meta } = Card;
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 interface ILanguageInfoProps {
   language: ILanguage;
@@ -29,15 +29,15 @@ export default function LanguageCard({ language, style }: ILanguageInfoProps) {
         </>
       }
     >
-      <Text>{language.about ? cropWithEllipsis(language.about) : ""}</Text>
+      <Paragraph>
+        {language.about ? cropWithEllipsis(language.about) : ""}
+      </Paragraph>
 
-      {/* <Meta
-        avatar={
-          <LanguageFlag src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-        }
-        title="Card title"
-        description="This is the description"
-      /> */}
+      <Meta
+        avatar={<Avatar>U</Avatar>}
+        title="User name"
+        description="Some description"
+      />
     </Card>
   );
 }

@@ -4,8 +4,6 @@ import ISentence from "../../models/ISentence";
 const { Panel } = Collapse;
 
 const EditSentence = ({ sentence }: { sentence: ISentence }) => {
-  const [form] = Form.useForm();
-
   return (
     // <Collapse defaultActiveKey={["1"]}>
     //   <Panel header={sentence.text} key="1">

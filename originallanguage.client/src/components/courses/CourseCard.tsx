@@ -1,15 +1,18 @@
 import ICourse from "../../models/ICourse";
-import { Card, Typography } from "antd";
+import { Avatar, Card, Typography } from "antd";
 
 const { Text, Paragraph } = Typography;
+const { Meta } = Card;
 
 export const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
   return (
-    <Card>
-      <Text strong>{course.title}</Text>
-      <Paragraph>Author ID: {course.authorId}</Paragraph>
-      <Paragraph>Language ID: {course.languageId}</Paragraph>
-      <Paragraph>Added: {course.dateTimeAdded?.toString()}</Paragraph>
+    <Card title={course.title}>
+      <Paragraph>Added: {course.dateTimeAdded?.toLocaleString()}</Paragraph>
+      <Meta
+        avatar={<Avatar>U</Avatar>}
+        title="User name"
+        description="Some description"
+      />
     </Card>
   );
 };

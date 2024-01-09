@@ -2,6 +2,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { useCourses } from "../../hooks/courses";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
 
@@ -13,13 +14,18 @@ export default function EditCourse() {
 
   const { updateCourse, getCourse } = useCourses();
 
+  const { getDecodedToken } = useAuth();
+
+  const decodedToken = getDecodedToken();
+  const userId = decodedToken?.sub;
+
   // const [course, setCourse] = useState<ICourse>();
 
   const handleFinish = async (values: any) => {
     if (courseId) {
       await updateCourse(courseId, {
         ...values,
-        authorId: import.meta.env.VITE_DEBUG_USER_ID, // Todo: actual author
+        authorId: userId,
       });
       messageApi.open({
         type: "success",

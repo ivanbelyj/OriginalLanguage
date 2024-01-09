@@ -9,6 +9,7 @@ namespace OriginalLanguage.Services.Languages;
 public interface ILanguagesService
 {
     Task<IEnumerable<LanguageModel>> GetLanguages(int offset = 0, int limit = 10);
+    Task<IEnumerable<LanguageModel>> GetUserLanguages(Guid userId);
     Task<IEnumerable<LanguageModel>> GetLanguagesFiltered(
         LanguagesFilterModel languagesFilterModel,
         int offset = 0, int limit = 10);

@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import React from "react";
 
 import "./edit-language.css";
+import { useAuth } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -28,6 +29,10 @@ export function EditLanguage() {
   const languageName = useWatch("name", form);
   const [isConlang, setIsConlang] = useState(false);
 
+  const { getDecodedToken } = useAuth();
+  const decodedToken = getDecodedToken();
+  const userId = decodedToken?.sub;
+
   const handleFinish = async (values: React.FormEvent) => {
     console.log("Handle finish. values", values);
 
@@ -35,7 +40,7 @@ export function EditLanguage() {
 
     const langData: IUpdateLanguage = {
       ...form.getFieldsValue(),
-      authorId: import.meta.env.VITE_DEBUG_USER_ID, // Todo: actual author
+      authorId: userId,
     };
     if (!isConlang) delete langData.conlangData;
     await updateLanguage(languageId, langData);

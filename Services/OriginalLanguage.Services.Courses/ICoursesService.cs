@@ -1,4 +1,5 @@
-﻿using OriginalLanguage.Services.Courses.Models;
+﻿using AutoMapper;
+using OriginalLanguage.Services.Courses.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ public interface ICoursesService
 {
     Task<CourseModel> GetCourse(int id);
     Task<IEnumerable<CourseModel>> GetCourses(int offset = 0, int limit = 10);
+    Task<IEnumerable<CourseModel>> GetUserCourses(Guid authorId);
     Task<CourseModel> AddCourse(AddCourseModel model);
     Task UpdateCourse(int id, UpdateCourseModel model);
     Task DeleteCourse(int id);

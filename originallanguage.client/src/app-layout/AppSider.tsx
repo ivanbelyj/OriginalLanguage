@@ -13,6 +13,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguages } from "../hooks/languages";
 import { useCourses } from "../hooks/courses";
+import { useUserLanguages } from "../hooks/useUserLanguages";
+import { useAuth } from "../auth/AuthProvider";
+import { useUserCourses } from "../hooks/useUserCourses";
 
 const { Header, Content, Sider } = Layout;
 
@@ -41,11 +44,28 @@ const AppSider = () => {
   const { postLanguage } = useLanguages();
   const { postCourse } = useCourses();
 
+  const { getDecodedToken } = useAuth();
+
+  const decodedToken = getDecodedToken();
+  console.log("user id from token:", decodedToken);
+  const userId = decodedToken?.sub;
+
+  if (!userId) {
+    // Todo: handle unauthenticated user
+    return <></>;
+  }
+
+  const { userLanguages, addLanguage } = useUserLanguages({
+    authorId: userId,
+  });
+
+  const { userCourses, addCourse } = useUserCourses({ authorId: userId });
+
   const navigate = useNavigate();
 
   async function onAddLanguageClick() {
     const lang = await postLanguage({
-      authorId: import.meta.env.VITE_DEBUG_USER_ID,
+      authorId: userId,
       name: "New Language",
       conlangData: {
         type: "notSpecified",
@@ -59,50 +79,60 @@ const AppSider = () => {
       },
     });
 
+    addLanguage(lang);
+
     navigate(`/edit-language/${lang.id}`);
   }
 
   async function onAddCourseClick() {
+    if (!userId) return;
+
     const course = await postCourse({
-      authorId: import.meta.env.VITE_DEBUG_USER_ID, // Todo: actual author
+      authorId: userId,
       title: "New Course",
     });
 
-    console.log("course added: ", course);
+    addCourse(course);
 
     navigate(`/edit-course/${course.id}`);
   }
 
   const items: MenuItem[] = [
-    createItem(<Link to="/profile">Profile</Link>, "1", <UserOutlined />),
+    createItem(<Link to="/profile">Profile</Link>, "a0", <UserOutlined />),
     createItem("Languages", "sub1", <TranslationOutlined />, [
       createItem(
         <div onClick={onAddLanguageClick}>
           <PlusCircleOutlined /> Add Language
         </div>,
-        "2"
+        "a1"
       ),
-      createItem("Lang 1", "3"),
-      createItem("Lang 2", "4"),
-      createItem("Lang 3", "5"),
+      ...userLanguages.map((lang, index) =>
+        createItem(
+          <Link to={`edit-language/${lang.id}`}>{lang.name}</Link>,
+          "a" + (index + 3).toString()
+        )
+      ),
     ]),
     createItem("Courses", "sub2", <BookOutlined />, [
       createItem(
         <div onClick={onAddCourseClick}>
           <PlusCircleOutlined /> Add Course
         </div>,
-        "5b"
+        "b0"
       ),
-      createItem("Course 1", "6"),
-      createItem("Course 2", "8"),
+      ...userCourses.map((course, index) =>
+        createItem(
+          <Link to={`edit-course/${course.id}`}>{course.title}</Link>,
+          "b" + (index + 1).toString()
+        )
+      ),
     ]),
-    //   getItem("Files", "9", <BookOutlined />),
   ];
 
   return (
     <Sider
       theme="light"
-      trigger={null}
+      // trigger={null}
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
@@ -116,7 +146,7 @@ const AppSider = () => {
       }
     >
       <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
-      <Button
+      {/* <Button
         type="text"
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onClick={() => setCollapsed(!collapsed)}
@@ -125,7 +155,7 @@ const AppSider = () => {
           width: 64,
           height: 64,
         }}
-      />
+      /> */}
     </Sider>
   );
 };

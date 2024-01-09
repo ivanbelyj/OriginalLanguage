@@ -1,4 +1,5 @@
 import axios from "axios";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import {
   ReactNode,
   createContext,
@@ -11,11 +12,15 @@ import {
 interface AuthContextType {
   token: string | null;
   setToken: (newToken: string) => void;
+  getDecodedToken: () => JwtPayload | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
   token: null,
-  setToken: () => {},
+  setToken: () => {}, // Todo: is it correct?
+  getDecodedToken: () => {
+    return null;
+  },
 });
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -25,6 +30,22 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const setToken = (newToken: string) => {
     setToken_(newToken);
     localStorage.setItem("token", newToken);
+  };
+
+  const getDecodedToken = () => {
+    if (!token) {
+      return null;
+    }
+
+    const decodedToken = jwtDecode(token);
+
+    return decodedToken;
+
+    // if ("id" in decodedToken) {
+    //   return "" + decodedToken.id;
+    // }
+
+    // return null;
   };
 
   useEffect(() => {
@@ -41,6 +62,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       token,
       setToken,
+      getDecodedToken,
     }),
     [token]
   );
