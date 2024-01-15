@@ -61,6 +61,8 @@ export function useLanguages(
 
   async function fetchLanguages() {
     const params = new URLSearchParams();
+    // Todo: pagination
+    params.append("limit", "1000");
     if (isConlang) {
       params.append("isConlang", String(isConlang));
     }

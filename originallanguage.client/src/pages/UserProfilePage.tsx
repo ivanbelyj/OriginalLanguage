@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Layout,
   Menu,
@@ -11,11 +11,16 @@ import {
 } from "antd";
 
 import UserProfile from "../components/UserProfile";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
 
 const UserProfilePage: React.FC = () => {
+  // const { token, setToken } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <Layout style={{ minHeight: "100%" }}>
       <Layout>
@@ -36,9 +41,19 @@ const UserProfilePage: React.FC = () => {
           >
             <UserProfile
               name="User"
-              location="Voronezh"
               about="Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui distinctio accusamus, iusto ducimus perspiciatis eius eum illo assumenda id, quos sit ab. Labore obcaecati esse explicabo consequatur quam mollitia ullam!"
             />
+            {/* Todo */}
+            {/* <Link to="/logout">Logout</Link> */}
+            <Button
+              onClick={() => {
+                // setToken(null);
+                // navigate("/", { replace: true });
+                navigate("/logout");
+              }}
+            >
+              Logout
+            </Button>
           </div>
         </Content>
       </Layout>

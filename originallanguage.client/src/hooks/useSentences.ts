@@ -2,12 +2,32 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ISentence from "../models/ISentence";
 
+export interface ICreateSentence {
+  lessonSampleId: string;
+
+  text?: string;
+  translation?: string;
+  literalTranslation?: string;
+  glosses?: string;
+  transcription?: string;
+}
+
+export interface IUpdateSentence {
+  lessonSampleId: string;
+
+  text?: string;
+  translation?: string;
+  literalTranslation?: string;
+  glosses?: string;
+  transcription?: string;
+}
+
 export function useSentences(lessonSampleId: string) {
   const [lessonSampleSentences, setLessonSampleSentences] = useState<
     ISentence[]
   >([]);
 
-  async function postSentence(sentence: ISentence): Promise<ISentence> {
+  async function postSentence(sentence: ICreateSentence): Promise<ISentence> {
     const response = await axios.post<ISentence>(
       import.meta.env.VITE_API_URL + "sentences",
       sentence
@@ -22,7 +42,7 @@ export function useSentences(lessonSampleId: string) {
 
   async function updateSentence(
     id: string,
-    updateSentence: ISentence
+    updateSentence: IUpdateSentence
   ): Promise<void> {
     await axios.put<ISentence>(
       import.meta.env.VITE_API_URL + "sentences/" + id,

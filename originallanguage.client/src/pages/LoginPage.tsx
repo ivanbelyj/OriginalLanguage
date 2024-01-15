@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { Form, Input, Button, Card, Checkbox } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Center from "../components/common/Center";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -10,6 +10,7 @@ const LoginPage: React.FC = () => {
   const { setToken } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleFinish = async (_: FormEvent) => {
     console.log(`Username: ${email}, Password: ${password}`);
@@ -32,6 +33,10 @@ const LoginPage: React.FC = () => {
       );
       console.log(response.data);
       setToken(response.data.access_token);
+
+      // Todo:
+
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Failed to authenticate", error);
     }

@@ -6,11 +6,23 @@ import ILessonSample from "../models/ILessonSample";
 
 // Todo: decomposite hooks?
 
+export interface ICreateLessonSample {
+  minimalProgressLevel: number;
+  mainSentenceVariantId?: string;
+  lessonId: string;
+}
+
+export interface IUpdateLessonSample {
+  minimalProgressLevel: number;
+  mainSentenceVariantId?: string;
+  lessonId: string;
+}
+
 export function useLessonSamples(lessonId: string) {
   const [samplesOfLesson, setSamplesOfLesson] = useState<ILessonSample[]>([]);
 
   async function postLessonSample(
-    lessonSample: ILessonSample
+    lessonSample: ICreateLessonSample
   ): Promise<ILessonSample> {
     const response = await axios.post<ILessonSample>(
       import.meta.env.VITE_API_URL + "lesson-samples",
@@ -26,7 +38,7 @@ export function useLessonSamples(lessonId: string) {
 
   async function updateLessonSample(
     id: string,
-    updateLessonSample: ILessonSample
+    updateLessonSample: IUpdateLessonSample
   ): Promise<void> {
     await axios.put<ILessonSample>(
       import.meta.env.VITE_API_URL + "lesson-samples/" + id,

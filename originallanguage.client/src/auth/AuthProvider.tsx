@@ -11,7 +11,7 @@ import {
 
 interface AuthContextType {
   token: string | null;
-  setToken: (newToken: string) => void;
+  setToken: (newToken: string | null) => void;
   getDecodedToken: () => JwtPayload | null;
 }
 
@@ -27,9 +27,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken_] = useState<string | null>(
     localStorage.getItem("token") // Todo: don't use local storage?
   );
-  const setToken = (newToken: string) => {
+  const setToken = (newToken: string | null) => {
     setToken_(newToken);
-    localStorage.setItem("token", newToken);
+    if (newToken === null) localStorage.removeItem("token");
+    else localStorage.setItem("token", newToken);
   };
 
   const getDecodedToken = () => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ILanguage from "../models/ILanguage";
 import axios, { AxiosResponse } from "axios";
 
-export function useUserLanguages({ authorId }: { authorId: string }) {
+export function useUserLanguages({ authorId }: { authorId?: string }) {
   const [userLanguages, setUserLanguages] = useState<ILanguage[]>([]);
 
   function addLanguage(newLanguage: ILanguage) {
@@ -16,6 +16,8 @@ export function useUserLanguages({ authorId }: { authorId: string }) {
   }
 
   async function fetchLanguages() {
+    if (!authorId) return;
+
     const url = import.meta.env.VITE_API_URL + `accounts/${authorId}/languages`;
 
     console.log("fetch languages", url);

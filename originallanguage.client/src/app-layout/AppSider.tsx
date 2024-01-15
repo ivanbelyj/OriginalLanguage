@@ -50,11 +50,6 @@ const AppSider = () => {
   console.log("user id from token:", decodedToken);
   const userId = decodedToken?.sub;
 
-  if (!userId) {
-    // Todo: handle unauthenticated user
-    return <></>;
-  }
-
   const { userLanguages, addLanguage } = useUserLanguages({
     authorId: userId,
   });
@@ -136,26 +131,8 @@ const AppSider = () => {
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
-      style={
-        {
-          // overflow: "auto",
-          // position: "fixed",
-          // maxHeight: "80vh",
-          // zIndex: 1,
-        }
-      }
     >
       <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
-      {/* <Button
-        type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
-        style={{
-          fontSize: "16px",
-          width: 64,
-          height: 64,
-        }}
-      /> */}
     </Sider>
   );
 };

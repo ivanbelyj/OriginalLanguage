@@ -4,11 +4,26 @@ import EditLessonSample from "./EditLessonSample";
 import { useLessonSamples } from "../../hooks/useLessonSamples";
 import { useParams } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
+import ILessonSample from "../../models/ILessonSample";
 
 const { Panel } = Collapse;
 
-const EditLesson = ({ lesson }: { lesson: ILesson }) => {
+export interface IEditLessonProps {
+  lesson: ILesson;
+  handleAddLessonSample: () => void;
+  handleAddSentence: (lessonSampleId: string) => void;
+}
+
+const EditLesson = ({
+  lesson,
+  handleAddLessonSample,
+  handleAddSentence,
+}: IEditLessonProps) => {
   const { samplesOfLesson } = useLessonSamples(lesson.id);
+
+  const onAddLessonSampleClicked = () => {
+    handleAddLessonSample();
+  };
 
   return (
     <div>
@@ -36,13 +51,14 @@ const EditLesson = ({ lesson }: { lesson: ILesson }) => {
             renderItem={(lessonSample, index) => (
               <List.Item>
                 <EditLessonSample
+                  handleAddSentence={() => handleAddSentence(lessonSample.id)}
                   lessonSample={lessonSample}
                   title={"Sample " + (index + 1)}
                 />
               </List.Item>
             )}
           />
-          <Button type="primary">
+          <Button type="primary" onClick={onAddLessonSampleClicked}>
             <PlusOutlined /> Add sample
           </Button>
         </Panel>

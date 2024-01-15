@@ -18,15 +18,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   location,
 }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "1rem",
-      }}
-    >
+    <div>
       <Space direction="vertical" align="center" size={16}>
         <Avatar
           src={avatarUrl}

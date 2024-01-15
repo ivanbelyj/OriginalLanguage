@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import EditCourse from "../components/courses/EditCourse";
-import EditLessons from "../components/courses/EditLessons";
+import EditCourseLessons from "../components/courses/EditCourseLessons";
 import ILesson from "../models/ILesson";
-import { useLessons } from "../hooks/lessons";
+import { ICreateLesson, useLessons } from "../hooks/lessons";
 import { useParams } from "react-router-dom";
+import {
+  ICreateLessonSample,
+  useLessonSamples,
+} from "../hooks/useLessonSamples";
+import ILessonSample from "../models/ILessonSample";
+import ISentence from "../models/ISentence";
+import { ICreateSentence } from "../hooks/useSentences";
 
 const EditCoursePage = () => {
   const { id: courseId } = useParams();
@@ -12,8 +19,33 @@ const EditCoursePage = () => {
   const { courseLessons } = useLessons(courseId);
   const [editedLessons, setEditedLessons] = useState<ILesson[]>(courseLessons);
 
-  const onAddLesson = () => {
+  const [editedLessonSamples, setEditedLessonSamples] =
+    useState<ILessonSample[]>();
+  const [editedSentences, setEditedSentences] = useState<ILessonSample[]>();
+
+  const lessonsToAdd: ICreateLesson[] = [];
+  const lessonSamplesToAdd: ICreateLessonSample[] = [];
+  const sentencesToAdd: ICreateSentence[] = [];
+
+  const handleAddLesson = () => {
     console.log("Todo: Add lesson");
+    lessonsToAdd.push({
+      courseId: courseId,
+      number: 0, // Todo: set next number
+    });
+  };
+  const handleAddLessonSample = (lessonId: string) => {
+    console.log("Todo: Add lesson sample to lesson ", lessonId);
+    lessonSamplesToAdd.push({
+      lessonId,
+      minimalProgressLevel: 0,
+    });
+  };
+  const handleAddSentence = (lessonSampleId: string) => {
+    console.log("Todo: Add sentence to sample ", lessonSampleId);
+    sentencesToAdd.push({
+      lessonSampleId,
+    });
   };
 
   useEffect(() => {
@@ -25,10 +57,12 @@ const EditCoursePage = () => {
       <EditCourse />
 
       {editedLessons && (
-        <EditLessons
+        <EditCourseLessons
           lessons={editedLessons}
           setLessons={setEditedLessons}
-          onAddLesson={onAddLesson}
+          handleAddLesson={handleAddLesson}
+          handleAddLessonSample={handleAddLessonSample}
+          handleAddSentence={handleAddSentence}
         />
       )}
     </>

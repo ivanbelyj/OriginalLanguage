@@ -6,13 +6,17 @@ import { PlusOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 
+export interface IEditLessonSampleProps {
+  lessonSample: ILessonSample;
+  title: string;
+  handleAddSentence: () => void;
+}
+
 const EditLessonSample = ({
   lessonSample,
   title,
-}: {
-  lessonSample: ILessonSample;
-  title: string;
-}) => {
+  handleAddSentence,
+}: IEditLessonSampleProps) => {
   const { lessonSampleSentences } = useSentences(lessonSample.id.toString());
 
   const [form] = Form.useForm();
@@ -42,7 +46,7 @@ const EditLessonSample = ({
           )}
         /> */}
 
-        <Button type="primary">
+        <Button type="primary" onClick={handleAddSentence}>
           <PlusOutlined /> Add sentence variant
         </Button>
       </Form>

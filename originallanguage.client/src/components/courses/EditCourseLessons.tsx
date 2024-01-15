@@ -12,18 +12,18 @@ import EditLesson from "./EditLesson";
 export interface EditLessonsProps {
   lessons: ILesson[];
   setLessons: (lessons: ILesson[]) => void;
-  onAddLesson: () => void;
+  handleAddLesson: () => void;
+  handleAddLessonSample: (lessonId: string) => void;
+  handleAddSentence: (lessonSampleId: string) => void;
 }
 
-const EditLessons: React.FC<EditLessonsProps> = ({
+const EditCourseLessons: React.FC<EditLessonsProps> = ({
   lessons,
   setLessons,
-  onAddLesson,
+  handleAddLesson,
+  handleAddLessonSample,
+  handleAddSentence,
 }: EditLessonsProps) => {
-  //   const { lessons, updateLesson, postLesson, deleteLesson } = useLessons();
-
-  //   const [lessons, setLessons] = useState(initialLessons);
-
   const sortedLessons = lessons.sort((a, b) => a.number - b.number);
 
   const handleDragEnd = (result: DropResult) => {
@@ -37,14 +37,17 @@ const EditLessons: React.FC<EditLessonsProps> = ({
       return { ...item, number: index + 1 };
     });
 
-    // setLessons(newOrder);
     setLessons(newOrder);
   };
 
   const ItemRenderer = ({ item, index }: { item: ILesson; index: number }) => {
     return (
       <div style={{ paddingBottom: "1rem", cursor: "move" }}>
-        <EditLesson lesson={item} />
+        <EditLesson
+          lesson={item}
+          handleAddLessonSample={() => handleAddLessonSample(item.id)}
+          handleAddSentence={handleAddSentence}
+        />
       </div>
     );
   };
@@ -79,11 +82,11 @@ const EditLessons: React.FC<EditLessonsProps> = ({
           )}
         </Droppable>
       </DragDropContext>
-      <Button type="primary" onClick={onAddLesson}>
+      <Button type="primary" onClick={handleAddLesson}>
         <PlusOutlined /> Add lesson
       </Button>
     </div>
   );
 };
 
-export default EditLessons;
+export default EditCourseLessons;

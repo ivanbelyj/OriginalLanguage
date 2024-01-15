@@ -3,13 +3,13 @@ import axios from "axios";
 import ILesson from "../models/ILesson";
 
 export interface ICreateLesson {
-  theoryArticleId: string;
+  theoryArticleId?: string;
   number: number;
   courseId: string;
 }
 
 export interface IUpdateLesson {
-  theoryArticleId: string;
+  theoryArticleId?: string;
   number: number;
   courseId: string;
 }

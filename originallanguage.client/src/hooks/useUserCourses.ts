@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ICourse from "../models/ICourse";
 import axios, { AxiosResponse } from "axios";
 
-export function useUserCourses({ authorId }: { authorId: string }) {
+export function useUserCourses({ authorId }: { authorId?: string }) {
   const [userCourses, setUserCourses] = useState<ICourse[]>([]);
 
   function addCourse(newCourse: ICourse) {
@@ -16,6 +16,8 @@ export function useUserCourses({ authorId }: { authorId: string }) {
   }
 
   async function fetchCourses() {
+    if (!authorId) return;
+
     const url = import.meta.env.VITE_API_URL + `accounts/${authorId}/courses`;
 
     console.log("fetch courses", url);

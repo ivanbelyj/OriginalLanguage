@@ -15,6 +15,7 @@ import ArticlePage from "../pages/ArticlePage";
 import UserProfilePage from "../pages/UserProfilePage";
 import EditCoursePage from "../pages/EditCoursePage";
 import EditLanguagePage from "../pages/EditLanguagePage";
+import Logout from "../auth/Logout";
 
 const AppRouterProvider = () => {
   const { token } = useAuth();
@@ -73,7 +74,7 @@ const AppRouterProvider = () => {
         },
         {
           path: "/logout",
-          element: <div>Logout</div>,
+          element: <Logout />,
         },
         {
           path: "/edit-course/:id",
