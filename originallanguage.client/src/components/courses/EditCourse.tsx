@@ -6,7 +6,11 @@ import { useAuth } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
 
-export default function EditCourse() {
+export interface IEditCourseProps {
+  saveCourse?: () => void;
+}
+
+export default function EditCourse({ saveCourse }: IEditCourseProps) {
   const [form] = Form.useForm();
   const courseTitle = Form.useWatch("title", form);
   const { id: courseId } = useParams();
@@ -32,6 +36,8 @@ export default function EditCourse() {
         content: "Course is saved",
       });
     }
+
+    saveCourse?.();
   };
 
   useEffect(() => {

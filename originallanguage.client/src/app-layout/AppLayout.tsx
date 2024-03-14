@@ -3,17 +3,21 @@ import { Layout } from "antd";
 import AppHeader from "./AppHeader";
 import { Link, Outlet } from "react-router-dom";
 import AppSider from "./AppSider";
+import { useAuth } from "../auth/AuthProvider";
 
 const { Footer, Content } = Layout;
 // const { Text, Paragraph } = Typography;
 
 export default function AppLayout() {
+  const { token } = useAuth();
+
   const currentYear = new Date().getFullYear();
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <AppHeader />
+
       <Layout>
-        <AppSider />
+        {token && <AppSider />}
         <Content style={{ padding: "1.5em", backgroundColor: "#f0f2f5" }}>
           <Outlet />
         </Content>

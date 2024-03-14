@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ILessonSample from "../models/ILessonSample";
 
-// Todo: rename other hooks?
-
-// Todo: decomposite hooks?
-
 export interface ICreateLessonSample {
   minimalProgressLevel: number;
   mainSentenceVariantId?: string;
@@ -18,7 +14,7 @@ export interface IUpdateLessonSample {
   lessonId: string;
 }
 
-export function useLessonSamples(lessonId: string) {
+export function useLessonSamples() {
   const [samplesOfLesson, setSamplesOfLesson] = useState<ILessonSample[]>([]);
 
   async function postLessonSample(
@@ -62,23 +58,6 @@ export function useLessonSamples(lessonId: string) {
     });
   }
 
-  function fetchLessonSamples() {
-    fetch(import.meta.env.VITE_API_URL + `lessons/${lessonId}/lesson-samples`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => setSamplesOfLesson(data))
-      .catch((error) => {
-        console.error(
-          "There has been a problem with lesson samples fetch:",
-          error
-        );
-      });
-  }
-
   async function getLessonSample(id: string): Promise<ILessonSample> {
     const response = await axios.get<ILessonSample>(
       import.meta.env.VITE_API_URL + "lesson-samples/" + id
@@ -86,10 +65,6 @@ export function useLessonSamples(lessonId: string) {
 
     return response.data;
   }
-
-  useEffect(() => {
-    fetchLessonSamples();
-  }, []);
 
   return {
     samplesOfLesson,
