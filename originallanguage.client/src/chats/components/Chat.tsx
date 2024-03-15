@@ -1,9 +1,9 @@
-// src/components/Chat.tsx
 import React, { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 import MessageForm from "./MessageForm";
 import IMessage from "../models/IMessage";
 import { useSignalR } from "../SignalRContext";
+import "./Chat.css";
 
 const Chat: React.FC = () => {
   const { connection, sendMessage } = useSignalR();
@@ -26,36 +26,6 @@ const Chat: React.FC = () => {
     };
   }, [connection]);
 
-  // const newConnection = new signalR.HubConnectionBuilder()
-  //   // http://localhost:10000/
-  //   .withUrl(import.meta.env.VITE_SIGNALR_URL + "chat", {
-  //     // Todo: ?
-  //     skipNegotiation: true,
-  //     transport: signalR.HttpTransportType.WebSockets,
-  //   })
-  //   .build();
-
-  // newConnection.on("ReceiveMessage", function (message: any) {
-  //   console.log("Received message: ", message);
-  // const newMessage: IMessage = {
-  //   id: Date.now(),
-  //   author: "User",
-  //   content: message,
-  //   avatar: "https://example.com/avatar.jpg",
-  // };
-  // const newMessage = { content: message };
-  // setMessages((prevMessages) => [...prevMessages, newMessage]);
-  // });
-
-  // newConnection
-  //   .start()
-  //   .then(() => {
-  //     console.log("Started");
-  //   })
-  //   .catch((err) => console.error(err.toString()));
-
-  // console.log("Connection state: ", newConnection.state);
-
   const handleSend = async (content: string) => {
     const newMessage = {
       id: Date.now(),
@@ -64,22 +34,15 @@ const Chat: React.FC = () => {
       avatar: "https://example.com/avatar.jpg",
     };
     console.log("Handle send!");
-    // newConnection
-    //   .send("SendMessage", newMessage)
-    //   .catch((err) => console.error(err.toString()));
 
     await sendMessage(newMessage);
   };
 
-  // const onReceive = (message: string) {
-  //   console.log("Received message!", message);
-  // }
-
   return (
-    <>
+    <div className="chat">
       <MessageList messages={messages} />
       <MessageForm onSend={handleSend} />
-    </>
+    </div>
   );
 };
 

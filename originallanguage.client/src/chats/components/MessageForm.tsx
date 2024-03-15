@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
+import "./MessageForm.css";
 
 interface MessageFormProps {
   onSend: (content: string) => void;
@@ -23,14 +24,19 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
   };
 
   return (
-    <div>
+    <div className="message-form">
       <Input.TextArea
+        className="message-form__textarea"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onPressEnter={handlePressEnter}
         placeholder="Enter your message..."
       />
-      <Button onClick={handleSubmit} type="primary">
+      <Button
+        className="message-form__send-button"
+        onClick={handleSubmit}
+        type="primary"
+      >
         Send
       </Button>
     </div>

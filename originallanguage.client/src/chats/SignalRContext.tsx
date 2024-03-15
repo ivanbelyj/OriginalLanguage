@@ -45,10 +45,6 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
 
     setConnection(newConnection);
 
-    newConnection.on("ReceiveMessage", function (message: IMessage) {
-      console.log("Received message: ", message);
-    });
-
     newConnection.start().catch((err) => console.error(err.toString()));
 
     return () => {
