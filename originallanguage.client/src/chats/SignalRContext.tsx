@@ -9,9 +9,13 @@ import React, {
 import * as signalR from "@microsoft/signalr";
 import IMessage from "./models/IMessage";
 
+export interface ISendMessageModel {
+  content: string;
+}
+
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
-  sendMessage: (message: IMessage) => Promise<void>;
+  sendMessage: (message: ISendMessageModel) => Promise<void>;
 }
 
 const SignalRContext = createContext<SignalRContextType>({
@@ -52,7 +56,7 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
     };
   }, []);
 
-  const sendMessage = async (message: IMessage) => {
+  const sendMessage = async (message: ISendMessageModel) => {
     console.log("Sending message...");
 
     if (!connection) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
-import "./MessageForm.css";
+import "./styles/MessageForm.css";
 
 interface MessageFormProps {
   onSend: (content: string) => void;

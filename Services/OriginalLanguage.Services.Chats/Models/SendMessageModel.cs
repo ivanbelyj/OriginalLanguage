@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OriginalLanguage.Services.Chats;
-public class MessageModel
+namespace OriginalLanguage.Services.Chats.Models;
+
+#nullable disable
+public class SendMessageModel
 {
     public string Content { get; set; }
 }

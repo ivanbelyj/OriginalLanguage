@@ -1,15 +1,14 @@
 import React from "react";
 import { List, Avatar } from "antd";
 import IMessage from "../models/IMessage";
-import "./MessageItem.css";
+import "./styles/MessageItem.css";
 
 interface MessageItemProps {
   message: IMessage;
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
-  // Todo: dateTime in message
-  const formattedDateTime = new Date().toLocaleString([], {
+  const formattedDateTime = message.dateTime.toLocaleString([], {
     year: "numeric",
     month: "short",
     day: "2-digit",
@@ -20,8 +19,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   return (
     <List.Item className="message-item">
       <List.Item.Meta
-        avatar={<Avatar src={""} />}
-        title={"Author"}
+        avatar={<Avatar src={message.avatarUrl} />}
+        title={message.userName}
         description={
           <div style={{ fontSize: "14px", color: "#333" }}>
             {message.content}

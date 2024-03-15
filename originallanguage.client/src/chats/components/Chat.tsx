@@ -3,11 +3,15 @@ import MessageList from "./MessageList";
 import MessageForm from "./MessageForm";
 import IMessage from "../models/IMessage";
 import { useSignalR } from "../SignalRContext";
-import "./Chat.css";
+import "./styles/Chat.css";
+import { useAuth } from "../../auth/AuthProvider";
 
 const Chat: React.FC = () => {
   const { connection, sendMessage } = useSignalR();
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const { getDecodedToken } = useAuth();
+  const decodedToken = getDecodedToken();
+  const userId = decodedToken?.sub;
 
   useEffect(() => {
     console.log("connection", connection);
@@ -15,6 +19,11 @@ const Chat: React.FC = () => {
       console.log("Connection state: ", connection.state);
       connection.on("ReceiveMessage", (message: IMessage) => {
         console.log("Receive message!", message);
+
+        // Todo: handle it in another place ?
+        console.log("message datetime", message.dateTime);
+        message.dateTime = new Date(message.dateTime);
+
         setMessages((prevMessages) => [...prevMessages, message]);
       });
     }
@@ -28,12 +37,9 @@ const Chat: React.FC = () => {
 
   const handleSend = async (content: string) => {
     const newMessage = {
-      id: Date.now(),
-      author: "User",
       content,
-      avatar: "https://example.com/avatar.jpg",
+      userId,
     };
-    console.log("Handle send!");
 
     await sendMessage(newMessage);
   };
