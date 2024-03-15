@@ -1,7 +1,7 @@
 // src/components/MessageList.tsx
 import React, { useEffect } from "react";
 import { List, Avatar } from "antd";
-import IMessage from "../../models/chats/IMessage";
+import IMessage from "../models/IMessage";
 
 interface MessageListProps {
   messages: IMessage[];

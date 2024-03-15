@@ -1,24 +1,23 @@
-// src/contexts/SignalRContext.tsx
 import React, {
   ReactNode,
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
+import IMessage from "./models/IMessage";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
-  sendMessage: (message: string) => Promise<void>;
+  sendMessage: (message: IMessage) => Promise<void>;
 }
 
 const SignalRContext = createContext<SignalRContextType>({
   connection: null,
   sendMessage: async () => {
-    console.log("test");
+    console.error("Using default SignalR context");
   },
 });
 
@@ -26,20 +25,17 @@ export const useSignalR = () => useContext(SignalRContext);
 
 interface SignalRProviderProps {
   children?: ReactNode;
-  //   onReceive: (message: string) => {};
 }
 
 export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   children,
-}: //   onReceive,
-SignalRProviderProps) => {
+}: SignalRProviderProps) => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
 
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      // http://localhost:10000/
       .withUrl(import.meta.env.VITE_SIGNALR_URL + "chat", {
         // Todo: ?
         skipNegotiation: true,
@@ -49,7 +45,7 @@ SignalRProviderProps) => {
 
     setConnection(newConnection);
 
-    newConnection.on("Receive", function (message: string) {
+    newConnection.on("ReceiveMessage", function (message: IMessage) {
       console.log("Received message: ", message);
     });
 
@@ -60,16 +56,9 @@ SignalRProviderProps) => {
     };
   }, []);
 
-  //   const sendMessage = async (message: string) => {
-  //     console.log("Sending message...");
-  //     try {
-  //       await connection?.invoke("SendMessage", message);
-  //     } catch (err: any) {
-  //       console.error(err.toString());
-  //     }
-  //   };
+  const sendMessage = async (message: IMessage) => {
+    console.log("Sending message...");
 
-  const sendMessage = async (message: string) => {
     if (!connection) {
       console.error("Connection is not established");
       return;
@@ -86,8 +75,9 @@ SignalRProviderProps) => {
       connection,
       sendMessage,
     }),
-    []
+    [connection]
   );
+
   console.log("ctx", contextValue);
   return (
     <SignalRContext.Provider value={contextValue}>

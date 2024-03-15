@@ -8,9 +8,17 @@ interface MessageFormProps {
 const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
   const [content, setContent] = useState("");
 
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!e.shiftKey) {
+      e.preventDefault();
+      if (content.trim()) {
+        handleSubmit();
+      }
+    }
+  };
+
   const handleSubmit = () => {
     onSend(content);
-
     setContent("");
   };
 
@@ -19,6 +27,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
       <Input.TextArea
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onPressEnter={handlePressEnter}
         placeholder="Enter your message..."
       />
       <Button onClick={handleSubmit} type="primary">
