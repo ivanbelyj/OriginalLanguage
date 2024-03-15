@@ -47,7 +47,7 @@ const AppSider = () => {
   const { getDecodedToken } = useAuth();
 
   const decodedToken = getDecodedToken();
-  console.log("user id from token:", decodedToken);
+  // console.log("user id from token:", decodedToken);
   const userId = decodedToken?.sub;
 
   const { userLanguages, addLanguage } = useUserLanguages({
