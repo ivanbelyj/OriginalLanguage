@@ -13,4 +13,5 @@ public class MessageModel
     public string UserName { get; set; }
     public string AvatarUrl { get; set; }
     public DateTime DateTime { get; set; }
+    public string GroupId { get; set; }
 }

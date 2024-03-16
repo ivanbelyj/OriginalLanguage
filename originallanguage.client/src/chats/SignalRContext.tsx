@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
-import IMessage from "./models/IMessage";
+import { useAuth } from "../auth/AuthProvider";
 
 export interface ISendMessageModel {
   content: string;
@@ -15,14 +15,18 @@ export interface ISendMessageModel {
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
-  sendMessage: (message: ISendMessageModel) => Promise<void>;
+  sendMessage: (groupId: string, message: ISendMessageModel) => Promise<void>;
+  joinGroup: (groupId: string) => Promise<void>;
 }
+
+const printDefaultContextError = async () => {
+  console.error("Using default SignalR context");
+};
 
 const SignalRContext = createContext<SignalRContextType>({
   connection: null,
-  sendMessage: async () => {
-    console.error("Using default SignalR context");
-  },
+  sendMessage: printDefaultContextError,
+  joinGroup: printDefaultContextError,
 });
 
 export const useSignalR = () => useContext(SignalRContext);
@@ -34,6 +38,7 @@ interface SignalRProviderProps {
 export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   children,
 }: SignalRProviderProps) => {
+  const { token } = useAuth();
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
@@ -41,10 +46,14 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
       .withUrl(import.meta.env.VITE_SIGNALR_URL + "chat", {
+        accessTokenFactory: () => {
+          return token ?? "";
+        },
         // Todo: ?
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets,
       })
+      .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
@@ -56,15 +65,28 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
     };
   }, []);
 
-  const sendMessage = async (message: ISendMessageModel) => {
-    console.log("Sending message...");
+  const sendMessage = async (groupId: string, message: ISendMessageModel) => {
+    console.log("Sending message...", message, "to group", groupId);
 
     if (!connection) {
       console.error("Connection is not established");
       return;
     }
     try {
-      await connection.invoke("SendMessage", message);
+      await connection.invoke("SendMessage", groupId, message);
+    } catch (err: any) {
+      console.error(err.toString());
+    }
+  };
+
+  const joinGroup = async (groupId: string) => {
+    console.log("Joining group...");
+    if (!connection) {
+      console.error("Connection is not established");
+      return;
+    }
+    try {
+      await connection.invoke("JoinGroup", groupId);
     } catch (err: any) {
       console.error(err.toString());
     }
@@ -74,6 +96,7 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
     () => ({
       connection,
       sendMessage,
+      joinGroup,
     }),
     [connection]
   );

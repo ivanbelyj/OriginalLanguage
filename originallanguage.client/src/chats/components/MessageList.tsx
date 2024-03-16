@@ -1,6 +1,6 @@
 // src/components/MessageList.tsx
-import React, { useEffect, useRef } from "react";
-import { List, Avatar, Button } from "antd";
+import React from "react";
+import { List } from "antd";
 import IMessage from "../models/IMessage";
 import MessageItem from "./MessageItem";
 import "./styles/MessageList.css";

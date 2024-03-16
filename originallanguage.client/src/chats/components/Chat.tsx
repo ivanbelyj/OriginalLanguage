@@ -4,27 +4,36 @@ import MessageForm from "./MessageForm";
 import IMessage from "../models/IMessage";
 import { useSignalR } from "../SignalRContext";
 import "./styles/Chat.css";
-import { useAuth } from "../../auth/AuthProvider";
 
-const Chat: React.FC = () => {
-  const { connection, sendMessage } = useSignalR();
+interface ChatProps {
+  groupId?: string;
+}
+
+const defaultGroupName = "main";
+
+const Chat: React.FC<ChatProps> = ({ groupId: groupIdInitial }: ChatProps) => {
+  const { connection, sendMessage, joinGroup } = useSignalR();
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const { getDecodedToken } = useAuth();
-  const decodedToken = getDecodedToken();
-  const userId = decodedToken?.sub;
+
+  const groupId = groupIdInitial ?? defaultGroupName;
 
   useEffect(() => {
     console.log("connection", connection);
     if (connection) {
       console.log("Connection state: ", connection.state);
+
+      joinGroup(groupId);
+
       connection.on("ReceiveMessage", (message: IMessage) => {
         console.log("Receive message!", message);
+        if (message.groupId == groupId) {
+          // Todo: handle it in another place ?
+          message.dateTime = new Date(message.dateTime);
 
-        // Todo: handle it in another place ?
-        console.log("message datetime", message.dateTime);
-        message.dateTime = new Date(message.dateTime);
-
-        setMessages((prevMessages) => [...prevMessages, message]);
+          setMessages((prevMessages) => [...prevMessages, message]);
+        } else {
+          console.log("Message is from another group");
+        }
       });
     }
 
@@ -38,10 +47,9 @@ const Chat: React.FC = () => {
   const handleSend = async (content: string) => {
     const newMessage = {
       content,
-      userId,
     };
 
-    await sendMessage(newMessage);
+    await sendMessage(groupId ?? defaultGroupName, newMessage);
   };
 
   return (

@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Chats;
 public class ChatHub : Hub
 {
-    public async Task SendMessage(SendMessageModel message)
+    public async Task JoinGroup(string groupId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
+    }
+
+    public async Task SendMessage(string groupId, SendMessageModel message)
     {
         Guid? userId = GetUserId();
 
@@ -19,10 +24,11 @@ public class ChatHub : Hub
             AvatarUrl = "https://via.placeholder.com/150",
             DateTime = DateTime.UtcNow,
             UserName = userId?.ToString().Substring(0, 3) ?? "Anonymous",
-            Content = message.Content
+            Content = message.Content,
+            GroupId = groupId
         };
-        await Clients.All.SendAsync("ReceiveMessage", messageModel);
-        //await Clients.Group(groupName).SendAsync("Receive", message);
+        //await Clients.All.SendAsync("ReceiveMessage", messageModel);
+        await Clients.Group(groupId).SendAsync("ReceiveMessage", messageModel);
     }
 
     private Guid? GetUserId()

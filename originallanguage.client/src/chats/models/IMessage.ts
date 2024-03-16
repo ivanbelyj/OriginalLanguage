@@ -3,4 +3,5 @@ export default interface IMessage {
   userName: string;
   avatarUrl: string;
   dateTime: Date;
+  groupId: string;
 }
