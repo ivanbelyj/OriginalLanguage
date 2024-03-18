@@ -22,8 +22,6 @@ const Chat: React.FC<ChatProps> = ({ groupId: groupIdInitial }: ChatProps) => {
     if (connection) {
       console.log("Connection state: ", connection.state);
 
-      joinGroup(groupId);
-
       connection.on("ReceiveMessage", (message: IMessage) => {
         console.log("Receive message!", message);
         if (message.groupId == groupId) {
@@ -35,6 +33,10 @@ const Chat: React.FC<ChatProps> = ({ groupId: groupIdInitial }: ChatProps) => {
           console.log("Message is from another group");
         }
       });
+
+      // Todo: fix but it normally
+      setTimeout(() => joinGroup(groupId), 1000);
+      // joinGroup(groupId);
     }
 
     return () => {
@@ -42,7 +44,7 @@ const Chat: React.FC<ChatProps> = ({ groupId: groupIdInitial }: ChatProps) => {
         connection.off("ReceiveMessage");
       }
     };
-  }, [connection]);
+  }, [connection, groupId]);
 
   const handleSend = async (content: string) => {
     const newMessage = {

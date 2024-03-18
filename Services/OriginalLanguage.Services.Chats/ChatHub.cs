@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using OriginalLanguage.Services.Chats.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,17 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Chats;
 public class ChatHub : Hub
 {
+    private readonly IMessagesService messagesService;
+    private readonly IMapper mapper;
+
+    public ChatHub(
+        IMessagesService messagesService,
+        IMapper mapper)
+    {
+        this.messagesService = messagesService;
+        this.mapper = mapper;
+    }
+
     public async Task JoinGroup(string groupId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
@@ -21,14 +33,21 @@ public class ChatHub : Hub
 
         var messageModel = new MessageModel()
         {
-            AvatarUrl = "https://via.placeholder.com/150",
-            DateTime = DateTime.UtcNow,
-            UserName = userId?.ToString().Substring(0, 3) ?? "Anonymous",
             Content = message.Content,
-            GroupId = groupId
+            DateTime = DateTime.UtcNow,
+            GroupId = groupId,
+            UserId = userId
         };
-        //await Clients.All.SendAsync("ReceiveMessage", messageModel);
-        await Clients.Group(groupId).SendAsync("ReceiveMessage", messageModel);
+
+        await messagesService.AddMessage(messageModel);
+
+        var messageResponse = mapper.Map<MessageResponse>(messageModel);
+
+        // Todo: return actual user data
+        messageResponse.AvatarUrl = "https://via.placeholder.com/150";
+        messageResponse.UserName = userId?.ToString().Substring(0, 3) ?? "Anonymous";
+
+        await Clients.Group(groupId).SendAsync("ReceiveMessage", messageResponse);
     }
 
     private Guid? GetUserId()

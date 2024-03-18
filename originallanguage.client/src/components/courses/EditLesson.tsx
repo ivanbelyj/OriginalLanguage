@@ -1,4 +1,4 @@
-import { Button, Collapse, List } from "antd";
+import { Button, Collapse, CollapseProps, List } from "antd";
 import ILesson from "../../models/ILesson";
 import EditLessonSample from "./EditLessonSample";
 import { PlusOutlined } from "@ant-design/icons";
@@ -23,10 +23,12 @@ const EditLesson = ({
     handleAddLessonSample();
   };
 
-  return (
-    <div>
-      <Collapse>
-        <Panel header={"Lesson " + lesson.number} key={1}>
+  const items: CollapseProps["items"] = [
+    {
+      key: "1",
+      label: "Lesson " + lesson.number,
+      children: (
+        <>
           <List
             itemLayout="vertical"
             dataSource={samplesOfLesson}
@@ -43,8 +45,14 @@ const EditLesson = ({
           <Button type="primary" onClick={onAddLessonSampleClicked}>
             <PlusOutlined /> Add sample
           </Button>
-        </Panel>
-      </Collapse>
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <Collapse items={items}></Collapse>
     </div>
   );
 };

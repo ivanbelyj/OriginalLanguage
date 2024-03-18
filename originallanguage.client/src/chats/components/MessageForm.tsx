@@ -12,15 +12,15 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
   const handlePressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!e.shiftKey) {
       e.preventDefault();
-      if (content.trim()) {
-        handleSubmit();
-      }
+      handleSubmit();
     }
   };
 
   const handleSubmit = () => {
-    onSend(content);
-    setContent("");
+    if (content.trim()) {
+      onSend(content);
+      setContent("");
+    }
   };
 
   return (

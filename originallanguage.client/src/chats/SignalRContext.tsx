@@ -80,12 +80,12 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   };
 
   const joinGroup = async (groupId: string) => {
-    console.log("Joining group...");
     if (!connection) {
       console.error("Connection is not established");
       return;
     }
     try {
+      console.log("Joining group...");
       await connection.invoke("JoinGroup", groupId);
     } catch (err: any) {
       console.error(err.toString());

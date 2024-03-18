@@ -20,6 +20,7 @@ public static class Bootstrapper
             options.EnableDetailedErrors = environment.IsDevelopment();
 
         });
+        services.AddSingleton<IMessagesService, MessagesService>();
         return services;
     }
 
