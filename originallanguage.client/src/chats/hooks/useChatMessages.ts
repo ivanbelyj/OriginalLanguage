@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSignalR } from "../SignalRContext";
 import IMessage from "../models/IMessage";
+import axios from "axios";
 
 export function useChatMessages(groupId: string) {
-  const messagesPerPage = 10;
-
   const { connection, joinGroup } = useSignalR();
   const [messages, setMessages] = useState<IMessage[]>([]);
-  // const [hasMoreItems, setHasMoreItems] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [oldestMessageId, setOldestMessageId] = useState<number | null>(null);
 
   useEffect(() => {
     console.log("connection", connection);
@@ -20,7 +18,6 @@ export function useChatMessages(groupId: string) {
         console.log("Receive message!", message);
         if (message.groupId == groupId) {
           addMessages([message]);
-          // setMessages((prevMessages) => [...prevMessages, message]);
         } else {
           console.log("Message is from another group");
         }
@@ -36,40 +33,73 @@ export function useChatMessages(groupId: string) {
     };
   }, [connection, groupId]);
 
-  async function getMessages(page: number) {
-    const offset = (page - 1) * messagesPerPage;
-    const limit = messagesPerPage;
-
+  async function getMessages(idLimit: number | null, limit: number) {
     try {
       setIsLoading(true);
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}chat-messages`,
         {
-          params: { limit, offset, groupId },
+          params: { groupId, idLimit, limit },
         }
       );
       setIsLoading(false);
-      return response.data;
+      return response.data.reverse();
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   }
+  // async function getMessages(idLimit: number | null, limit: number) {
+  //   try {
+  //     setIsLoading(true);
+  //     // Генерация новых сообщений с уникальными ID
+  //     const startId = (idLimit ?? 201) - 1;
+  //     const newMessages: IMessage[] = Array.from(
+  //       { length: limit },
+  //       (_, index) => ({
+  //         id: startId - index,
+  //         content: `Message ${startId - index}`,
+  //         userName: "TestUser",
+  //         avatarUrl: "https://example.com/avatar.jpg",
+  //         dateTime: new Date(),
+  //         groupId: groupId,
+  //       })
+  //     ).reverse();
+  //     setIsLoading(false);
+  //     return newMessages;
+  //   } catch (error) {
+  //     console.error("Error fetching messages:", error);
+  //   }
+  // }
 
-  const addMessages = (messages: IMessage[]) => {
+  const addMessages = (newMessages: IMessage[]) => {
+    // Todo: optimize
     setMessages((prevMessages) => [
+      ...newMessages.map((message) => {
+        message.dateTime = new Date(message.dateTime);
+        return message;
+      }),
       ...prevMessages,
-      ...messages
-        .map((message) => {
-          message.dateTime = new Date(message.dateTime);
-          return message;
-        })
-        .reverse(),
     ]);
   };
 
-  const loadMessages = async (page: number) => {
-    addMessages(await getMessages(page));
+  useEffect(() => {
+    const oldestMessage = messages.reduce(
+      (min, current) => (current.id < min.id ? current : min),
+      messages[0]
+    );
+    if (oldestMessage) {
+      setOldestMessageId(oldestMessage.id);
+      console.log("oldestMessageId", oldestMessageId);
+    }
+
+    console.log("messages: ", messages);
+  }, [messages]);
+
+  const loadOlderMessages = async () => {
+    const newMessages = await getMessages(oldestMessageId, 10);
+    console.log("loaded messages", newMessages);
+    addMessages(newMessages);
   };
 
-  return { messages, loadMessages, isLoading };
+  return { messages, loadOlderMessages, isLoading };
 }

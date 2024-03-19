@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Chats;
 public interface IMessagesService
 {
-    Task<MessageModel> AddMessage(MessageModel messageModel);
-    Task<MessageResponse> ToMessageResponse(MessageModel messageModel);
-    Task<IEnumerable<MessageResponse>> ToMessageResponses(
+    Task<MessageModel> AddMessage(AddMessageModel messageModel);
+    Task<MessageModelRedundant> EnrichWithUserData(MessageModel messageModel);
+    Task<IEnumerable<MessageModelRedundant>> EnrichWithUserData(
         IEnumerable<MessageModel> messageModels);
-    Task<IEnumerable<MessageModel>> GetMessages(
+    Task<IEnumerable<MessageModelRedundant>> GetMessages(
         string groupId,
-        int offset = 0,
+        int? idLimit = null,
         int limit = 100);
 }

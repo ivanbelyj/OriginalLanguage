@@ -13,21 +13,16 @@ const defaultGroupName = "main";
 
 const Chat: React.FC<ChatProps> = ({ groupId }: ChatProps) => {
   const { sendMessage } = useSignalR();
-  const { messages, loadMessages, isLoading } = useChatMessages(
+  const { messages, loadOlderMessages, isLoading } = useChatMessages(
     groupId ?? defaultGroupName
   );
-  console.log("messages: ", messages);
 
   const handleSend = async (content: string) => {
-    const newMessage = {
-      content,
-    };
-
-    await sendMessage(groupId ?? defaultGroupName, newMessage);
+    await sendMessage(groupId ?? defaultGroupName, content);
   };
 
   useEffect(() => {
-    loadMessages(0);
+    loadOlderMessages();
   }, []);
 
   return (
@@ -35,7 +30,7 @@ const Chat: React.FC<ChatProps> = ({ groupId }: ChatProps) => {
       <MessageList
         messages={messages}
         isLoading={isLoading}
-        loadMessages={loadMessages}
+        loadOlderMessages={loadOlderMessages}
       />
       <MessageForm onSend={handleSend} />
     </div>

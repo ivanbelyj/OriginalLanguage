@@ -20,15 +20,13 @@ public class ChatMessagesController
         this.messagesService = messagesService;
     }
 
-    [ProducesResponseType(typeof(IEnumerable<MessageResponse>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<MessageModelRedundant>), 200)]
     [HttpGet("")]
-    public async Task<IEnumerable<MessageResponse>> GetMessages(
+    public async Task<IEnumerable<MessageModelRedundant>> GetMessages(
         [FromQuery] string groupId,
-        [FromQuery] int offset = 0,
+        [FromQuery] int? idLimit = null,
         [FromQuery] int limit = 100)
     {
-        return await messagesService
-            .ToMessageResponses(await messagesService
-                .GetMessages(groupId, offset, limit));
+        return await messagesService.GetMessages(groupId, idLimit, limit);
     }
 }

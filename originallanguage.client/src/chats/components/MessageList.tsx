@@ -7,26 +7,25 @@ import "./styles/MessageList.css";
 
 interface MessageListProps {
   messages: IMessage[];
-  loadMessages: (page: number) => Promise<void>;
+  loadOlderMessages: () => Promise<void>;
   isLoading: boolean;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
   messages,
-  loadMessages,
+  loadOlderMessages,
   isLoading,
 }) => {
-  const [page, setPage] = useState(0);
+  console.log("messages passed to message list", messages);
   const loadMore = () => {
-    loadMessages(page);
-    setPage((prev) => prev + 1);
+    loadOlderMessages();
   };
   return (
     <div id="scrollableDiv" className="message-list">
       <InfiniteScroll
         dataLength={messages.length}
         next={loadMore}
-        hasMore={messages.length < 50}
+        hasMore={true} // Todo: has more
         loader={
           <Skeleton
             avatar
@@ -38,15 +37,17 @@ const MessageList: React.FC<MessageListProps> = ({
         }
         endMessage={<Divider plain>It is all, no more messages</Divider>}
         scrollableTarget="scrollableDiv"
-        style={{
-          display: "flex",
-          flexDirection: "column-reverse",
-          overflow: "hidden",
-        }}
+        style={
+          {
+            // display: "flex",
+            // flexDirection: "column-reverse",
+            // overflow: "hidden",
+          }
+        }
         inverse={true}
       >
         {messages.map((item, index) => {
-          return <MessageItem message={item} key={index} />;
+          return <MessageItem message={item} key={item.id} />;
         })}
       </InfiniteScroll>
     </div>

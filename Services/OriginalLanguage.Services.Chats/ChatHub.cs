@@ -27,21 +27,21 @@ public class ChatHub : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
     }
 
-    public async Task SendMessage(string groupId, SendMessageModel message)
+    public async Task SendMessage(string groupId, string messageContent)
     {
         Guid? userId = GetUserId();
 
-        var messageModel = new MessageModel()
+        var addMessageModel = new AddMessageModel()
         {
-            Content = message.Content,
+            Content = messageContent,
             DateTime = DateTime.UtcNow,
             GroupId = groupId,
             UserId = userId
         };
 
-        await messagesService.AddMessage(messageModel);
+        var messageModel = await messagesService.AddMessage(addMessageModel);
 
-        var messageResponse = await messagesService.ToMessageResponse(messageModel);
+        var messageResponse = await messagesService.EnrichWithUserData(messageModel);
 
         await Clients.Group(groupId).SendAsync("ReceiveMessage", messageResponse);
     }

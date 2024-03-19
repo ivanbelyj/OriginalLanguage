@@ -9,13 +9,9 @@ import React, {
 import * as signalR from "@microsoft/signalr";
 import { useJwtToken } from "../auth/AuthProvider";
 
-export interface ISendMessageModel {
-  content: string;
-}
-
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
-  sendMessage: (groupId: string, message: ISendMessageModel) => Promise<void>;
+  sendMessage: (groupId: string, message: string) => Promise<void>;
   joinGroup: (groupId: string) => Promise<void>;
 }
 
@@ -65,7 +61,7 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
     };
   }, []);
 
-  const sendMessage = async (groupId: string, message: ISendMessageModel) => {
+  const sendMessage = async (groupId: string, message: string) => {
     console.log("Sending message...", message, "to group", groupId);
 
     if (!connection) {
