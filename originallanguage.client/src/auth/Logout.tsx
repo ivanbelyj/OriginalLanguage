@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthProvider";
+import { useJwtToken } from "./AuthProvider";
 
 const Logout = () => {
-  const { setToken } = useAuth();
+  const { setToken } = useJwtToken();
   const navigate = useNavigate();
 
   const handleLogout = () => {

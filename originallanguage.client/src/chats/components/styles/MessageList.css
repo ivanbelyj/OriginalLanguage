@@ -1,4 +1,7 @@
 .message-list {
   height: 60vh;
   overflow-y: scroll;
+  padding: 0 1em;
+  display: flex;
+  flex-direction: column-reverse;
 }

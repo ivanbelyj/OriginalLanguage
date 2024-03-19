@@ -15,10 +15,15 @@ interface AuthContextType {
   getDecodedToken: () => JwtPayload | null;
 }
 
+const printUsingDefaultContextError = () => {
+  console.error("Using default auth context");
+};
+
 const AuthContext = createContext<AuthContextType>({
   token: null,
-  setToken: () => {}, // Todo: is it correct?
+  setToken: printUsingDefaultContextError,
   getDecodedToken: () => {
+    printUsingDefaultContextError();
     return null;
   },
 });
@@ -41,12 +46,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const decodedToken = jwtDecode(token);
 
     return decodedToken;
-
-    // if ("id" in decodedToken) {
-    //   return "" + decodedToken.id;
-    // }
-
-    // return null;
   };
 
   useEffect(() => {
@@ -73,7 +72,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
+export const useJwtToken = () => {
   return useContext(AuthContext);
 };
 

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Chats.Models;
 
 #nullable disable
+/// <summary>
+/// Message model contains minimal data about a message
+/// </summary>
 public class MessageModel
 {
     public string Content { get; set; }

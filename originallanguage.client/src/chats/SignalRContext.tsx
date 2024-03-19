@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 
 export interface ISendMessageModel {
   content: string;
@@ -38,7 +38,7 @@ interface SignalRProviderProps {
 export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   children,
 }: SignalRProviderProps) => {
-  const { token } = useAuth();
+  const { token } = useJwtToken();
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );

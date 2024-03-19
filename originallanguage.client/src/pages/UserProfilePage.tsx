@@ -12,7 +12,7 @@ import {
 
 import UserProfile from "../components/UserProfile";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;

@@ -3,13 +3,13 @@ import { Layout } from "antd";
 import AppHeader from "./AppHeader";
 import { Link, Outlet } from "react-router-dom";
 import AppSider from "./AppSider";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 
 const { Footer, Content } = Layout;
 // const { Text, Paragraph } = Typography;
 
 export default function AppLayout() {
-  const { token } = useAuth();
+  const { token } = useJwtToken();
 
   const currentYear = new Date().getFullYear();
   return (

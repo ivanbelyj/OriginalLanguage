@@ -2,7 +2,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { useCourses } from "../../hooks/courses";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../auth/AuthProvider";
+import { useJwtToken } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
 
@@ -18,7 +18,7 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
 
   const { updateCourse, getCourse } = useCourses();
 
-  const { getDecodedToken } = useAuth();
+  const { getDecodedToken } = useJwtToken();
 
   const decodedToken = getDecodedToken();
   const userId = decodedToken?.sub;

@@ -7,9 +7,13 @@ interface MessageItemProps {
   message: IMessage;
 }
 
+const isCurrentYear = (date: Date) => {
+  return date.getFullYear() === new Date().getFullYear();
+};
+
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const formattedDateTime = message.dateTime.toLocaleString([], {
-    year: "numeric",
+    ...(isCurrentYear(message.dateTime) ? {} : { year: "numeric" }),
     month: "short",
     day: "2-digit",
     hour: "2-digit",
@@ -17,20 +21,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   });
 
   return (
-    <List.Item className="message-item">
-      <List.Item.Meta
-        avatar={<Avatar src={message.avatarUrl} />}
-        title={message.userName}
-        description={
-          <div style={{ fontSize: "14px", color: "#333" }}>
-            {message.content}
-            <span style={{ fontSize: "12px", color: "#999", float: "right" }}>
-              {formattedDateTime}
-            </span>
-          </div>
-        }
-      />
-    </List.Item>
+    <div className="message">
+      <Avatar className="message__avatar" src={message.avatarUrl} />
+      <div className="message__content-box">
+        <a href="https://ant.design" className="message__user-name">
+          {message.userName}
+        </a>
+        <span className="message__date-time">{formattedDateTime}</span>
+        <div className="message__content">{message.content}</div>
+      </div>
+    </div>
   );
 };
 

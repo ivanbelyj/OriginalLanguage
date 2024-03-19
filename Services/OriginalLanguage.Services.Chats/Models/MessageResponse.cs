@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.Chats.Models;
 
 #nullable disable
+/// <summary>
+/// Message response contains full data required for message so
+/// it is convenient for using on client
+/// </summary>
 public class MessageResponse
 {
     public string Content { get; set; }

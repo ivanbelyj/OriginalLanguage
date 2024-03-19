@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import React from "react";
 
 import "./edit-language.css";
-import { useAuth } from "../../auth/AuthProvider";
+import { useJwtToken } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -29,7 +29,7 @@ export function EditLanguage() {
   const languageName = useWatch("name", form);
   const [isConlang, setIsConlang] = useState(false);
 
-  const { getDecodedToken } = useAuth();
+  const { getDecodedToken } = useJwtToken();
   const decodedToken = getDecodedToken();
   const userId = decodedToken?.sub;
 

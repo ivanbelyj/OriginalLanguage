@@ -41,11 +41,7 @@ public class ChatHub : Hub
 
         await messagesService.AddMessage(messageModel);
 
-        var messageResponse = mapper.Map<MessageResponse>(messageModel);
-
-        // Todo: return actual user data
-        messageResponse.AvatarUrl = "https://via.placeholder.com/150";
-        messageResponse.UserName = userId?.ToString().Substring(0, 3) ?? "Anonymous";
+        var messageResponse = await messagesService.ToMessageResponse(messageModel);
 
         await Clients.Group(groupId).SendAsync("ReceiveMessage", messageResponse);
     }

@@ -1,11 +1,11 @@
 import { Avatar, Button, Layout, Menu, Switch } from "antd";
 import { Link } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 
 const { Header } = Layout;
 
 export default function AppHeader() {
-  const { token } = useAuth();
+  const { token } = useJwtToken();
 
   const links = [
     <Link to="/">Main</Link>,

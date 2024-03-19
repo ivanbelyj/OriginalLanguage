@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLanguages } from "../hooks/languages";
 import { useCourses } from "../hooks/courses";
 import { useUserLanguages } from "../hooks/useUserLanguages";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 import { useUserCourses } from "../hooks/useUserCourses";
 
 const { Header, Content, Sider } = Layout;
@@ -44,7 +44,7 @@ const AppSider = () => {
   const { postLanguage } = useLanguages();
   const { postCourse } = useCourses();
 
-  const { getDecodedToken } = useAuth();
+  const { getDecodedToken } = useJwtToken();
 
   const decodedToken = getDecodedToken();
   // console.log("user id from token:", decodedToken);
