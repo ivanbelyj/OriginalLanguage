@@ -3,10 +3,13 @@ import { useSignalR } from "../SignalRContext";
 import IMessage from "../models/IMessage";
 import axios from "axios";
 
+const messagesPerPage = 10;
+
 export function useChatMessages(groupId: string) {
   const { connection, joinGroup } = useSignalR();
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [oldestMessageId, setOldestMessageId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -43,43 +46,24 @@ export function useChatMessages(groupId: string) {
         }
       );
       setIsLoading(false);
+      setHasMoreMessages(response.data.length === messagesPerPage);
       return response.data.reverse();
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   }
-  // async function getMessages(idLimit: number | null, limit: number) {
-  //   try {
-  //     setIsLoading(true);
-  //     // Генерация новых сообщений с уникальными ID
-  //     const startId = (idLimit ?? 201) - 1;
-  //     const newMessages: IMessage[] = Array.from(
-  //       { length: limit },
-  //       (_, index) => ({
-  //         id: startId - index,
-  //         content: `Message ${startId - index}`,
-  //         userName: "TestUser",
-  //         avatarUrl: "https://example.com/avatar.jpg",
-  //         dateTime: new Date(),
-  //         groupId: groupId,
-  //       })
-  //     ).reverse();
-  //     setIsLoading(false);
-  //     return newMessages;
-  //   } catch (error) {
-  //     console.error("Error fetching messages:", error);
-  //   }
-  // }
 
   const addMessages = (newMessages: IMessage[]) => {
-    // Todo: optimize
-    setMessages((prevMessages) => [
-      ...newMessages.map((message) => {
-        message.dateTime = new Date(message.dateTime);
-        return message;
-      }),
-      ...prevMessages,
-    ]);
+    const newMessagesToSet = newMessages.map((message) => {
+      message.dateTime = new Date(message.dateTime);
+      return message;
+    });
+    console.log("newMessagesToSet", newMessagesToSet);
+    setMessages((prevMessages) =>
+      [...newMessagesToSet, ...prevMessages].sort(
+        (m1, m2) => m1.dateTime.getTime() - m2.dateTime.getTime()
+      )
+    );
   };
 
   useEffect(() => {
@@ -96,10 +80,9 @@ export function useChatMessages(groupId: string) {
   }, [messages]);
 
   const loadOlderMessages = async () => {
-    const newMessages = await getMessages(oldestMessageId, 10);
-    console.log("loaded messages", newMessages);
+    const newMessages = await getMessages(oldestMessageId, messagesPerPage);
     addMessages(newMessages);
   };
 
-  return { messages, loadOlderMessages, isLoading };
+  return { messages, loadOlderMessages, isLoading, hasMoreMessages };
 }

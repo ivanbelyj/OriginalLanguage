@@ -9,12 +9,14 @@ interface MessageListProps {
   messages: IMessage[];
   loadOlderMessages: () => Promise<void>;
   isLoading: boolean;
+  hasMoreMessages: boolean;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
   messages,
   loadOlderMessages,
   isLoading,
+  hasMoreMessages,
 }) => {
   console.log("messages passed to message list", messages);
   const loadMore = () => {
@@ -25,7 +27,7 @@ const MessageList: React.FC<MessageListProps> = ({
       <InfiniteScroll
         dataLength={messages.length}
         next={loadMore}
-        hasMore={true} // Todo: has more
+        hasMore={hasMoreMessages}
         loader={
           <Skeleton
             avatar
@@ -37,18 +39,19 @@ const MessageList: React.FC<MessageListProps> = ({
         }
         endMessage={<Divider plain>It is all, no more messages</Divider>}
         scrollableTarget="scrollableDiv"
-        style={
-          {
-            // display: "flex",
-            // flexDirection: "column-reverse",
-            // overflow: "hidden",
-          }
-        }
+        style={{
+          display: "flex",
+          flexDirection: "column-reverse",
+          overflow: "hidden",
+        }}
         inverse={true}
       >
-        {messages.map((item, index) => {
-          return <MessageItem message={item} key={item.id} />;
-        })}
+        {messages
+          .slice()
+          .reverse()
+          .map((item, index) => {
+            return <MessageItem message={item} key={item.id} />;
+          })}
       </InfiniteScroll>
     </div>
   );
