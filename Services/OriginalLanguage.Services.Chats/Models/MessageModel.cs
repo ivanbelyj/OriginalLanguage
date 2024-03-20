@@ -11,7 +11,7 @@ public class MessageModel
 {
     public int Id { get; set; }
     public string Content { get; set; }
-    public Guid? UserId { get; set; }
+    public string? UserId { get; set; }
     public DateTime DateTime { get; set; }
     public string GroupId { get; set; }
 }

@@ -3,7 +3,7 @@ import { useSignalR } from "../SignalRContext";
 import IMessage from "../models/IMessage";
 import axios from "axios";
 
-const messagesPerPage = 10;
+const messagesPerPage = 50;
 
 export function useChatMessages(groupId: string) {
   const { connection, joinGroup } = useSignalR();

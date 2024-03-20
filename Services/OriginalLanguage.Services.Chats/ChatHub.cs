@@ -29,7 +29,7 @@ public class ChatHub : Hub
 
     public async Task SendMessage(string groupId, string messageContent)
     {
-        Guid? userId = GetUserId();
+        string? userId = GetUserId();
 
         var addMessageModel = new AddMessageModel()
         {
@@ -46,22 +46,13 @@ public class ChatHub : Hub
         await Clients.Group(groupId).SendAsync("ReceiveMessage", messageResponse);
     }
 
-    private Guid? GetUserId()
+    private string? GetUserId()
     {
         Claim? userIdClaim = Context
             .User
             ?.Claims
             .FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
 
-        var claims = Context.User?.Claims.ToList();
-
-        Guid? userId = null;
-        if (userIdClaim != null &&
-            Guid.TryParse(userIdClaim.Value, out var parsedUserId))
-        {
-            userId = parsedUserId;
-        }
-
-        return userId;
+        return userIdClaim?.Value;
     }
 }

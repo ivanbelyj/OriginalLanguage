@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using OriginalLanguage.Services.Chats.Configutation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +22,15 @@ public static class Bootstrapper
         services.AddSignalR(options =>
         {
             options.EnableDetailedErrors = environment.IsDevelopment();
-
+            
         });
-        services.AddSingleton<IMessagesService, MessagesService>();
+        services.AddScoped<IMessagesService, MessagesService>();
+
+        // Cofigure JWT for SignalR
+        services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>,
+            ConfigureJwtBearerOptions>());
+
         return services;
     }
 

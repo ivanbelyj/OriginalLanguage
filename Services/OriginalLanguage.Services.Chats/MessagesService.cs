@@ -9,6 +9,7 @@ using OriginalLanguage.Services.Chats.Models;
 using OriginalLanguage.Common.Validator;
 using AutoMapper;
 using OriginalLanguage.Context.Entities.Chat;
+using OriginalLanguage.Services.UserAccount;
 
 namespace OriginalLanguage.Services.Chats;
 public class MessagesService : IMessagesService
@@ -16,15 +17,18 @@ public class MessagesService : IMessagesService
     private readonly IDbContextFactory<MainDbContext> dbContextFactory;
     private readonly IModelValidator<AddMessageModel> messageModelValidator;
     private readonly IMapper mapper;
+    private readonly IUserAccountService usersService;
 
     public MessagesService(
         IDbContextFactory<MainDbContext> dbContextFactory,
         IModelValidator<AddMessageModel> messageModelValidator,
-        IMapper mapper)
+        IMapper mapper,
+        IUserAccountService usersService)
     {
         this.dbContextFactory = dbContextFactory;
         this.messageModelValidator = messageModelValidator;
         this.mapper = mapper;
+        this.usersService = usersService;
     }
 
     public async Task<MessageModel> AddMessage(AddMessageModel addMessageModel)
@@ -43,17 +47,18 @@ public class MessagesService : IMessagesService
         int? idLimit = null,
         int limit = 100)
     {
-        // Todo: is it normally to base pagination on DateTime?
         await using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var chatMessages = dbContext
+        var chatMessages = await dbContext
             .ChatMessages
             .Where(m => m.GroupId == groupId)
-            .OrderByDescending(x => x.DateTime)
+            .OrderByDescending(x => x.Id)
             .Where(m => m.Id < (idLimit ?? int.MaxValue))
-            .Take(Math.Min(Math.Max(0, limit), 1000));
+            .Take(Math.Min(Math.Max(0, limit), 1000))
+            .ToListAsync();
 
-        var messageModels = (await chatMessages.ToListAsync())
-            .Select(m => mapper.Map<MessageModel>(m));
+        var messageModels = chatMessages
+            .Select(mapper.Map<MessageModel>)
+            .ToList();
         return await EnrichWithUserData(messageModels);
     }
 
@@ -62,12 +67,12 @@ public class MessagesService : IMessagesService
     {
         var messageResponse = mapper.Map<MessageModelRedundant>(messageModel);
 
-        // Todo: return actual user data
-        messageResponse.AvatarUrl = "";
-        messageResponse.UserName = messageModel
-            .UserId?
-            .ToString()
-            .Substring(0, 3) ?? "Anonymous";
+        var user = messageModel.UserId == null ?
+            null
+            : await usersService.GetUser(messageModel.UserId);
+        
+        messageResponse.AvatarUrl = ""; // Todo:
+        messageResponse.UserName = user?.Name ?? "Anonymous";
 
         return messageResponse;
     }
@@ -75,8 +80,11 @@ public class MessagesService : IMessagesService
     public async Task<IEnumerable<MessageModelRedundant>> EnrichWithUserData(
         IEnumerable<MessageModel> messageModels)
     {
-        var tasks = messageModels.Select(EnrichWithUserData);
-        var messageResponses = await Task.WhenAll(tasks);
-        return messageResponses;
+        List<MessageModelRedundant> messages = new();
+        foreach (var messageModel in messageModels)
+        {
+            messages.Add(await EnrichWithUserData(messageModel));
+        }
+        return messages;
     }
 }

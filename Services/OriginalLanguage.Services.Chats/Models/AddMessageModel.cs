@@ -16,7 +16,7 @@ namespace OriginalLanguage.Services.Chats.Models;
 public class AddMessageModel
 {
     public string Content { get; set; }
-    public Guid? UserId { get; set; }
+    public string? UserId { get; set; }
     public DateTime DateTime { get; set; }
     public string GroupId { get; set; }
 }

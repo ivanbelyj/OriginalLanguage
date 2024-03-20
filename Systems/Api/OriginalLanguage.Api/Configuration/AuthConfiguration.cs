@@ -6,6 +6,7 @@ using OriginalLanguage.Services.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.IdentityModel.Tokens;
 using OriginalLanguage.Context.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace OriginalLanguage.Api.Configuration;
 
@@ -54,6 +55,23 @@ public static class AuthConfiguration
                     ClockSkew = TimeSpan.Zero
                 };
                 options.Audience = "api";
+
+                //options.Events = new JwtBearerEvents()
+                //{
+                //    OnMessageReceived = context =>
+                //    {
+                //        var accessToken = context.Request.Query["access_token"];
+
+                //        // If the request is for our hub...
+                //        var path = context.HttpContext.Request.Path;
+                //        if (!string.IsNullOrEmpty(accessToken) &&
+                //            (path.StartsWithSegments("/chat")))
+                //        {
+                //            context.Token = accessToken;
+                //        }
+                //        return Task.CompletedTask;
+                //    }
+                //};
             });
 
         services.AddAuthorization(options =>

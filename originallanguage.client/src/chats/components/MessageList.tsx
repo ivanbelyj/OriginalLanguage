@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import IMessage from "../models/IMessage";
 import MessageItem from "./MessageItem";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -8,14 +8,12 @@ import "./styles/MessageList.css";
 interface MessageListProps {
   messages: IMessage[];
   loadOlderMessages: () => Promise<void>;
-  isLoading: boolean;
   hasMoreMessages: boolean;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
   messages,
   loadOlderMessages,
-  isLoading,
   hasMoreMessages,
 }) => {
   console.log("messages passed to message list", messages);
@@ -49,7 +47,7 @@ const MessageList: React.FC<MessageListProps> = ({
         {messages
           .slice()
           .reverse()
-          .map((item, index) => {
+          .map((item) => {
             return <MessageItem message={item} key={item.id} />;
           })}
       </InfiniteScroll>
