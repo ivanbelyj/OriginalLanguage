@@ -1,4 +1,13 @@
-import { Card, Form, Input, Button, InputNumber, List, Collapse } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  InputNumber,
+  List,
+  Collapse,
+  CollapseProps,
+} from "antd";
 import ILessonSample from "../../models/ILessonSample";
 import EditSentence from "./EditSentence";
 import { PlusOutlined } from "@ant-design/icons";
@@ -23,6 +32,14 @@ const EditLessonSample = ({
 
   const [form] = Form.useForm();
 
+  const items: CollapseProps["items"] = lessonSampleSentences.map(
+    (sentence, index) => ({
+      key: sentence.id,
+      label: sentence.text ?? `Variant ${index + 1}`,
+      children: <EditSentence sentence={sentence} />,
+    })
+  );
+
   return (
     <Card title={title}>
       <Form form={form}>
@@ -30,13 +47,7 @@ const EditLessonSample = ({
           <InputNumber min={0} max={10} />
         </Form.Item>
         <Form.Item>
-          <Collapse>
-            {lessonSampleSentences.map((sentence, index) => (
-              <Panel key={index} header={sentence.text}>
-                <EditSentence sentence={sentence} />
-              </Panel>
-            ))}
-          </Collapse>
+          <Collapse items={items} />
         </Form.Item>
 
         <Button type="primary" onClick={handleAddSentence}>

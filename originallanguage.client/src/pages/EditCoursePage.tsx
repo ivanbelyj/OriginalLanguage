@@ -26,10 +26,7 @@ const EditCoursePage = () => {
   const { postSentence } = useSentences();
   const [editedSentences, setEditedSentences] = useState<ISentence[]>();
 
-  // const lessonsToAdd: ICreateLesson[] = [];
-  // const lessonSamplesToAdd: ICreateLessonSample[] = [];
-  // const sentencesToAdd: ICreateSentence[] = [];
-
+  // Waiting until the lessons are loaded from the server
   useEffect(() => {
     setEditedLessons(courseLessons);
   }, [courseLessons]);
@@ -64,10 +61,6 @@ const EditCoursePage = () => {
     await postSentence({
       lessonSampleId,
     });
-    // console.log("Todo: Add sentence to sample ", lessonSampleId);
-    // sentencesToAdd.push({
-    //   lessonSampleId,
-    // });
   };
   // #endregion
 

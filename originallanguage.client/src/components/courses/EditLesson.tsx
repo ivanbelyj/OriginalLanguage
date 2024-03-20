@@ -3,6 +3,7 @@ import ILesson from "../../models/ILesson";
 import EditLessonSample from "./EditLessonSample";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSamplesOfLesson } from "../../hooks/useSamplesOfLesson";
+import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
