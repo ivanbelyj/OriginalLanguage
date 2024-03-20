@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../pages/MainPage";
 import AboutPage from "../pages/AboutPage";
@@ -18,7 +18,7 @@ import EditLanguagePage from "../pages/EditLanguagePage";
 import Logout from "../auth/Logout";
 
 const AppRouterProvider = () => {
-  const { token } = useAuth();
+  const { token } = useJwtToken();
 
   const routesForPublic = [
     {

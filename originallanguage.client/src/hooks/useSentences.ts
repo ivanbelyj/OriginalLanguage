@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import ISentence from "../models/ISentence";
 
@@ -22,7 +22,7 @@ export interface IUpdateSentence {
   transcription?: string;
 }
 
-export function useSentences(lessonSampleId: string) {
+export function useSentences() {
   const [lessonSampleSentences, setLessonSampleSentences] = useState<
     ISentence[]
   >([]);
@@ -64,23 +64,6 @@ export function useSentences(lessonSampleId: string) {
     });
   }
 
-  function fetchSentences() {
-    fetch(
-      import.meta.env.VITE_API_URL +
-        `lesson-samples/${lessonSampleId}/sentences`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => setLessonSampleSentences(data))
-      .catch((error) => {
-        console.error("There has been a problem with sentences fetch:", error);
-      });
-  }
-
   async function getSentence(id: string): Promise<ISentence> {
     const response = await axios.get<ISentence>(
       import.meta.env.VITE_API_URL + "sentences/" + id
@@ -88,10 +71,6 @@ export function useSentences(lessonSampleId: string) {
 
     return response.data;
   }
-
-  useEffect(() => {
-    fetchSentences();
-  }, []);
 
   return {
     lessonSampleSentences,

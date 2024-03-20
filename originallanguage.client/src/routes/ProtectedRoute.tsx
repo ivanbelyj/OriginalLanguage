@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
+import { useJwtToken } from "../auth/AuthProvider";
 
 export const ProtectedRoute = () => {
-  const { token } = useAuth();
+  const { token } = useJwtToken();
 
   if (!token) {
     return <Navigate to="/login" />;

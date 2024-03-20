@@ -4,12 +4,15 @@ import ReactDOM from "react-dom/client";
 import "antd/dist/reset.css";
 import AuthProvider from "./auth/AuthProvider.tsx";
 import App from "./App.tsx";
+import { SignalRProvider } from "./chats/SignalRContext.tsx";
 // import "antd/dist/antd.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <AuthProvider>
-    <App />
+    <SignalRProvider>
+      <App />
+    </SignalRProvider>
   </AuthProvider>
   // </React.StrictMode>
 );

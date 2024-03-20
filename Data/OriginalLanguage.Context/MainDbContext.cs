@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Context.Entities.Chat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
     public DbSet<LessonSample> LessonSamples { get; set; }
     public DbSet<Sentence> Sentences { get; set; }
 
+    public DbSet<ChatMessage> ChatMessages { get; set; }
+
     public MainDbContext(DbContextOptions<MainDbContext> options) : base(options)
     {
         
@@ -37,6 +40,8 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
         modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("user_role_claims");
         modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
         modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
+
+        // Todo: move into entity type configurations
 
         modelBuilder.Entity<Article>(entity =>
         {
@@ -188,6 +193,11 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
             entity.ToTable("sentences");
             //entity.HasOne(s => s.LessonSample)
             //    .WithMany(ls => ls.SentenceVariants);
+        });
+
+        modelBuilder.Entity<ChatMessage>(chatMessage =>
+        {
+            chatMessage.ToTable("chat_messages");
         });
     }
 }

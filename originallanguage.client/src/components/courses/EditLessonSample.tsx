@@ -1,8 +1,17 @@
-import { Card, Form, Input, Button, InputNumber, List, Collapse } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  InputNumber,
+  List,
+  Collapse,
+  CollapseProps,
+} from "antd";
 import ILessonSample from "../../models/ILessonSample";
 import EditSentence from "./EditSentence";
-import { useSentences } from "../../hooks/useSentences";
 import { PlusOutlined } from "@ant-design/icons";
+import { useLessonSampleSentences } from "../../hooks/useLessonSampleSentences";
 
 const { Panel } = Collapse;
 
@@ -17,9 +26,19 @@ const EditLessonSample = ({
   title,
   handleAddSentence,
 }: IEditLessonSampleProps) => {
-  const { lessonSampleSentences } = useSentences(lessonSample.id.toString());
+  const { lessonSampleSentences } = useLessonSampleSentences(
+    lessonSample.id.toString()
+  );
 
   const [form] = Form.useForm();
+
+  const items: CollapseProps["items"] = lessonSampleSentences.map(
+    (sentence, index) => ({
+      key: sentence.id,
+      label: sentence.text ?? `Variant ${index + 1}`,
+      children: <EditSentence sentence={sentence} />,
+    })
+  );
 
   return (
     <Card title={title}>
@@ -28,23 +47,8 @@ const EditLessonSample = ({
           <InputNumber min={0} max={10} />
         </Form.Item>
         <Form.Item>
-          <Collapse>
-            {lessonSampleSentences.map((sentence, index) => (
-              <Panel key={index} header={sentence.text}>
-                <EditSentence sentence={sentence} />
-              </Panel>
-            ))}
-          </Collapse>
+          <Collapse items={items} />
         </Form.Item>
-        {/* <List
-          itemLayout="vertical"
-          dataSource={lessonSampleSentences}
-          renderItem={(sentence) => (
-            <List.Item>
-              <EditSentence sentence={sentence} />
-            </List.Item>
-          )}
-        /> */}
 
         <Button type="primary" onClick={handleAddSentence}>
           <PlusOutlined /> Add sentence variant

@@ -20,9 +20,7 @@ public class AddLessonSampleModelValidator : AbstractValidator<AddLessonSampleMo
 {
     public AddLessonSampleModelValidator()
     {
-        RuleFor(x => x.MinimalProgressLevel)
-            .NotEmpty()
-            .WithMessage("MinimalProgressLevel is required");
+
     }
 }
 

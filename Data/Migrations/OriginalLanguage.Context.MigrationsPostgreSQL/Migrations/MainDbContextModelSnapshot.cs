@@ -268,6 +268,33 @@ namespace OriginalLanguage.Context.MigrationsPostgreSQL.Migrations
                     b.ToTable("articles", (string)null);
                 });
 
+            modelBuilder.Entity("OriginalLanguage.Context.Entities.Chat.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("GroupId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("chat_messages", (string)null);
+                });
+
             modelBuilder.Entity("OriginalLanguage.Context.Entities.ConlangData", b =>
                 {
                     b.Property<int>("Id")

@@ -1,9 +1,11 @@
-import { Collapse, Descriptions, Typography } from "antd";
+import { Descriptions, Typography } from "antd";
 import ILanguage from "../../models/ILanguage";
 import { useParams } from "react-router-dom";
 import { useLanguages } from "../../hooks/languages";
 import { useEffect, useState } from "react";
 import LanguageFlag from "./LanguageFlag";
+import Chat from "../../chats/components/Chat";
+import { ChatGroupUtils } from "../../chats/chat-group-utils";
 
 const { Title, Paragraph } = Typography;
 
@@ -105,7 +107,9 @@ export default function LanguageFullInfo() {
           {language.dateTimeUpdated.toLocaleString()}
         </Descriptions.Item>
       </Descriptions>
+
+      <Title level={4}>{language.name} public chat</Title>
+      <Chat groupId={ChatGroupUtils.getLanguageGroupId(language.id)} />
     </>
-    // </Card>
   );
 }

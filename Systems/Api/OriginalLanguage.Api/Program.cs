@@ -5,6 +5,7 @@ using OriginalLanguage.Context;
 using OriginalLanguage.Context.Setup;
 using OriginalLanguage.Services.Settings;
 using OriginalLanguage.Settings;
+using OriginalLanguage.Services.Chats;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,8 @@ services.AddAppControllersAndViews();
 
 services.AddAppServices();
 
+services.AddChatsService(builder.Environment);
+
 var app = builder.Build();
 
 DbInitializer.Initialize(app.Services);
@@ -47,6 +50,8 @@ DbSeeder.SeedDb(app.Services, true);
 app.UseAppCors();
 
 app.UseAuthorization();
+
+app.UseChatsService();
 
 app.MapControllers();
 
