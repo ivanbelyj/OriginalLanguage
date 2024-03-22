@@ -1,31 +1,44 @@
-import { Button, Card, Collapse, Form, Input } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import ISentence from "../../models/ISentence";
+import { IUpdateSentence } from "../../hooks/useSentences";
 
-const { Panel } = Collapse;
+interface IEditSentenceProps {
+  sentence: ISentence;
+  handleSentenceChanged: (sentence: IUpdateSentence) => void;
+}
 
-const EditSentence = ({ sentence }: { sentence: ISentence }) => {
+const EditSentence = ({
+  sentence,
+  handleSentenceChanged,
+}: IEditSentenceProps) => {
+  const [form] = Form.useForm<FormInstance>();
+
+  const handleBlur = () => {
+    const updateSentence: IUpdateSentence = {
+      ...form.getFieldsValue(),
+      lessonSampleId: sentence.lessonSampleId,
+    };
+    handleSentenceChanged(updateSentence);
+  };
+
   return (
-    // <Collapse defaultActiveKey={["1"]}>
-    //   <Panel header={sentence.text} key="1">
-    <>
+    <Form form={form} initialValues={sentence}>
       <Form.Item name="text" label="Text">
-        <Input />
+        <Input onBlur={handleBlur} />
       </Form.Item>
       <Form.Item name="translation" label="Translation">
-        <Input />
+        <Input onBlur={handleBlur} />
       </Form.Item>
       <Form.Item name="literalTranslation" label="Literal Translation">
-        <Input />
+        <Input onBlur={handleBlur} />
       </Form.Item>
       <Form.Item name="glosses" label="Glosses">
-        <Input />
+        <Input onBlur={handleBlur} />
       </Form.Item>
       <Form.Item name="transcription" label="Transcription">
-        <Input />
+        <Input onBlur={handleBlur} />
       </Form.Item>
-    </>
-    //   </Panel>
-    // </Collapse>
+    </Form>
   );
 };
 

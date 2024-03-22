@@ -14,6 +14,11 @@ export interface IUpdateLesson {
   courseId: string;
 }
 
+export interface ILessonIdAndNumber {
+  id: string;
+  number: number;
+}
+
 export function useLessons(courseId: string) {
   const [courseLessons, setCourseLessons] = useState<ILesson[]>([]);
 
@@ -44,6 +49,27 @@ export function useLessons(courseId: string) {
       return prev.map((lesson) =>
         lesson.id === id ? { ...lesson, ...updateLesson } : lesson
       );
+    });
+  }
+
+  async function updateLessonNumbers(
+    lessonIdsAndNumbers: ILessonIdAndNumber[]
+  ) {
+    await axios.put(
+      import.meta.env.VITE_API_URL + "lessons/numbers",
+      lessonIdsAndNumbers
+    );
+    setCourseLessons((prev) => {
+      return prev.map((lesson) => {
+        // Check if prev lesson is changed
+        const updatedLessonIdAndNumber = lessonIdsAndNumbers.find(
+          ({ id: lessonId }) => lessonId === lesson.id
+        );
+        // If the lesson is changed - replace number
+        return updatedLessonIdAndNumber
+          ? { ...lesson, number: updatedLessonIdAndNumber.number }
+          : lesson;
+      });
     });
   }
 
@@ -87,6 +113,7 @@ export function useLessons(courseId: string) {
     getLesson,
     postLesson,
     updateLesson,
+    updateLessonNumbers,
     deleteLesson,
   };
 }

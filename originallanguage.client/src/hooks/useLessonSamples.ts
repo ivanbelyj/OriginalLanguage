@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ILessonSample from "../models/ILessonSample";
 
@@ -14,7 +14,7 @@ export interface IUpdateLessonSample {
   lessonId: string;
 }
 
-export function useLessonSamples() {
+export function useLessonSamples(lessonId: string) {
   const [samplesOfLesson, setSamplesOfLesson] = useState<ILessonSample[]>([]);
 
   async function postLessonSample(
@@ -58,17 +58,35 @@ export function useLessonSamples() {
     });
   }
 
-  async function getLessonSample(id: string): Promise<ILessonSample> {
-    const response = await axios.get<ILessonSample>(
-      import.meta.env.VITE_API_URL + "lesson-samples/" + id
-    );
+  // async function getLessonSample(id: string): Promise<ILessonSample> {
+  //   const response = await axios.get<ILessonSample>(
+  //     import.meta.env.VITE_API_URL + "lesson-samples/" + id
+  //   );
 
-    return response.data;
+  //   return response.data;
+  // }
+
+  async function fetchLessonSamples() {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}lessons/${lessonId}/lesson-samples`
+      );
+      setSamplesOfLesson(response.data);
+    } catch (error) {
+      console.error(
+        "There has been a problem with lesson samples fetch:",
+        error
+      );
+    }
   }
+
+  useEffect(() => {
+    fetchLessonSamples();
+  }, []);
 
   return {
     samplesOfLesson,
-    getLessonSample,
+    // getLessonSample,
     postLessonSample,
     updateLessonSample,
     deleteLessonSample,

@@ -76,6 +76,14 @@ public class LessonsController : ControllerBase
         return Ok();
     }
 
+    [HttpPut("numbers")]
+    public async Task<IActionResult> UpdateLessonNumber(
+        [FromBody] IEnumerable<LessonIdAndNumber> lessonIdsAndNumbers)
+    {
+        await lessonsService.UpdateLessonNumbers(lessonIdsAndNumbers);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLesson([FromRoute] int id)
     {

@@ -86,10 +86,37 @@ public class LessonsService : ILessonsService
         updateLessonModelValidator.Check(model);
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
-        var lesson = dbContext.Lessons.FirstOrDefault(x => x.Id == id)
-            ?? throw new ProcessException($"The lesson (id: {id}) was not found");
+        var lesson = GetLesson(dbContext, id);
 
         dbContext.Lessons.Update(mapper.Map(model, lesson));
         dbContext.SaveChanges();
+    }
+
+    public async Task UpdateLessonNumbers(
+        IEnumerable<LessonIdAndNumber> lessonIdsAndNumbers)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+        foreach (var item in lessonIdsAndNumbers)
+        {
+            UpdateLessonNumber(
+                item.Id,
+                item.Number,
+                dbContext);
+        }
+        dbContext.SaveChanges();
+    }
+
+    private Lesson GetLesson(MainDbContext dbContext, int id) =>
+        dbContext.Lessons.FirstOrDefault(x => x.Id == id)
+            ?? throw new ProcessException($"The lesson (id: {id}) was not found");
+
+    private void UpdateLessonNumber(
+        int lessonId,
+        int lessonNumber,
+        MainDbContext dbContext)
+    {
+        var lesson = GetLesson(dbContext, lessonId);
+        lesson.Number = lessonNumber;
+        dbContext.Lessons.Update(lesson);
     }
 }

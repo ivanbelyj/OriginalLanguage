@@ -8,35 +8,39 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import ILesson from "../../models/ILesson";
 import EditLesson from "./EditLesson";
-import ILessonSample from "../../models/ILessonSample";
-import ISentence from "../../models/ISentence";
+import { useLessons } from "../../hooks/useLessons.ts";
 
 export interface EditLessonsProps {
-  lessons: ILesson[];
-  getLessonSampleById: (id: string) => ILessonSample;
-  getSentenceById: (id: string) => ISentence;
-
-  setLessons: (lessons: ILesson[]) => void;
-  setLessonSampleById: (id: string, lessonSample: ILessonSample) => void;
-  setSentenceById: (id: string, sentence: ISentence) => void;
-
-  handleAddLesson: () => void;
-  handleAddLessonSample: (lessonId: string) => void;
-  handleAddSentence: (lessonSampleId: string) => void;
+  courseId: string;
 }
 
 const EditCourseLessons: React.FC<EditLessonsProps> = ({
-  lessons,
-  getLessonSampleById,
-  getSentenceById,
-  setLessons,
-  setLessonSampleById,
-  setSentenceById,
-  handleAddLesson,
-  handleAddLessonSample,
-  handleAddSentence,
+  courseId,
 }: EditLessonsProps) => {
-  const sortedLessons = lessons.sort((a, b) => a.number - b.number);
+  const { courseLessons, postLesson, updateLessonNumbers } = useLessons(
+    courseId!
+  );
+  // const [editedLessons, setEditedLessons] = useState<ILesson[]>(initialLessons);
+
+  const sortedLessons = courseLessons.sort((a, b) => a.number - b.number);
+
+  // useEffect(() => {
+  //   setEditedLessons(initialLessons);
+  // }, [initialLessons]);
+
+  const handleAddLesson = async () => {
+    if (!courseId) return;
+
+    console.log("Add lesson");
+    await postLesson({
+      courseId: courseId,
+      number:
+        courseLessons.reduce(
+          (acc, lesson) => (lesson.number > acc ? lesson.number : acc),
+          0
+        ) + 1,
+    });
+  };
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -45,21 +49,20 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    const newOrder = items.map((item, index) => {
-      return { ...item, number: index + 1 };
-    });
+    // const newOrder = items.map((item, index) => {
+    //   return { ...item, number: index + 1 };
+    // });
 
-    setLessons(newOrder);
+    updateLessonNumbers(
+      items.map((item, index) => ({ id: item.id, number: index + 1 }))
+    );
+    // setEditedLessons(newOrder);
   };
 
   const ItemRenderer = ({ item, index }: { item: ILesson; index: number }) => {
     return (
       <div style={{ paddingBottom: "1rem", cursor: "move" }}>
-        <EditLesson
-          lesson={item}
-          handleAddLessonSample={() => handleAddLessonSample(item.id)}
-          handleAddSentence={handleAddSentence}
-        />
+        <EditLesson lesson={item} />
       </div>
     );
   };

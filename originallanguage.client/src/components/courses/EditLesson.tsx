@@ -2,26 +2,24 @@ import { Button, Collapse, CollapseProps, List } from "antd";
 import ILesson from "../../models/ILesson";
 import EditLessonSample from "./EditLessonSample";
 import { PlusOutlined } from "@ant-design/icons";
-import { useSamplesOfLesson } from "../../hooks/useSamplesOfLesson";
-import { useEffect } from "react";
-
-const { Panel } = Collapse;
+import {
+  IUpdateLessonSample,
+  useLessonSamples,
+} from "../../hooks/useLessonSamples";
 
 export interface IEditLessonProps {
   lesson: ILesson;
-  handleAddLessonSample: () => void;
-  handleAddSentence: (lessonSampleId: string) => void;
 }
 
-const EditLesson = ({
-  lesson,
-  handleAddLessonSample,
-  handleAddSentence,
-}: IEditLessonProps) => {
-  const { samplesOfLesson } = useSamplesOfLesson(lesson.id);
+const EditLesson = ({ lesson }: IEditLessonProps) => {
+  const { samplesOfLesson, postLessonSample, updateLessonSample } =
+    useLessonSamples(lesson.id);
 
-  const onAddLessonSampleClicked = () => {
-    handleAddLessonSample();
+  const onAddLessonSampleClicked = async () => {
+    await postLessonSample({
+      lessonId: lesson.id,
+      minimalProgressLevel: 0,
+    });
   };
 
   const items: CollapseProps["items"] = [
@@ -36,9 +34,13 @@ const EditLesson = ({
             renderItem={(lessonSample, index) => (
               <List.Item>
                 <EditLessonSample
-                  handleAddSentence={() => handleAddSentence(lessonSample.id)}
                   lessonSample={lessonSample}
-                  title={"Sample " + (index + 1)}
+                  lessonSampleNumber={index + 1}
+                  handleLessonSampleChanged={(
+                    lessonSampleChanged: IUpdateLessonSample
+                  ) => {
+                    updateLessonSample(lessonSample.id, lessonSampleChanged);
+                  }}
                 />
               </List.Item>
             )}

@@ -13,5 +13,6 @@ public interface ILessonsService
     Task<LessonModel> GetLesson(int id);
     Task<LessonModel> AddLesson(AddLessonModel model);
     Task UpdateLesson(int id, UpdateLessonModel model);
+    Task UpdateLessonNumbers(IEnumerable<LessonIdAndNumber> lessonIdsAndNumbers);
     Task DeleteLesson(int id);
 }
