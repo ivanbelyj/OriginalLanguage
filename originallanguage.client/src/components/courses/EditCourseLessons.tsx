@@ -4,6 +4,7 @@ import {
   Droppable,
   Draggable,
   DropResult,
+  DraggableProvidedDragHandleProps,
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
 import ILesson from "../../models/ILesson";
@@ -17,16 +18,10 @@ export interface EditLessonsProps {
 const EditCourseLessons: React.FC<EditLessonsProps> = ({
   courseId,
 }: EditLessonsProps) => {
-  const { courseLessons, postLesson, updateLessonNumbers } = useLessons(
-    courseId!
-  );
-  // const [editedLessons, setEditedLessons] = useState<ILesson[]>(initialLessons);
+  const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
+    useLessons(courseId!);
 
   const sortedLessons = courseLessons.sort((a, b) => a.number - b.number);
-
-  // useEffect(() => {
-  //   setEditedLessons(initialLessons);
-  // }, [initialLessons]);
 
   const handleAddLesson = async () => {
     if (!courseId) return;
@@ -49,20 +44,27 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    // const newOrder = items.map((item, index) => {
-    //   return { ...item, number: index + 1 };
-    // });
-
     updateLessonNumbers(
       items.map((item, index) => ({ id: item.id, number: index + 1 }))
     );
-    // setEditedLessons(newOrder);
   };
 
-  const ItemRenderer = ({ item, index }: { item: ILesson; index: number }) => {
+  const ItemRenderer = ({
+    item,
+    dragHandleProps,
+    index,
+  }: {
+    item: ILesson;
+    index: number;
+    dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  }) => {
     return (
-      <div style={{ paddingBottom: "1rem", cursor: "move" }}>
-        <EditLesson lesson={item} />
+      <div style={{ paddingBottom: "1rem" }}>
+        <EditLesson
+          lesson={item}
+          dragHandleProps={dragHandleProps}
+          onDelete={(id: string) => deleteLesson(id)}
+        />
       </div>
     );
   };
@@ -81,12 +83,12 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
                     index={index}
                   >
                     {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {ItemRenderer({ item, index })}
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        {ItemRenderer({
+                          item,
+                          index,
+                          dragHandleProps: provided.dragHandleProps,
+                        })}
                       </div>
                     )}
                   </Draggable>

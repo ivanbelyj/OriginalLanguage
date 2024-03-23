@@ -1,7 +1,7 @@
-import { Form, Input, Button, Typography, message } from "antd";
+import { Form, Input, Typography, message } from "antd";
 import { useCourses } from "../../hooks/courses";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useJwtToken } from "../../auth/AuthProvider";
 
 const { Title } = Typography;
@@ -23,12 +23,10 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
   const decodedToken = getDecodedToken();
   const userId = decodedToken?.sub;
 
-  // const [course, setCourse] = useState<ICourse>();
-
-  const handleFinish = async (values: any) => {
+  const handleBlur = async () => {
     if (courseId) {
       await updateCourse(courseId, {
-        ...values,
+        ...form.getFieldsValue(),
         authorId: userId,
       });
       messageApi.open({
@@ -43,7 +41,6 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
   useEffect(() => {
     if (courseId) {
       getCourse(courseId).then((course) => {
-        // setCourse(course);
         form.setFieldsValue(course);
       });
     }
@@ -52,7 +49,7 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
   return (
     <>
       {contextHolder}
-      <Form form={form} onFinish={handleFinish}>
+      <Form form={form}>
         <Title level={3}>{courseTitle}</Title>
         <Form.Item
           label="Course title"
@@ -61,12 +58,7 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
             { required: true, message: "Please input the course title!" },
           ]}
         >
-          <Input type="text" placeholder="Course title" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Save
-          </Button>
+          <Input type="text" placeholder="Course title" onBlur={handleBlur} />
         </Form.Item>
       </Form>
     </>

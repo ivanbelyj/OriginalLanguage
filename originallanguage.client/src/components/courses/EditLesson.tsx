@@ -1,19 +1,31 @@
 import { Button, Collapse, CollapseProps, List } from "antd";
 import ILesson from "../../models/ILesson";
 import EditLessonSample from "./EditLessonSample";
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   IUpdateLessonSample,
   useLessonSamples,
 } from "../../hooks/useLessonSamples";
+import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
+import PopconfirmButton from "../common/PopconfirmButton";
 
 export interface IEditLessonProps {
   lesson: ILesson;
+  dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  onDelete: (id: string) => Promise<void>;
 }
 
-const EditLesson = ({ lesson }: IEditLessonProps) => {
-  const { samplesOfLesson, postLessonSample, updateLessonSample } =
-    useLessonSamples(lesson.id);
+const EditLesson = ({
+  lesson,
+  dragHandleProps,
+  onDelete,
+}: IEditLessonProps) => {
+  const {
+    samplesOfLesson,
+    postLessonSample,
+    updateLessonSample,
+    deleteLessonSample,
+  } = useLessonSamples(lesson.id);
 
   const onAddLessonSampleClicked = async () => {
     await postLessonSample({
@@ -25,7 +37,7 @@ const EditLesson = ({ lesson }: IEditLessonProps) => {
   const items: CollapseProps["items"] = [
     {
       key: "1",
-      label: "Lesson " + lesson.number,
+      label: <div {...dragHandleProps}>Lesson {lesson.number}</div>,
       children: (
         <>
           <List
@@ -41,6 +53,7 @@ const EditLesson = ({ lesson }: IEditLessonProps) => {
                   ) => {
                     updateLessonSample(lessonSample.id, lessonSampleChanged);
                   }}
+                  onDelete={(id: string) => deleteLessonSample(id)}
                 />
               </List.Item>
             )}
@@ -48,6 +61,17 @@ const EditLesson = ({ lesson }: IEditLessonProps) => {
           <Button type="primary" onClick={onAddLessonSampleClicked}>
             <PlusOutlined /> Add sample
           </Button>
+          <PopconfirmButton
+            onConfirm={() => onDelete(lesson.id)}
+            buttonProps={{
+              danger: true,
+              type: "text",
+              style: { marginLeft: "1em" },
+              icon: <DeleteOutlined />,
+            }}
+          >
+            Delete lesson
+          </PopconfirmButton>
         </>
       ),
     },

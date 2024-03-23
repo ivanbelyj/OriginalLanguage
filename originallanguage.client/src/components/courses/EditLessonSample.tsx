@@ -1,32 +1,61 @@
 import { Card, Form, Button, InputNumber, Collapse, CollapseProps } from "antd";
 import ILessonSample from "../../models/ILessonSample";
 import EditSentence from "./EditSentence";
-import { PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { IUpdateSentence, useSentences } from "../../hooks/useSentences";
 import "../../styles/common.css";
 import { IUpdateLessonSample } from "../../hooks/useLessonSamples";
+import PopconfirmButton from "../common/PopconfirmButton";
 
 export interface IEditLessonSampleProps {
   lessonSample: ILessonSample;
   lessonSampleNumber: number;
   handleLessonSampleChanged: (updateLessonSample: IUpdateLessonSample) => void;
+  onDelete: (id: string) => Promise<void>;
 }
 
 const EditLessonSample = ({
   lessonSample,
   lessonSampleNumber,
   handleLessonSampleChanged,
+  onDelete,
 }: IEditLessonSampleProps) => {
-  const { lessonSampleSentences, postSentence, updateSentence } = useSentences(
-    lessonSample.id
-  );
+  const {
+    lessonSampleSentences,
+    postSentence,
+    updateSentence,
+    deleteSentence,
+  } = useSentences(lessonSample.id);
 
   const [form] = Form.useForm();
+
+  const onDeleteSentenceClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    console.log("on delete sentence click");
+  };
 
   const items: CollapseProps["items"] = lessonSampleSentences.map(
     (sentence, index) => ({
       key: sentence.id,
-      label: sentence.text ?? `Variant ${index + 1}`,
+      label: (
+        <div>
+          {sentence.text ?? `Variant ${index + 1}`}
+          <PopconfirmButton
+            onConfirm={() => deleteSentence(sentence.id)}
+            buttonProps={{
+              type: "text",
+              size: "small",
+              style: { marginLeft: "1em" },
+              icon: <DeleteOutlined />,
+              onClick: onDeleteSentenceClick,
+            }}
+          >
+            {""}
+          </PopconfirmButton>
+        </div>
+      ),
       children: (
         <EditSentence
           sentence={sentence}
@@ -72,6 +101,17 @@ const EditLessonSample = ({
       <Button type="primary" onClick={handleAddSentence}>
         <PlusOutlined /> Add sentence variant
       </Button>
+      <PopconfirmButton
+        onConfirm={() => onDelete(lessonSample.id)}
+        buttonProps={{
+          danger: true,
+          type: "text",
+          style: { marginLeft: "1em" },
+          icon: <DeleteOutlined />,
+        }}
+      >
+        Delete sample
+      </PopconfirmButton>
     </Card>
   );
 };
