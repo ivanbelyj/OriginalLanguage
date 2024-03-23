@@ -7,9 +7,9 @@ import {
   DraggableProvidedDragHandleProps,
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
-import ILesson from "../../models/ILesson";
+import ILesson from "../../../models/ILesson.ts";
 import EditLesson from "./EditLesson";
-import { useLessons } from "../../hooks/useLessons.ts";
+import { useLessons } from "../../../hooks/useLessons.ts";
 
 export interface EditLessonsProps {
   courseId: string;

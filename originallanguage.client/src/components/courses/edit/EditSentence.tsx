@@ -1,6 +1,6 @@
 import { Form, FormInstance, Input } from "antd";
-import ISentence from "../../models/ISentence";
-import { IUpdateSentence } from "../../hooks/useSentences";
+import ISentence from "../../../models/ISentence";
+import { IUpdateSentence } from "../../../hooks/useSentences";
 
 interface IEditSentenceProps {
   sentence: ISentence;

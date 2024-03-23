@@ -58,6 +58,7 @@
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.RabbitMq\OriginalLanguage.Services.RabbitMq.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Sentences\OriginalLanguage.Services.Sentences.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Settings\OriginalLanguage.Services.Settings.csproj" />
+    <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.TaskGenerator\OriginalLanguage.Services.TaskGenerator.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.UserAccount\OriginalLanguage.Services.UserAccount.csproj" />
     <ProjectReference Include="..\..\..\Shared\OriginalLanguage.Common\OriginalLanguage.Common.csproj" />
     <ProjectReference Include="..\OriginalLanguage.Api.Settings\OriginalLanguage.Api.Settings.csproj" />

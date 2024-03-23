@@ -14,6 +14,7 @@ using OriginalLanguage.Services.EmailSender;
 using OriginalLanguage.Services.RabbitMq;
 using OriginalLanguage.Services.Cache;
 using OriginalLanguage.Services.Actions;
+using OriginalLanguage.Services.TaskGenerator;
 
 public static class Bootstrapper
 {
@@ -33,6 +34,8 @@ public static class Bootstrapper
             .AddLessonProgressesService()
             .AddLessonSamplesService()
             .AddSentencesService()
+
+            .AddTaskGenerator()
             
             .AddActions()
             .AddCacheService()

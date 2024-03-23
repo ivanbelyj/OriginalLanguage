@@ -1,13 +1,13 @@
 import { Button, Collapse, CollapseProps, List } from "antd";
-import ILesson from "../../models/ILesson";
+import ILesson from "../../../models/ILesson";
 import EditLessonSample from "./EditLessonSample";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   IUpdateLessonSample,
   useLessonSamples,
-} from "../../hooks/useLessonSamples";
+} from "../../../hooks/useLessonSamples";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
-import PopconfirmButton from "../common/PopconfirmButton";
+import PopconfirmButton from "../../common/PopconfirmButton";
 
 export interface IEditLessonProps {
   lesson: ILesson;

@@ -6,6 +6,7 @@ using OriginalLanguage.Common.Responses;
 using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.Lessons.Models;
 using OriginalLanguage.Services.LessonSamples;
+using OriginalLanguage.Services.TaskGenerator;
 
 namespace OriginalLanguage.Api.Controllers.Lessons;
 
@@ -22,13 +23,18 @@ public class LessonsController : ControllerBase
 {
     private readonly ILessonsService lessonsService;
     private readonly ILessonSamplesService lessonSamplesService;
+    private readonly ITaskGenerator taskGenerator;
     private readonly IMapper mapper;
-    public LessonsController(IMapper mapper,
+
+    public LessonsController(
+        IMapper mapper,
         ILessonsService lessonsService,
-        ILessonSamplesService lessonSamplesService)
+        ILessonSamplesService lessonSamplesService,
+        ITaskGenerator taskGenerator)
     {
         this.lessonsService = lessonsService;
         this.lessonSamplesService = lessonSamplesService;
+        this.taskGenerator = taskGenerator;
         this.mapper = mapper;
     }
 
@@ -89,5 +95,14 @@ public class LessonsController : ControllerBase
     {
         await lessonsService.DeleteLesson(id);
         return Ok();
+    }
+
+    [HttpGet("{id}/generate-tasks")]
+    [ProducesResponseType(typeof(IEnumerable<LessonTask>), 200)]
+    public async Task<IEnumerable<LessonTask>> GenerateLessons(
+        [FromRoute] int id)
+    {
+        // Todo: get user`s progress level and pass it
+        return await taskGenerator.GenerateLessonTasks(id, 10);
     }
 }

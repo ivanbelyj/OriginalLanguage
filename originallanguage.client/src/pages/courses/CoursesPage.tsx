@@ -1,12 +1,14 @@
 import React from "react";
 
-import { useCourses } from "../hooks/courses";
+import { useCourses } from "../../hooks/courses";
 import { Card, List } from "antd";
 import Title from "antd/es/typography/Title";
-import { CourseCard } from "../components/courses/CourseCard";
+import { CourseCard } from "../../components/courses/CourseCard";
+import ICourse from "../../models/ICourse";
 
 const CoursesPage: React.FC = () => {
   const { courses } = useCourses();
+  console.log("courses", courses);
 
   return (
     <Card>
@@ -15,7 +17,7 @@ const CoursesPage: React.FC = () => {
         itemLayout="vertical"
         // pagination={{ pageSize: 5 }}
         dataSource={courses}
-        renderItem={(course) => (
+        renderItem={(course: ICourse) => (
           <List.Item>
             <CourseCard course={course} />
           </List.Item>

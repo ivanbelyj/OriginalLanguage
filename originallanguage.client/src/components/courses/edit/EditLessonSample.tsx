@@ -1,11 +1,11 @@
 import { Card, Form, Button, InputNumber, Collapse, CollapseProps } from "antd";
-import ILessonSample from "../../models/ILessonSample";
+import ILessonSample from "../../../models/ILessonSample";
 import EditSentence from "./EditSentence";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { IUpdateSentence, useSentences } from "../../hooks/useSentences";
-import "../../styles/common.css";
-import { IUpdateLessonSample } from "../../hooks/useLessonSamples";
-import PopconfirmButton from "../common/PopconfirmButton";
+import { IUpdateSentence, useSentences } from "../../../hooks/useSentences";
+import "../../../styles/common.css";
+import { IUpdateLessonSample } from "../../../hooks/useLessonSamples";
+import PopconfirmButton from "../../common/PopconfirmButton";
 
 export interface IEditLessonSampleProps {
   lessonSample: ILessonSample;

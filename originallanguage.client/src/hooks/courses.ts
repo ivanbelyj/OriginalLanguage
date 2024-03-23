@@ -60,18 +60,26 @@ export function useCourses() {
     });
   }
 
-  function fetchCourses() {
-    fetch(import.meta.env.VITE_API_URL + "courses")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+  async function fetchCourses() {
+    try {
+      const response = await axios.get(
+        import.meta.env.VITE_API_URL + "courses",
+        {
+          params: {
+            limit: 100,
+          },
         }
-        return response.json();
-      })
-      .then((data) => setCourses(data))
-      .catch((error) => {
-        console.error("There has been a problem with courses fetch:", error);
-      });
+      );
+
+      setCourses(
+        response.data.map((x: ICourse) => ({
+          ...x,
+          dateTimeAdded: new Date(x.dateTimeAdded),
+        }))
+      );
+    } catch (error) {
+      console.error("There has been a problem with courses fetch:", error);
+    }
   }
 
   async function getCourse(id: string): Promise<ICourse> {
@@ -79,11 +87,13 @@ export function useCourses() {
       import.meta.env.VITE_API_URL + "courses/" + id
     );
 
-    return {
-      ...response.data,
-      dateTimeAdded: new Date(response.data.dateTimeAdded),
-      // dateTimeUpdated: new Date(response.data.dateTimeUpdated),
-    };
+    return response.data;
+
+    // return {
+    //   ...response.data,
+    //   dateTimeAdded: new Date(response.data.dateTimeAdded),
+    //   // dateTimeUpdated: new Date(response.data.dateTimeUpdated),
+    // };
   }
 
   useEffect(() => {

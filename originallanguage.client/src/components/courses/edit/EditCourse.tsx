@@ -1,8 +1,8 @@
-import { Form, Input, Typography, message } from "antd";
-import { useCourses } from "../../hooks/courses";
+import { Form, Input, Typography } from "antd";
+import { useCourses } from "../../../hooks/courses";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useJwtToken } from "../../auth/AuthProvider";
+import { useJwtToken } from "../../../auth/AuthProvider";
 
 const { Title } = Typography;
 
@@ -14,7 +14,6 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
   const [form] = Form.useForm();
   const courseTitle = Form.useWatch("title", form);
   const { id: courseId } = useParams();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const { updateCourse, getCourse } = useCourses();
 
@@ -28,10 +27,6 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
       await updateCourse(courseId, {
         ...form.getFieldsValue(),
         authorId: userId,
-      });
-      messageApi.open({
-        type: "success",
-        content: "Course is saved",
       });
     }
 
@@ -48,7 +43,6 @@ export default function EditCourse({ saveCourse }: IEditCourseProps) {
 
   return (
     <>
-      {contextHolder}
       <Form form={form}>
         <Title level={3}>{courseTitle}</Title>
         <Form.Item
