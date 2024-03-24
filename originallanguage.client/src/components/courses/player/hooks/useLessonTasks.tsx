@@ -1,8 +1,9 @@
 import axios from "axios";
 import { ITask, ITaskAnswer } from "../lesson-player-models";
 
-export interface ICheckAnswerResponse {
+export interface ICheckAnswerResult {
   isCorrect: boolean;
+  correctAnswer: ITaskAnswer;
 }
 
 export interface ICompleteLessonResponse {}
@@ -19,15 +20,20 @@ async function generateLessonTasks(lessonId: string): Promise<ITask[]> {
   }
 }
 
-export function useLessonTasks(lessonId: string) {
-  async function checkAnswer(
-    answer: ITaskAnswer
-  ): Promise<ICheckAnswerResponse> {
+axios.interceptors.request.use((req) => {
+  console.log(req);
+  return req;
+});
+
+export function useLessonTasks() {
+  async function checkAnswer(answer: ITaskAnswer): Promise<ICheckAnswerResult> {
     try {
+      console.log("checking ", answer);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}lessons/${lessonId}/check-answer`,
+        `${import.meta.env.VITE_API_URL}lessons/check-task-answer`,
         answer
       );
+      console.log("check answer response", response);
       return response.data;
     } catch (err) {
       console.error(err);

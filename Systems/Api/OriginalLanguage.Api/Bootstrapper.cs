@@ -15,6 +15,7 @@ using OriginalLanguage.Services.RabbitMq;
 using OriginalLanguage.Services.Cache;
 using OriginalLanguage.Services.Actions;
 using OriginalLanguage.Services.TaskGenerator;
+using OriginalLanguage.Services.TaskAnswerChecker;
 
 public static class Bootstrapper
 {
@@ -36,6 +37,7 @@ public static class Bootstrapper
             .AddSentencesService()
 
             .AddTaskGenerator()
+            .AddTaskAnswerChecker()
             
             .AddActions()
             .AddCacheService()

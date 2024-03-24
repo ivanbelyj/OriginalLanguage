@@ -2,7 +2,7 @@ import { TaskType } from "./TaskType";
 
 export interface ITask {
   lessonSampleId: string;
-  sentence: string;
+  question: string;
   taskType: TaskType;
 }
 

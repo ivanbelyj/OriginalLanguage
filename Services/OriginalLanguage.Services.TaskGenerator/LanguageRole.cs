@@ -11,7 +11,7 @@ namespace OriginalLanguage.Services.TaskGenerator;
 /// A sentence on the target language is called <b>text</b>
 /// and a sentence on the source language is called <b>translation</b>
 /// </summary>
-internal enum LanguageRole
+public enum LanguageRole
 {
     Source,
     Target

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.TaskGenerator;
-internal class TaskTypeUtils
+public class TaskTypeUtils
 {
-    public static LanguageRole GetTaskSentenceLanguageRole(TaskType taskType)
+    public static LanguageRole GetQuestionLanguageRole(TaskType taskType)
     {
         return taskType switch
         {
@@ -22,6 +22,9 @@ internal class TaskTypeUtils
             _ => throw new NotImplementedException("Not supported task type")
         };
     }
+
+    public static bool IsQuestionLanguageHasTargetRole(TaskType taskType)
+        => GetQuestionLanguageRole(taskType) == LanguageRole.Target;
 
     public static TaskType GetRandomTaskTypeByProgressLevel(
         int progressLevel,

@@ -9,6 +9,6 @@ namespace OriginalLanguage.Services.TaskGenerator;
 public class LessonTask
 {
     public int LessonSampleId { get; set; }
-    public string Sentence { get; set; }
+    public string Question { get; set; }
     public TaskType TaskType { get; set; }
 }

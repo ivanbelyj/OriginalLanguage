@@ -7,6 +7,8 @@ using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.Lessons.Models;
 using OriginalLanguage.Services.LessonSamples;
 using OriginalLanguage.Services.TaskGenerator;
+using OriginalLanguage.Services.TaskAnswerChecker.Models;
+using OriginalLanguage.Services.TaskAnswerChecker;
 
 namespace OriginalLanguage.Api.Controllers.Lessons;
 
@@ -24,17 +26,20 @@ public class LessonsController : ControllerBase
     private readonly ILessonsService lessonsService;
     private readonly ILessonSamplesService lessonSamplesService;
     private readonly ITaskGenerator taskGenerator;
+    private readonly ITaskAnswerChecker taskAnswerChecker;
     private readonly IMapper mapper;
 
     public LessonsController(
         IMapper mapper,
         ILessonsService lessonsService,
         ILessonSamplesService lessonSamplesService,
-        ITaskGenerator taskGenerator)
+        ITaskGenerator taskGenerator,
+        ITaskAnswerChecker taskAnswerChecker)
     {
         this.lessonsService = lessonsService;
         this.lessonSamplesService = lessonSamplesService;
         this.taskGenerator = taskGenerator;
+        this.taskAnswerChecker = taskAnswerChecker;
         this.mapper = mapper;
     }
 
@@ -104,5 +109,13 @@ public class LessonsController : ControllerBase
     {
         // Todo: get user`s progress level and pass it
         return await taskGenerator.GenerateLessonTasks(id, 10);
+    }
+
+    [HttpPost("check-task-answer")]
+    [ProducesResponseType(typeof(CheckAnswerResult), 200)]
+    public async Task<CheckAnswerResult> CheckTaskAnswer(
+        [FromBody] TaskAnswer answer)
+    {
+        return await taskAnswerChecker.Check(answer);
     }
 }

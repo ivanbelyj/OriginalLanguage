@@ -102,7 +102,7 @@ public class TaskGenerator : ITaskGenerator
         TaskType taskType = TaskTypeUtils
             .GetRandomTaskTypeByProgressLevel(progressLevel);
         bool isSentenceLanguageHasTargetRole = TaskTypeUtils
-            .GetTaskSentenceLanguageRole(taskType) == LanguageRole.Target;
+            .IsQuestionLanguageHasTargetRole(taskType);
             
         string? sentence = await GetTaskSentenceByLessonSample(
             lessonSampleModel,
@@ -110,7 +110,7 @@ public class TaskGenerator : ITaskGenerator
         return sentence == null ? null : new LessonTask()
         {
             LessonSampleId = lessonSampleModel.Id,
-            Sentence = sentence,
+            Question = sentence,
             TaskType = taskType
         };
     }
@@ -119,15 +119,11 @@ public class TaskGenerator : ITaskGenerator
         LessonSampleModel sample,
         bool isSentenceLanguageHasTargetRole)
     {
-        var sampleSentences = await sentencesService
-            .GetLessonSampleSentences(sample.Id);
-        if (sampleSentences.Count() == 0)
+        var sentence = await sentencesService
+            .TryGetMainSentenceVariantOrFirst(sample);
+        if (sentence == null)
             return null;
-            
-        var sentence = sample.MainSentenceVariantId == null
-            ? sampleSentences.ElementAt(0)
-            : await sentencesService
-                .GetSentence(sample.MainSentenceVariantId.Value);
+
         return isSentenceLanguageHasTargetRole
             ? sentence.Text
             : sentence.Transcription;

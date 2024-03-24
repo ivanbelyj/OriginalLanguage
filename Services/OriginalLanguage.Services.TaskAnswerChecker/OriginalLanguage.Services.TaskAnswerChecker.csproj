@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OriginalLanguage.Services.TaskGenerator\OriginalLanguage.Services.TaskGenerator.csproj" />
+  </ItemGroup>
+
 </Project>

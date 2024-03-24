@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\OriginalLanguage.Context.Entities\OriginalLanguage.Context.Entities.csproj" />
     <ProjectReference Include="..\..\Data\OriginalLanguage.Context\OriginalLanguage.Context.csproj" />
+    <ProjectReference Include="..\OriginalLanguage.Services.LessonSamples\OriginalLanguage.Services.LessonSamples.csproj" />
   </ItemGroup>
 
 </Project>
