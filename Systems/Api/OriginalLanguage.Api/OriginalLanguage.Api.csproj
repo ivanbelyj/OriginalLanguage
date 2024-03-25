@@ -52,6 +52,7 @@
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Chats\OriginalLanguage.Services.Chats.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Courses\OriginalLanguage.Services.Courses.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Languages\OriginalLanguage.Services.Languages.csproj" />
+    <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.LessonCompletion\OriginalLanguage.Services.LessonCompletion.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.LessonProgresses\OriginalLanguage.Services.LessonProgresses.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.LessonSamples\OriginalLanguage.Services.LessonSamples.csproj" />
     <ProjectReference Include="..\..\..\Services\OriginalLanguage.Services.Lessons\OriginalLanguage.Services.Lessons.csproj" />

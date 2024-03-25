@@ -20,5 +20,6 @@ public class LessonProgressModelProfile : Profile
     public LessonProgressModelProfile()
     {
         CreateMap<LessonProgress, LessonProgressModel>();
+        CreateMap<LessonProgressModel, UpdateLessonProgressModel>();
     }
 }

@@ -14,4 +14,5 @@ public interface ILessonProgressesService
     Task<LessonProgressModel> AddLessonProgress(AddLessonProgressModel model);
     Task UpdateLessonProgress(int id, UpdateLessonProgressModel model);
     Task DeleteLessonProgress(int id);
+    Task TryIncrementLessonProgress(int id);
 }

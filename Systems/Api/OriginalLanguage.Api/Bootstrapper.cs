@@ -16,6 +16,7 @@ using OriginalLanguage.Services.Cache;
 using OriginalLanguage.Services.Actions;
 using OriginalLanguage.Services.TaskGenerator;
 using OriginalLanguage.Services.TaskAnswerChecker;
+using OriginalLanguage.Services.LessonCompletion;
 
 public static class Bootstrapper
 {
@@ -38,6 +39,7 @@ public static class Bootstrapper
 
             .AddTaskGenerator()
             .AddTaskAnswerChecker()
+            .AddLessonCompletionService()
             
             .AddActions()
             .AddCacheService()

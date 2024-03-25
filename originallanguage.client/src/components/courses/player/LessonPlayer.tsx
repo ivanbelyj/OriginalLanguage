@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLessonTasks } from "./hooks/useLessonTasks";
 import { ITask, ITaskAnswer } from "./lesson-player-models";
 import { Input, Button, Alert, Typography } from "antd";
+import ComposeElements from "./tasks/ComposeElements";
 
 const { Paragraph } = Typography;
 
@@ -38,15 +39,22 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
       setCurrentTaskIndex(currentTaskIndex + 1);
     } else {
       console.log("complete lesson");
-      completeLesson(lessonId, answers);
+      completeLesson(lessonId, answers).then((lessonCompletionResult) => {
+        console.log(lessonCompletionResult);
+      });
     }
   };
 
-  const handleNextButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-    handleCheckAnswer(currentAnswer).then(() => {
+  const handleButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    if (isAnswerCorrect === null) {
+      // Check answer
+      handleCheckAnswer(currentAnswer).then(() => {});
+    } else {
+      // Move next
       handleNextTask();
       setCurrentAnswer("");
-    });
+      setIsAnswerCorrect(null);
+    }
   };
 
   console.log("task", tasks[currentTaskIndex]);
@@ -66,6 +74,10 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
         />
       </Paragraph>
 
+      <Paragraph>
+        <ComposeElements />
+      </Paragraph>
+
       {isAnswerCorrect !== null && (
         <Paragraph>
           <Alert
@@ -80,9 +92,9 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
         <Button
           type="primary"
           style={{ marginTop: 16 }}
-          onClick={handleNextButtonClick}
+          onClick={handleButtonClick}
         >
-          Next
+          {isAnswerCorrect === null ? "Check" : "Next"}
         </Button>
       </Paragraph>
     </div>

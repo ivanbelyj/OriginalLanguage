@@ -6,7 +6,9 @@ export interface ICheckAnswerResult {
   correctAnswer: ITaskAnswer;
 }
 
-export interface ICompleteLessonResponse {}
+export interface ILessonCompletionResult {
+  isSucceeded: boolean;
+}
 
 async function generateLessonTasks(lessonId: string): Promise<ITask[]> {
   try {
@@ -44,7 +46,7 @@ export function useLessonTasks() {
   async function completeLesson(
     lessonId: string,
     answers: ITaskAnswer[]
-  ): Promise<ICompleteLessonResponse> {
+  ): Promise<ILessonCompletionResult> {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}lessons/${lessonId}/complete`,

@@ -73,9 +73,11 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "originallanguage.client", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.Chats", "Services\OriginalLanguage.Services.Chats\OriginalLanguage.Services.Chats.csproj", "{E94BE5AB-BC46-457E-B6E1-7EF0726AEFB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.TaskGenerator", "Services\OriginalLanguage.Services.TaskGenerator\OriginalLanguage.Services.TaskGenerator.csproj", "{C9C26205-58E1-43F7-AE07-70C2F30C9B8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.TaskGenerator", "Services\OriginalLanguage.Services.TaskGenerator\OriginalLanguage.Services.TaskGenerator.csproj", "{C9C26205-58E1-43F7-AE07-70C2F30C9B8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriginalLanguage.Services.TaskAnswerChecker", "Services\OriginalLanguage.Services.TaskAnswerChecker\OriginalLanguage.Services.TaskAnswerChecker.csproj", "{53AE28B9-940C-497D-B0FE-13C99BBFDF22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.TaskAnswerChecker", "Services\OriginalLanguage.Services.TaskAnswerChecker\OriginalLanguage.Services.TaskAnswerChecker.csproj", "{53AE28B9-940C-497D-B0FE-13C99BBFDF22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OriginalLanguage.Services.LessonCompletion", "Services\OriginalLanguage.Services.LessonCompletion\OriginalLanguage.Services.LessonCompletion.csproj", "{547377EE-134D-416B-86DA-6141D5223163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -201,6 +203,10 @@ Global
 		{53AE28B9-940C-497D-B0FE-13C99BBFDF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53AE28B9-940C-497D-B0FE-13C99BBFDF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53AE28B9-940C-497D-B0FE-13C99BBFDF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{547377EE-134D-416B-86DA-6141D5223163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{547377EE-134D-416B-86DA-6141D5223163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{547377EE-134D-416B-86DA-6141D5223163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{547377EE-134D-416B-86DA-6141D5223163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +243,7 @@ Global
 		{E94BE5AB-BC46-457E-B6E1-7EF0726AEFB4} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 		{C9C26205-58E1-43F7-AE07-70C2F30C9B8E} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 		{53AE28B9-940C-497D-B0FE-13C99BBFDF22} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
+		{547377EE-134D-416B-86DA-6141D5223163} = {CF03AA21-2B36-4309-BD91-ABE340A81047}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E569FD64-91AF-46F9-909C-127A3B963F11}

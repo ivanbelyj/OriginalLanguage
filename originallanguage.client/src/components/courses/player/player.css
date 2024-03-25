@@ -1,0 +1,14 @@
+.element-area {
+  display: flex;
+  align-items: flex-start;
+
+  background-color: #aaa;
+}
+
+.sentence-element {
+  padding: 0.5em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}

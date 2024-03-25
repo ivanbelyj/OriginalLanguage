@@ -82,4 +82,16 @@ public class LessonProgressesService : ILessonProgressesService
         dbContext.LessonProgresses.Update(mapper.Map(model, lessonProg));
         dbContext.SaveChanges();
     }
+
+    public async Task TryIncrementLessonProgress(int id)
+    {
+        var lessonProgress = await GetLessonProgress(id);
+
+        var updateModel = mapper.Map<UpdateLessonProgressModel>(lessonProgress);
+        updateModel.ProgressLevel++;
+        if (updateModel.ProgressLevel > Constants.MaxProgressLevel)
+            return;
+
+        await UpdateLessonProgress(id, updateModel);
+    }
 }

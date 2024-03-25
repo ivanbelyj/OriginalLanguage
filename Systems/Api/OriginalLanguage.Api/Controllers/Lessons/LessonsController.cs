@@ -9,6 +9,7 @@ using OriginalLanguage.Services.LessonSamples;
 using OriginalLanguage.Services.TaskGenerator;
 using OriginalLanguage.Services.TaskAnswerChecker.Models;
 using OriginalLanguage.Services.TaskAnswerChecker;
+using OriginalLanguage.Services.LessonCompletion;
 
 namespace OriginalLanguage.Api.Controllers.Lessons;
 
@@ -27,6 +28,7 @@ public class LessonsController : ControllerBase
     private readonly ILessonSamplesService lessonSamplesService;
     private readonly ITaskGenerator taskGenerator;
     private readonly ITaskAnswerChecker taskAnswerChecker;
+    private readonly ILessonCompletionService lessonCompletionService;
     private readonly IMapper mapper;
 
     public LessonsController(
@@ -34,12 +36,14 @@ public class LessonsController : ControllerBase
         ILessonsService lessonsService,
         ILessonSamplesService lessonSamplesService,
         ITaskGenerator taskGenerator,
-        ITaskAnswerChecker taskAnswerChecker)
+        ITaskAnswerChecker taskAnswerChecker,
+        ILessonCompletionService lessonCompletionService)
     {
         this.lessonsService = lessonsService;
         this.lessonSamplesService = lessonSamplesService;
         this.taskGenerator = taskGenerator;
         this.taskAnswerChecker = taskAnswerChecker;
+        this.lessonCompletionService = lessonCompletionService;
         this.mapper = mapper;
     }
 
@@ -117,5 +121,14 @@ public class LessonsController : ControllerBase
         [FromBody] TaskAnswer answer)
     {
         return await taskAnswerChecker.Check(answer);
+    }
+
+    [HttpPost("{id}/complete")]
+    [ProducesResponseType(typeof(LessonCompletionResult), 200)]
+    public async Task<LessonCompletionResult> CheckTaskAnswer(
+        [FromRoute] int lessonId,
+        [FromBody] IEnumerable<TaskAnswer> answers)
+    {
+        return await lessonCompletionService.TryCompleteLesson(lessonId, answers);
     }
 }

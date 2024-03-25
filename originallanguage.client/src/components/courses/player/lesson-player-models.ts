@@ -1,4 +1,4 @@
-import { TaskType } from "./TaskType";
+import { TaskType } from "./tasks/TaskType";
 
 export interface ITask {
   lessonSampleId: string;
