@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import MessageForm from "./MessageForm";
 import { useSignalR } from "../SignalRContext";
-import "./styles/Chat.css";
 import { useChatMessages } from "../hooks/useChatMessages";
 import MessageList from "./MessageList";
+import "../chats.css";
 
 interface ChatProps {
   groupId?: string;
@@ -28,7 +28,6 @@ const Chat: React.FC<ChatProps> = ({ groupId }: ChatProps) => {
     <div className="chat">
       <MessageList
         messages={messages}
-        isLoading={isLoading}
         loadOlderMessages={loadOlderMessages}
         hasMoreMessages={hasMoreMessages}
       />

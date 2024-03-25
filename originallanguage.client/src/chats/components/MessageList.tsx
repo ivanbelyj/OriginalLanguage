@@ -3,7 +3,6 @@ import IMessage from "../models/IMessage";
 import MessageItem from "./MessageItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Divider, Skeleton } from "antd";
-import "./styles/MessageList.css";
 
 interface MessageListProps {
   messages: IMessage[];
@@ -16,7 +15,6 @@ const MessageList: React.FC<MessageListProps> = ({
   loadOlderMessages,
   hasMoreMessages,
 }) => {
-  console.log("messages passed to message list", messages);
   const loadMore = () => {
     loadOlderMessages();
   };

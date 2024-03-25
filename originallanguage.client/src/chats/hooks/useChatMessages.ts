@@ -18,11 +18,9 @@ export function useChatMessages(groupId: string) {
       console.log("Connection state: ", connection.state);
 
       connection.on("ReceiveMessage", (message: IMessage) => {
-        console.log("Receive message!", message);
         if (message.groupId == groupId) {
           addMessages([message]);
         } else {
-          console.log("Message is from another group");
         }
       });
 
@@ -58,7 +56,7 @@ export function useChatMessages(groupId: string) {
       message.dateTime = new Date(message.dateTime);
       return message;
     });
-    console.log("newMessagesToSet", newMessagesToSet);
+
     setMessages((prevMessages) =>
       [...newMessagesToSet, ...prevMessages].sort(
         (m1, m2) => m1.dateTime.getTime() - m2.dateTime.getTime()
@@ -73,10 +71,7 @@ export function useChatMessages(groupId: string) {
     );
     if (oldestMessage) {
       setOldestMessageId(oldestMessage.id);
-      console.log("oldestMessageId", oldestMessageId);
     }
-
-    console.log("messages: ", messages);
   }, [messages]);
 
   const loadOlderMessages = async () => {

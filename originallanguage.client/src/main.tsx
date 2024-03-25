@@ -1,11 +1,10 @@
 import ReactDOM from "react-dom/client";
-// import "./index.css";
 
-import "antd/dist/reset.css";
 import AuthProvider from "./auth/AuthProvider.tsx";
 import App from "./App.tsx";
 import { SignalRProvider } from "./chats/SignalRContext.tsx";
-// import "antd/dist/antd.css";
+
+import "antd/dist/reset.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>

@@ -1,7 +1,6 @@
 import React from "react";
 import { List, Avatar } from "antd";
 import IMessage from "../models/IMessage";
-import "./styles/MessageItem.css";
 
 interface MessageItemProps {
   message: IMessage;
