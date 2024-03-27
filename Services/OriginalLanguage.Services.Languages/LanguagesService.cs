@@ -104,13 +104,15 @@ public class LanguagesService : ILanguagesService
 
     public async Task<IEnumerable<LanguageModel>> GetLanguagesFiltered(
         LanguagesFilterModel languagesFilterModel,
-        int offset = 0, int limit = 10)
+        int offset = 0,
+        int limit = 10)
     {
         return await GetLanguages(lang => ApplyFilter(lang, languagesFilterModel),
             offset, limit);
     }
 
-    private IQueryable<Language> ApplyFilter(IQueryable<Language> languages,
+    private IQueryable<Language> ApplyFilter(
+        IQueryable<Language> languages,
         LanguagesFilterModel filter)
     {
         var res = languages;

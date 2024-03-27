@@ -21,11 +21,11 @@ public static class AppClients
                 AccessTokenLifetime = 3600, // 1 hour
 
                 AllowedScopes = {
-                    AppScopes.ArticlesRead,
-                    AppScopes.ArticlesWrite,
+                    
+                    AppScopes.CoursesLearn,
+                    AppScopes.ContentWrite,
                 }
-            }
-            ,
+            },
             new Client
             {
                 ClientId = "frontend",
@@ -47,8 +47,8 @@ public static class AppClients
                 SlidingRefreshTokenLifetime = 1296000, // 15 days
 
                 AllowedScopes = {
-                    AppScopes.ArticlesRead,
-                    AppScopes.ArticlesWrite,
+                    AppScopes.CoursesLearn,
+                    AppScopes.ContentWrite,
                 }
             }
         };

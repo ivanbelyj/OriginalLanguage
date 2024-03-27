@@ -2,6 +2,6 @@
 
 public static class AppScopes
 {
-    public const string ArticlesRead = "articles_read";
-    public const string ArticlesWrite = "articles_write";
+    public const string ContentWrite = "content_write";
+    public const string CoursesLearn = "courses_learn";
 }

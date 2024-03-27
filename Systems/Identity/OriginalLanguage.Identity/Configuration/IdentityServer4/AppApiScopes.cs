@@ -7,9 +7,9 @@ public static class AppApiScopes
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope(AppScopes.ArticlesRead,
-                "Access to articles API - Read data"),
-            new ApiScope(AppScopes.ArticlesWrite,
-                "Access to articles API - Write data")
+            new ApiScope(AppScopes.ContentWrite,
+                "Access to API - Write content"),
+            new ApiScope(AppScopes.CoursesLearn,
+                "Access to API - Read courses and write learning data")
         };
 }

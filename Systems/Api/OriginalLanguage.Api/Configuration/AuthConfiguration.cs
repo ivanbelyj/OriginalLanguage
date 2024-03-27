@@ -7,6 +7,10 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.IdentityModel.Tokens;
 using OriginalLanguage.Context.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using OriginalLanguage.Api.ResourceBasedAuth;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using OriginalLanguage.Api.Auth;
 
 namespace OriginalLanguage.Api.Configuration;
 
@@ -55,32 +59,30 @@ public static class AuthConfiguration
                     ClockSkew = TimeSpan.Zero
                 };
                 options.Audience = "api";
-
-                //options.Events = new JwtBearerEvents()
-                //{
-                //    OnMessageReceived = context =>
-                //    {
-                //        var accessToken = context.Request.Query["access_token"];
-
-                //        // If the request is for our hub...
-                //        var path = context.HttpContext.Request.Path;
-                //        if (!string.IsNullOrEmpty(accessToken) &&
-                //            (path.StartsWithSegments("/chat")))
-                //        {
-                //            context.Token = accessToken;
-                //        }
-                //        return Task.CompletedTask;
-                //    }
-                //};
             });
 
         services.AddAuthorization(options =>
         {
-            options.AddPolicy(AppScopes.ArticlesRead,
-                policy => policy.RequireClaim("scope", AppScopes.ArticlesRead));
-            options.AddPolicy(AppScopes.ArticlesWrite,
-                policy => policy.RequireClaim("scope", AppScopes.ArticlesWrite));
+            options.AddPolicy(AppScopes.CoursesLearn,
+                policy => {
+                    policy.Requirements.Add(new ClaimsAuthorizationRequirement(
+                        "scope",
+                        new List<string> { AppScopes.ContentWrite }));
+                });
+            options.AddPolicy(AppScopes.ContentWrite,
+                policy => {
+                    policy.Requirements.Add(new ClaimsAuthorizationRequirement(
+                        "scope",
+                        new List<string> { AppScopes.ContentWrite }));
+                });
+            options.AddPolicy(AuthConstants.OwnsResourcePolicy,
+                policy =>
+                {
+                    policy.Requirements.Add(new OwnsResourceRequirement());
+                });
         });
+
+        services.AddSingleton<IAuthorizationHandler, OwnsResourceHandler>();
 
         return services;
     }

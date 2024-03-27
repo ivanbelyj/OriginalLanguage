@@ -49,7 +49,7 @@ DbSeeder.SeedDb(app.Services, true);
 // Configure the HTTP request pipeline.
 app.UseAppCors();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.UseChatsService();
 

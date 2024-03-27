@@ -4,7 +4,7 @@ using OriginalLanguage.Common.Responses;
 using OriginalLanguage.Services.Chats;
 using OriginalLanguage.Services.Chats.Models;
 
-namespace OriginalLanguage.Api.ChatMessages;
+namespace OriginalLanguage.Api.Controllers.ChatMessages;
 
 [ProducesResponseType(typeof(ErrorResponse), 400)]
 [Route("api/v{version:apiVersion}/chat-messages")]

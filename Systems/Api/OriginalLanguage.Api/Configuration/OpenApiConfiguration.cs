@@ -63,8 +63,8 @@ public static class OpenApiConfiguration
                         TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
                         Scopes = new Dictionary<string, string>
                         {
-                            { AppScopes.ArticlesRead, "ArticlesRead" },
-                            { AppScopes.ArticlesWrite, "ArticlesWrite" }
+                            { AppScopes.CoursesLearn, "CoursesLearn" },
+                            { AppScopes.ContentWrite, "ContentWrite" }
                         }
                     }
                 }

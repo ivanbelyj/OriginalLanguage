@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Languages.Models;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Consts;
+using OriginalLanguage.Context.Entities;
 using OriginalLanguage.Services.Languages;
 using OriginalLanguage.Services.Languages.Models;
 
@@ -16,12 +20,16 @@ namespace OriginalLanguage.Api.Controllers.Languages;
 [Route("api/v{version:apiVersion}/languages")]
 [ApiController]
 [ApiVersion("1.0")]
-public class LanguagesController : ControllerBase
+public class LanguagesController : AppController
 {
     private readonly ILanguagesService languageService;
     private readonly IMapper mapper;
-
-    public LanguagesController(ILanguagesService languageService, IMapper mapper)
+    
+    public LanguagesController(
+        ILanguagesService languageService,
+        IMapper mapper,
+        IAuthorizationService authorizationService)
+        : base(authorizationService)
     {
         this.languageService = languageService;
         this.mapper = mapper;
@@ -56,27 +64,50 @@ public class LanguagesController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<LanguageResponse> AddLanguage(
+    [Authorize(AppScopes.ContentWrite)]
+    public async Task<IActionResult> AddLanguage(
         [FromBody] AddLanguageRequest request)
     {
+        var res = await ForbidNotOwnedResource(request.AuthorId.ToString());
+        if (res != null)
+            return res;
+
         var languageModel = await languageService
             .AddLanguage(mapper.Map<AddLanguageModel>(request));
-        return mapper.Map<LanguageResponse>(languageModel);
+        return Ok(mapper.Map<LanguageResponse>(languageModel));
     }
 
     [HttpPut("{id}")]
+    [Authorize(AppScopes.ContentWrite)]
     public async Task<IActionResult> UpdateLanguage([FromRoute] int id,
         [FromBody] UpdateLanguageRequest request)
     {
+        var res = await ForbidExistingNotOwnedLanguage(id);
+        if (res != null)
+            return res;
+
         await languageService.UpdateLanguage(id,
             mapper.Map<UpdateLanguageModel>(request));
         return Ok();
     }
 
     [HttpDelete("{id}")]
+    [Authorize(AppScopes.ContentWrite)]
     public async Task<IActionResult> DeleteLanguage([FromRoute] int id)
     {
+        var res = await ForbidExistingNotOwnedLanguage(id);
+        if (res != null)
+            return res;
+
         await languageService.DeleteLanguage(id);
         return Ok();
+    }
+
+    private async Task<IActionResult?> ForbidExistingNotOwnedLanguage(int languageId)
+    {
+        string resourceId = (await languageService.GetLanguage(languageId))
+            .AuthorId
+            .ToString();
+        return await ForbidNotOwnedResource(resourceId);
     }
 }
