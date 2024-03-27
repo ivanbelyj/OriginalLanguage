@@ -17,7 +17,7 @@ import EditCoursePage from "../../courses/pages/EditCoursePage";
 import EditLanguagePage from "../../languages/pages/EditLanguagePage";
 import Logout from "../../auth/pages/LogoutPage";
 import LessonPlayerPage from "../../courses/pages/LessonPlayerPage";
-import CourseLessonsPage from "../../courses/pages/CourseLessonsPage";
+import CoursePage from "../../courses/pages/CoursePage";
 import CourseFullInfo from "../../courses/components/CourseFullInfo";
 
 const AppRouterProvider = () => {
@@ -94,7 +94,7 @@ const AppRouterProvider = () => {
         },
         {
           path: "/course/:id/lessons/",
-          element: <CourseLessonsPage />,
+          element: <CoursePage />,
         },
       ],
     },

@@ -1,0 +1,21 @@
+.course-settings-box {
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 1em 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.course-settings-box__row {
+  display: flex;
+  /* padding: 0.5em; */
+}
+
+.course-settings-box__description {
+  min-width: 12em;
+}
+
+.course-settings-box__content {
+  flex-grow: 1;
+}

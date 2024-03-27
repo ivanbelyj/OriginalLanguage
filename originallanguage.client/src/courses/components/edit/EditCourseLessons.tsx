@@ -8,18 +8,34 @@ import {
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditLesson from "./EditLesson.tsx";
-import { useLessons } from "../../hooks/useLessons.ts";
+import {
+  ICreateLesson,
+  ILessonIdAndNumber,
+  useLessons,
+} from "../../hooks/useLessons.ts";
 import ILesson from "../../models/ILesson.ts";
 
 export interface EditLessonsProps {
   courseId: string;
+  courseLessons: ILesson[];
+  postLesson: (lesson: ICreateLesson) => Promise<ILesson>;
+  updateLessonNumbers: (
+    lessonIdsAndNumbers: ILessonIdAndNumber[]
+  ) => Promise<void>;
+  deleteLesson: (id: string) => Promise<void>;
 }
 
 const EditCourseLessons: React.FC<EditLessonsProps> = ({
   courseId,
+  courseLessons,
+  postLesson,
+  updateLessonNumbers,
+  deleteLesson,
 }: EditLessonsProps) => {
-  const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
-    useLessons(courseId!);
+  // const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
+  //   useLessons(courseId!);
+
+  console.log("render course lessons ");
 
   const sortedLessons = courseLessons.sort((a, b) => a.number - b.number);
 

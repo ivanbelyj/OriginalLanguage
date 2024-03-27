@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import EditCourseLessons from "../components/edit/EditCourseLessons";
 import EditCourse from "../components/edit/EditCourse";
-import PopconfirmButton from "../../common/components/PopconfirmButton";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Tabs, Typography } from "antd";
+import { Tabs } from "antd";
 import CourseSettings from "../components/edit/CourseSettings";
-const { Title } = Typography;
+import { CourseTree } from "../components/CourseTree";
+import { useLessons } from "../hooks/useLessons";
 
 const EditCoursePage = () => {
   const { id: courseId } = useParams();
-  const onDelete = async () => {};
+
+  const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
+    useLessons(courseId!);
 
   const tabsItems = [
     {
@@ -18,13 +19,26 @@ const EditCoursePage = () => {
       children: (
         <>
           <EditCourse />
-          {<EditCourseLessons courseId={courseId!} />}
+          {
+            <EditCourseLessons
+              courseId={courseId!}
+              courseLessons={courseLessons}
+              postLesson={postLesson}
+              updateLessonNumbers={updateLessonNumbers}
+              deleteLesson={deleteLesson}
+            />
+          }
         </>
       ),
     },
     {
-      label: "Settings",
+      label: "Preview",
       key: "2",
+      children: <CourseTree lessons={courseLessons} />,
+    },
+    {
+      label: "Settings",
+      key: "3",
       children: <CourseSettings courseId={courseId!} />,
     },
   ];

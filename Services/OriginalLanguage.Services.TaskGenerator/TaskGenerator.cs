@@ -126,6 +126,6 @@ public class TaskGenerator : ITaskGenerator
 
         return isSentenceLanguageHasTargetRole
             ? sentence.Text
-            : sentence.Transcription;
+            : sentence.Translation;
     }
 }
