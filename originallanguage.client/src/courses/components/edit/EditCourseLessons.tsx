@@ -70,7 +70,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
   };
 
   return (
-    <div>
+    <>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
@@ -102,7 +102,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
       <Button type="primary" onClick={handleAddLesson}>
         <PlusOutlined /> Add lesson
       </Button>
-    </div>
+    </>
   );
 };
 

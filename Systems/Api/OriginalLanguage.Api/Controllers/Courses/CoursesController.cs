@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Courses.Models;
 using OriginalLanguage.Api.Controllers.Lessons.Models;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Consts;
 using OriginalLanguage.Services.Courses;
 using OriginalLanguage.Services.Courses.Models;
 using OriginalLanguage.Services.Lessons;
@@ -18,14 +20,16 @@ namespace OriginalLanguage.Api.Controllers.Courses;
 [Route("api/v{version:apiVersion}/courses")]
 [ApiController]
 [ApiVersion("1.0")]
-public class CoursesController : ControllerBase
+public class CoursesController : AppController
 {
     private readonly ICoursesService coursesService;
     private readonly ILessonsService lessonsService;
     private readonly IMapper mapper;
     public CoursesController(IMapper mapper,
         ICoursesService coursesService,
-        ILessonsService lessonsService)
+        ILessonsService lessonsService,
+        IAuthorizationService authorizationService)
+        : base(authorizationService)
     {
         this.mapper = mapper;
         this.coursesService = coursesService;
@@ -60,30 +64,53 @@ public class CoursesController : ControllerBase
     }
 
     [ProducesResponseType(typeof(CourseResponse), 200)]
+    [Authorize(AppScopes.ContentWrite)]
     [HttpPost("")]
-    public async Task<CourseResponse> AddCourse(
+    public async Task<IActionResult> AddCourse(
         [FromBody] AddCourseRequest request)
     {
+        var res = await ForbidNotOwnedResource(request.AuthorId.ToString());
+        if (res != null)
+            return res;
+
         var model = await coursesService
             .AddCourse(mapper.Map<AddCourseModel>(request));
-        return mapper.Map<CourseResponse>(model);
+        return Ok(mapper.Map<CourseResponse>(model));
     }
 
     [ProducesResponseType(200)]
+    [Authorize(AppScopes.ContentWrite)]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCourse(
         [FromRoute] int id,
         [FromBody] UpdateCourseRequest request)
     {
+        var res = await ForbidExistingNotOwnedCourse(id);
+        if (res != null)
+            return res;
+
         await coursesService.UpdateCourse(id, mapper.Map<UpdateCourseModel>(request));
         return Ok();
     }
 
     [ProducesResponseType(200)]
+    [Authorize(AppScopes.ContentWrite)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourse([FromRoute] int id)
     {
+        var res = await ForbidExistingNotOwnedCourse(id);
+        if (res != null)
+            return res;
+
         await coursesService.DeleteCourse(id);
         return Ok();
+    }
+
+    private async Task<IActionResult?> ForbidExistingNotOwnedCourse(int courseId)
+    {
+        string resourceId = (await coursesService.GetCourse(courseId))
+            .AuthorId
+            .ToString();
+        return await ForbidNotOwnedResource(resourceId);
     }
 }

@@ -18,6 +18,8 @@ export function useUserCourses({ authorId }: { authorId?: string }) {
   async function fetchCourses() {
     if (!authorId) return;
 
+    // authorId = "09ae2b14-2900-490d-91ff-6d887018c6fc";
+
     const url = import.meta.env.VITE_API_URL + `accounts/${authorId}/courses`;
 
     console.log("fetch courses", url);
