@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.LessonSamples.Models;
 using OriginalLanguage.Api.Controllers.Sentences.Models;
+using OriginalLanguage.Api.Helpers;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Consts;
+using OriginalLanguage.Services.Courses;
+using OriginalLanguage.Services.Lessons;
 using OriginalLanguage.Services.LessonSamples;
 using OriginalLanguage.Services.LessonSamples.Models;
 using OriginalLanguage.Services.Sentences;
@@ -18,40 +23,49 @@ namespace OriginalLanguage.Api.Controllers.LessonSamples;
 [ApiController]
 [Produces("application/json")]
 [ApiVersion("1.0")]
-public class LessonSamplesController : ControllerBase
+public class LessonSamplesController : AppControllerBase
 {
+    private readonly IMapper mapper;
     private readonly ILessonSamplesService lessonSamplesService;
     private readonly ISentencesService sentencesService;
-    private readonly IMapper mapper;
-    public LessonSamplesController(IMapper mapper,
+    private readonly ResourceOwningHelper resourceOwningHelper;
+    
+    public LessonSamplesController(
+        IMapper mapper,
         ILessonSamplesService lessonSamplesService,
-        ISentencesService sentencesService)
+        ISentencesService sentencesService,
+        IAuthorizationService authorizationService,
+        ResourceOwningHelper resourceOwningHelper)
+        : base (authorizationService)
     {
         this.mapper = mapper;
         this.lessonSamplesService = lessonSamplesService;
         this.sentencesService = sentencesService;
+        this.resourceOwningHelper = resourceOwningHelper;
     }
 
-    [HttpGet("{id}")]
     [ProducesResponseType(typeof(LessonSampleResponse), 200)]
+    [Authorize(AppScopes.CoursesLearn)]
+    [HttpGet("{id}")]
     public async Task<LessonSampleResponse> GetLessonSample([FromRoute] int id)
     {
         return mapper.Map<LessonSampleResponse>(
             await lessonSamplesService.GetLessonSample(id));
     }
 
-    [HttpGet("")]
-    [ProducesResponseType(typeof(IEnumerable<LessonSampleResponse>), 200)]
-    public async Task<IEnumerable<LessonSampleResponse>> GetLessonSamples(
-        [FromQuery] int offset = 0,
-        [FromQuery] int limit = 10)
-    {
-        return mapper.Map<IEnumerable<LessonSampleResponse>>(
-            await lessonSamplesService.GetLessonSamples(offset, limit));
-    }
+    //[HttpGet("")]
+    //[ProducesResponseType(typeof(IEnumerable<LessonSampleResponse>), 200)]
+    //public async Task<IEnumerable<LessonSampleResponse>> GetLessonSamples(
+    //    [FromQuery] int offset = 0,
+    //    [FromQuery] int limit = 10)
+    //{
+    //    return mapper.Map<IEnumerable<LessonSampleResponse>>(
+    //        await lessonSamplesService.GetLessonSamples(offset, limit));
+    //}
 
-    [HttpGet("{lessonSampleId}/sentences")]
     [ProducesResponseType(typeof(IEnumerable<SentenceResponse>), 200)]
+    [Authorize(AppScopes.CoursesLearn)]
+    [HttpGet("{lessonSampleId}/sentences")]
     public async Task<IEnumerable<SentenceResponse>> GetLessonSampleSentences(
         [FromRoute] int lessonSampleId)
     {
@@ -62,29 +76,56 @@ public class LessonSamplesController : ControllerBase
 
     [HttpPost("")]
     [ProducesResponseType(typeof(LessonSampleResponse), 200)]
-    public async Task<LessonSampleResponse> AddLessonSample(
+    public async Task<IActionResult> AddLessonSample(
         [FromBody] AddLessonSampleRequest request)
     {
-        return mapper.Map<LessonSampleResponse>(
-            await lessonSamplesService.AddLessonSample(
-                mapper.Map<AddLessonSampleModel>(request)));
+        string lessonOwnerId = (await resourceOwningHelper
+            .GetLessonAuthorId(request.LessonId))
+            .ToString();
+        var res = await ForbidIfResourceIsNotOwned(lessonOwnerId);
+        if (res != null) return res;
+
+        var addLessonSampleModel = mapper.Map<AddLessonSampleModel>(request);
+        var addedLessonSampeModel = await lessonSamplesService
+            .AddLessonSample(addLessonSampleModel);
+        return Ok(mapper.Map<LessonSampleResponse>(addedLessonSampeModel));
     }
 
+    [Authorize(AppScopes.ContentWrite)]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateLessonSample(
         [FromRoute] int id,
         [FromBody] UpdateLessonSampleRequest request)
     {
-        await lessonSamplesService.UpdateLessonSample(id,
-            mapper.Map<UpdateLessonSampleModel>(request));
+        var res = await ForbidExistingNotOwnedLessonSample(id);
+        if (res != null)
+            return res;
+
+        var updateLessonSampleModel = mapper.Map<UpdateLessonSampleModel>(request);
+        await lessonSamplesService.UpdateLessonSample(id, updateLessonSampleModel);
 
         return Ok();
     }
 
+    [Authorize(AppScopes.ContentWrite)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLessonSample([FromRoute] int id)
     {
+        var res = await ForbidExistingNotOwnedLessonSample(id);
+        if (res != null)
+            return res;
+
         await lessonSamplesService.DeleteLessonSample(id);
         return Ok();
+    }
+
+    private async Task<IActionResult?> ForbidExistingNotOwnedLessonSample(
+        int lessonSampleId)
+    {
+        string ownerId = (await resourceOwningHelper
+            .GetLessonSampleAuthorId(lessonSampleId))
+            .ToString();
+
+        return await ForbidIfResourceIsNotOwned(ownerId);
     }
 }

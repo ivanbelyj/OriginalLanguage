@@ -49,7 +49,7 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
     }
   };
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleButtonClick = () => {
     if (isAnswerCorrect === null) {
       // Check answer
       handleCheckAnswer(currentAnswer).then(() => {});

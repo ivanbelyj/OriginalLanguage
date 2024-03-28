@@ -17,6 +17,7 @@ const ElementsArea: React.FC<ElementAreaProps> = ({ droppableId, items }) => {
     <div>
       {rows.map((row, rowIndex) => (
         <Droppable
+          key={rowIndex}
           droppableId={`${droppableId}-${rowIndex}`}
           direction="horizontal"
         >

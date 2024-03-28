@@ -78,11 +78,11 @@ public static class AuthConfiguration
             options.AddPolicy(AuthConstants.OwnsResourcePolicy,
                 policy =>
                 {
-                    policy.Requirements.Add(new OwnsResourceRequirement());
+                    policy.Requirements.Add(new ResourceOwningRequirement());
                 });
         });
 
-        services.AddSingleton<IAuthorizationHandler, OwnsResourceHandler>();
+        services.AddSingleton<IAuthorizationHandler, ResourceOwningHandler>();
 
         return services;
     }

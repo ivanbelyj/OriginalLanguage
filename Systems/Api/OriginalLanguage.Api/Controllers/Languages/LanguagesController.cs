@@ -20,7 +20,7 @@ namespace OriginalLanguage.Api.Controllers.Languages;
 [Route("api/v{version:apiVersion}/languages")]
 [ApiController]
 [ApiVersion("1.0")]
-public class LanguagesController : AppController
+public class LanguagesController : AppControllerBase
 {
     private readonly ILanguagesService languageService;
     private readonly IMapper mapper;
@@ -68,7 +68,7 @@ public class LanguagesController : AppController
     public async Task<IActionResult> AddLanguage(
         [FromBody] AddLanguageRequest request)
     {
-        var res = await ForbidNotOwnedResource(request.AuthorId.ToString());
+        var res = await ForbidIfResourceIsNotOwned(request.AuthorId.ToString());
         if (res != null)
             return res;
 
@@ -103,11 +103,12 @@ public class LanguagesController : AppController
         return Ok();
     }
 
-    private async Task<IActionResult?> ForbidExistingNotOwnedLanguage(int languageId)
+    private async Task<IActionResult?> ForbidExistingNotOwnedLanguage(
+        int languageId)
     {
-        string resourceId = (await languageService.GetLanguage(languageId))
+        string resourceOwnerId = (await languageService.GetLanguage(languageId))
             .AuthorId
             .ToString();
-        return await ForbidNotOwnedResource(resourceId);
+        return await ForbidIfResourceIsNotOwned(resourceOwnerId);
     }
 }

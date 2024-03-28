@@ -1,12 +1,9 @@
-import { Button, Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu, MenuProps } from "antd";
 
 import {
   BookOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   TranslationOutlined,
   UserOutlined,
-  StarOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
@@ -17,7 +14,7 @@ import { useUserLanguages } from "../../../user/hooks/useUserLanguages";
 import { useJwtToken } from "../../../auth/AuthProvider";
 import { useUserCourses } from "../../../user/hooks/useUserCourses";
 
-const { Header, Content, Sider } = Layout;
+const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 

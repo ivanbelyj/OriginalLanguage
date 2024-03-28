@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Courses.Models;
 using OriginalLanguage.Api.Controllers.Lessons.Models;
+using OriginalLanguage.Api.Helpers;
 using OriginalLanguage.Common.Responses;
 using OriginalLanguage.Consts;
 using OriginalLanguage.Services.Courses;
@@ -20,20 +21,24 @@ namespace OriginalLanguage.Api.Controllers.Courses;
 [Route("api/v{version:apiVersion}/courses")]
 [ApiController]
 [ApiVersion("1.0")]
-public class CoursesController : AppController
+public class CoursesController : AppControllerBase
 {
     private readonly ICoursesService coursesService;
     private readonly ILessonsService lessonsService;
+    private readonly ResourceOwningHelper resourceOwningHelper;
     private readonly IMapper mapper;
+
     public CoursesController(IMapper mapper,
         ICoursesService coursesService,
         ILessonsService lessonsService,
-        IAuthorizationService authorizationService)
+        IAuthorizationService authorizationService,
+        ResourceOwningHelper resourceOwningHelper)
         : base(authorizationService)
     {
         this.mapper = mapper;
         this.coursesService = coursesService;
         this.lessonsService = lessonsService;
+        this.resourceOwningHelper = resourceOwningHelper;
     }
 
     [ProducesResponseType(typeof(IEnumerable<LessonResponse>), 200)]
@@ -69,7 +74,7 @@ public class CoursesController : AppController
     public async Task<IActionResult> AddCourse(
         [FromBody] AddCourseRequest request)
     {
-        var res = await ForbidNotOwnedResource(request.AuthorId.ToString());
+        var res = await ForbidIfResourceIsNotOwned(request.AuthorId.ToString());
         if (res != null)
             return res;
 
@@ -108,9 +113,9 @@ public class CoursesController : AppController
 
     private async Task<IActionResult?> ForbidExistingNotOwnedCourse(int courseId)
     {
-        string resourceId = (await coursesService.GetCourse(courseId))
-            .AuthorId
+        string resourceOwnerId = (await resourceOwningHelper
+            .GetCourseAuthorId(courseId))
             .ToString();
-        return await ForbidNotOwnedResource(resourceId);
+        return await ForbidIfResourceIsNotOwned(resourceOwnerId);
     }
 }

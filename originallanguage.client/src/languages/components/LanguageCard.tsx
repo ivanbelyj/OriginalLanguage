@@ -1,11 +1,11 @@
-import { Avatar, Card, Descriptions, Typography } from "antd";
+import { Avatar, Card, Typography } from "antd";
 import ILanguage from "../models/ILanguage";
 import LanguageFlag from "./LanguageFlag";
 import { Link } from "react-router-dom";
 import React from "react";
 
 const { Meta } = Card;
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 interface ILanguageInfoProps {
   language: ILanguage;

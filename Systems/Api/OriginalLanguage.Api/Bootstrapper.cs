@@ -17,6 +17,7 @@ using OriginalLanguage.Services.Actions;
 using OriginalLanguage.Services.TaskGenerator;
 using OriginalLanguage.Services.TaskAnswerChecker;
 using OriginalLanguage.Services.LessonCompletion;
+using OriginalLanguage.Api.Helpers;
 
 public static class Bootstrapper
 {
@@ -43,7 +44,9 @@ public static class Bootstrapper
             
             .AddActions()
             .AddCacheService()
-            .AddAppRabbitMq();
+            .AddAppRabbitMq()
+            
+            .AddSingleton<ResourceOwningHelper>();
 
         return services;
     }

@@ -7,10 +7,10 @@ using OriginalLanguage.Consts;
 
 namespace OriginalLanguage.Api.Controllers;
 
-public class AppController : ControllerBase
+public class AppControllerBase : ControllerBase
 {
     private readonly IAuthorizationService authorizationService;
-    public AppController(IAuthorizationService authorizationService)
+    public AppControllerBase(IAuthorizationService authorizationService)
     {
         this.authorizationService = authorizationService;
     }
@@ -18,7 +18,7 @@ public class AppController : ControllerBase
     /// <summary>
     /// Returns null if authorization is successful
     /// </summary>
-    protected async Task<IActionResult?> ForbidNotOwnedResource(
+    protected async Task<IActionResult?> ForbidIfResourceIsNotOwned(
         string resourceOwnerId)
     {
         var authResult = await authorizationService.AuthorizeAsync(

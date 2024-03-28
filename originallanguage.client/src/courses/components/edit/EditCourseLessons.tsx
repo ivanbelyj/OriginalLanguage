@@ -10,8 +10,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import EditLesson from "./EditLesson.tsx";
 import {
   ICreateLesson,
-  ILessonIdAndNumber,
-  useLessons,
+  ILessonIdAndNumber
 } from "../../hooks/useLessons.ts";
 import ILesson from "../../models/ILesson.ts";
 
@@ -67,8 +66,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
 
   const ItemRenderer = ({
     item,
-    dragHandleProps,
-    index,
+    dragHandleProps
   }: {
     item: ILesson;
     index: number;

@@ -30,7 +30,7 @@
             <response code="403">Forbidden</response>
             <response code="404">Not Found</response>
         </member>
-        <member name="M:OriginalLanguage.Api.Controllers.AppController.ForbidNotOwnedResource(System.String)">
+        <member name="M:OriginalLanguage.Api.Controllers.AppControllerBase.ForbidIfResourceIsNotOwned(System.String)">
             <summary>
             Returns null if authorization is successful
             </summary>

@@ -4,12 +4,12 @@ using System.Security.Claims;
 
 namespace OriginalLanguage.Api.ResourceBasedAuth;
 
-public class OwnsResourceHandler
-    : AuthorizationHandler<OwnsResourceRequirement, string>
+public class ResourceOwningHandler
+    : AuthorizationHandler<ResourceOwningRequirement, string>
 {
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
-        OwnsResourceRequirement requirement,
+        ResourceOwningRequirement requirement,
         string resourceOwnerId)
     {
         var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);

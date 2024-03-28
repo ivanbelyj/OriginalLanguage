@@ -1,14 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Typography,
-  Popconfirm,
   Button,
-  Descriptions,
-  DescriptionsProps,
-  List,
-  Row,
-  Col,
-  Card,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import PopconfirmButton from "../../../common/components/PopconfirmButton";
@@ -31,7 +24,7 @@ const CourseSettings: React.FC<ICourseSettingsProps> = ({ courseId }) => {
     navigate("/", { replace: true });
   };
 
-  const getRow = (description: string, children: any) => {
+  const getRow = (description: string, children: ReactNode) => {
     return (
       <div className="course-settings-box__row">
         <div className="course-settings-box__description">{description}</div>

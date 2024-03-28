@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Descriptions, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import Chat from "../../chats/components/Chat";
 import { ChatGroupUtils } from "../../chats/chat-group-utils";
-import Icon, {
-  PlayCircleFilled,
+import {
   PlayCircleOutlined,
-  PlaySquareFilled,
 } from "@ant-design/icons";
 import { useCourses } from "../hooks/useCourses";
-import { useLessons } from "../hooks/useLessons";
 import ICourse from "../models/ICourse";
 
 const { Title, Paragraph } = Typography;
@@ -17,7 +14,6 @@ const { Title, Paragraph } = Typography;
 export default function CourseFullInfo() {
   const { id: courseId } = useParams<{ id: string }>();
   const { getCourse } = useCourses();
-  const { courseLessons } = useLessons(courseId!);
 
   const [course, setCourse] = useState<ICourse | null>(null);
 

@@ -51,7 +51,7 @@ const ComposeElements: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     // Droppable not found
     if (!destination) {

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Controllers.Sentences.Models;
+using OriginalLanguage.Api.Helpers;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Consts;
 using OriginalLanguage.Services.Sentences;
 using OriginalLanguage.Services.Sentences.Models;
 
@@ -16,28 +19,36 @@ namespace OriginalLanguage.Api.Controllers.Sentences;
 [Produces("application/json")]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/sentences")]
-public class SentencesController : ControllerBase
+public class SentencesController : AppControllerBase
 {
-    private readonly ISentencesService sentencesService;
     private readonly IMapper mapper;
+    private readonly ISentencesService sentencesService;
+    private readonly ResourceOwningHelper resourceOwningHelper;
 
-    public SentencesController(ISentencesService sentencesService, IMapper mapper)
+    public SentencesController(
+        IMapper mapper,
+        ISentencesService sentencesService,
+        ResourceOwningHelper resourceOwningHelper,
+        IAuthorizationService authorizationService)
+        : base (authorizationService)
     {
-        this.sentencesService = sentencesService;
         this.mapper = mapper;
+        this.sentencesService = sentencesService;
+        this.resourceOwningHelper = resourceOwningHelper;
     }
 
-    [ProducesResponseType(typeof(IEnumerable<SentenceResponse>), 200)]
-    [HttpGet("")]
-    public async Task<IEnumerable<SentenceResponse>> GetSentences(
-        [FromQuery] int offset = 0,
-        [FromQuery] int limit = 10)
-    {
-        return mapper.Map<IEnumerable<SentenceResponse>>(
-            await sentencesService.GetSentences(offset, limit));
-    }
+    //[ProducesResponseType(typeof(IEnumerable<SentenceResponse>), 200)]
+    //[HttpGet("")]
+    //public async Task<IEnumerable<SentenceResponse>> GetSentences(
+    //    [FromQuery] int offset = 0,
+    //    [FromQuery] int limit = 10)
+    //{
+    //    return mapper.Map<IEnumerable<SentenceResponse>>(
+    //        await sentencesService.GetSentences(offset, limit));
+    //}
 
     [ProducesResponseType(typeof(SentenceResponse), 200)]
+    [Authorize(AppScopes.CoursesLearn)]
     [HttpGet("{id}")]
     public async Task<SentenceResponse> GetSentence(
         [FromRoute] int id)
@@ -46,31 +57,56 @@ public class SentencesController : ControllerBase
     }
 
     [ProducesResponseType(typeof(SentenceResponse), 200)]
+    [Authorize(AppScopes.ContentWrite)]
     [HttpPost("")]
-    public async Task<SentenceResponse> AddSentence(
+    public async Task<IActionResult> AddSentence(
         [FromBody] AddSentenceRequest request)
     {
-        return mapper.Map<SentenceResponse>(
-            await sentencesService
-                .AddSentence(mapper.Map<AddSentenceModel>(request)));
+        string lessonSampleAuthorId = (await resourceOwningHelper
+            .GetLessonSampleAuthorId(request.LessonSampleId))
+            .ToString();
+        var res = await ForbidIfResourceIsNotOwned(lessonSampleAuthorId);
+        if (res != null) return res;
+
+        var addSentenceModel = mapper.Map<AddSentenceModel>(request);
+        var addedSentenceModel = await sentencesService.AddSentence(addSentenceModel);
+        return Ok(mapper.Map<SentenceResponse>(addedSentenceModel));
     }
 
+    [Authorize(AppScopes.ContentWrite)]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSentence(
         [FromRoute] int id,
         [FromBody] UpdateSentenceRequest request)
     {
+        var res = await ForbidExistingNotOwnedSentence(id);
+        if (res != null) return res;
+
         await sentencesService.UpdateSentence(id,
             mapper.Map<UpdateSentenceModel>(request));
 
         return Ok();
     }
 
+    [Authorize(AppScopes.ContentWrite)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSentence([FromRoute] int id)
     {
+        var res = await ForbidExistingNotOwnedSentence(id);
+        if (res != null) return res;
+
         await sentencesService.DeleteSentence(id);
 
         return Ok();
+    }
+
+    private async Task<IActionResult?> ForbidExistingNotOwnedSentence(
+        int sentenceId)
+    {
+        string ownerId = (await resourceOwningHelper
+            .GetSentenceAuthorId(sentenceId))
+            .ToString();
+
+        return await ForbidIfResourceIsNotOwned(ownerId);
     }
 }
