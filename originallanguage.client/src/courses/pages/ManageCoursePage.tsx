@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditCourseLessons from "../components/edit/EditCourseLessons";
 import EditCourse from "../components/edit/EditCourse";
 import { Tabs } from "antd";
@@ -6,16 +6,18 @@ import CourseSettings from "../components/edit/CourseSettings";
 import { CourseTree } from "../components/CourseTree";
 import { useLessons } from "../hooks/useLessons";
 
-const EditCoursePage = () => {
-  const { id: courseId } = useParams();
+const ManageCoursePage = () => {
+  const { id: courseId, activeTab } = useParams();
 
   const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
     useLessons(courseId!);
 
-  const tabsItems = [
+  const navigate = useNavigate();
+
+  const tabItems = [
     {
       label: "Lessons",
-      key: "1",
+      key: "lessons",
       children: (
         <>
           <EditCourse />
@@ -33,21 +35,33 @@ const EditCoursePage = () => {
     },
     {
       label: "Preview",
-      key: "2",
+      key: "preview",
       children: <CourseTree lessons={courseLessons} />,
     },
     {
       label: "Settings",
-      key: "3",
+      key: "settings",
       children: <CourseSettings courseId={courseId!} />,
     },
   ];
 
+  const navigateToTab = (newTabKey: string) => {
+    navigate(`/manage-course/${courseId}/${newTabKey}`);
+  };
+
+  const isActiveTabCorrect = () => {
+    return activeTab && tabItems.find((x) => x.key === activeTab);
+  };
+
   return (
     <>
-      <Tabs items={tabsItems}></Tabs>
+      <Tabs
+        items={tabItems}
+        activeKey={isActiveTabCorrect() ? activeTab : tabItems.at(0)!.key}
+        onChange={navigateToTab}
+      ></Tabs>
     </>
   );
 };
 
-export default EditCoursePage;
+export default ManageCoursePage;

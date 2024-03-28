@@ -5,6 +5,7 @@ import { Input, Button, Alert, Typography } from "antd";
 import ComposeElements from "./tasks/ComposeElements";
 
 import "../lesson-player.css";
+import { useNavigate } from "react-router-dom";
 
 const { Paragraph } = Typography;
 
@@ -24,6 +25,7 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
   const [answers, setAnswers] = useState<ITaskAnswer[]>(
     tasks.map((task) => ({ task, answer: "" }))
   );
+  const navigate = useNavigate();
 
   const handleCheckAnswer = async (answer: string) => {
     const result = await checkAnswer({ task: tasks[currentTaskIndex], answer });
@@ -61,7 +63,20 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
 
   console.log("task", tasks[currentTaskIndex]);
 
-  return (
+  return tasks.length == 0 ? (
+    <div>
+      <div>The lesson is not filled with content yet (</div>
+      <Button
+        type="primary"
+        style={{ marginTop: 16 }}
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Go back
+      </Button>
+    </div>
+  ) : (
     <div>
       <Paragraph>
         <div>{tasks[currentTaskIndex].question}</div>

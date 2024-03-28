@@ -13,7 +13,7 @@ import LanguageFullInfo from "../../languages/components/LanguageFullInfo";
 import ArticlesPage from "../pages/ArticlesPage";
 import ArticlePage from "../pages/ArticlePage";
 import UserProfilePage from "../../user/pages/UserProfilePage";
-import EditCoursePage from "../../courses/pages/EditCoursePage";
+import ManageCoursePage from "../../courses/pages/ManageCoursePage";
 import EditLanguagePage from "../../languages/pages/EditLanguagePage";
 import Logout from "../../auth/pages/LogoutPage";
 import LessonPlayerPage from "../../courses/pages/LessonPlayerPage";
@@ -81,8 +81,12 @@ const AppRouterProvider = () => {
           element: <Logout />,
         },
         {
-          path: "/edit-course/:id",
-          element: <EditCoursePage />,
+          path: "/manage-course/:id",
+          element: <ManageCoursePage />,
+        },
+        {
+          path: "/manage-course/:id/:activeTab",
+          element: <ManageCoursePage />,
         },
         {
           path: "/edit-language/:id",

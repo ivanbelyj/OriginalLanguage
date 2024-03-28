@@ -89,7 +89,7 @@ const AppSider = () => {
 
     addCourse(course);
 
-    navigate(`/edit-course/${course.id}`);
+    navigate(`/manage-course/${course.id}`);
   }
 
   const items: MenuItem[] = [
@@ -117,7 +117,7 @@ const AppSider = () => {
       ),
       ...userCourses.map((course, index) =>
         createItem(
-          <Link to={`edit-course/${course.id}`}>{course.title}</Link>,
+          <Link to={`manage-course/${course.id}`}>{course.title}</Link>,
           "b" + (index + 1).toString()
         )
       ),
