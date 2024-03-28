@@ -5,6 +5,10 @@ import App from "./App.tsx";
 import { SignalRProvider } from "./chats/SignalRContext.tsx";
 
 import "antd/dist/reset.css";
+import AuthUtils from "./auth/auth-utils.ts";
+import React from "react";
+
+AuthUtils.updateAxiosDefaults();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
@@ -13,5 +17,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <App />
     </SignalRProvider>
   </AuthProvider>
-  // </React.StrictMode>
+  //</React.StrictMode>
 );

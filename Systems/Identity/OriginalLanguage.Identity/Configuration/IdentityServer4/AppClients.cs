@@ -18,7 +18,8 @@ public static class AppClients
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
 
-                AccessTokenLifetime = 3600, // 1 hour
+                AccessTokenLifetime = 30,
+                //AccessTokenLifetime = 36000, // 10 hours
 
                 AllowedScopes = {
                     
@@ -39,7 +40,9 @@ public static class AppClients
                 AllowOfflineAccess = true,
                 AccessTokenType = AccessTokenType.Jwt,
 
-                AccessTokenLifetime = 3600, // 1 hour
+                //AccessTokenLifetime = 30,
+                AccessTokenLifetime = 36000,
+                // 10 hours
 
                 RefreshTokenUsage = TokenUsage.OneTimeOnly,
                 RefreshTokenExpiration = TokenExpiration.Sliding,

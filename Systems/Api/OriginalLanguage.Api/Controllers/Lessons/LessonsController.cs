@@ -56,7 +56,6 @@ public class LessonsController : AppControllerBase
         this.mapper = mapper;
     }
 
-    
     [ProducesResponseType(typeof(LessonResponse), 200)]
     [HttpGet("{id}")]
     public async Task<LessonResponse> GetLesson([FromRoute] int id)

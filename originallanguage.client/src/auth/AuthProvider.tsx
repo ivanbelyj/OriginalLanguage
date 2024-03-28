@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import AuthUtils from "./auth-utils";
 
 interface AuthContextType {
   token: string | null;
@@ -29,13 +30,11 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken_] = useState<string | null>(
-    localStorage.getItem("token") // Todo: don't use local storage?
-  );
+  const [token, setTokenCore] = useState<string | null>(AuthUtils.getToken());
   const setToken = (newToken: string | null) => {
-    setToken_(newToken);
-    if (newToken === null) localStorage.removeItem("token");
-    else localStorage.setItem("token", newToken);
+    setTokenCore(newToken);
+    if (newToken === null) AuthUtils.removeToken();
+    else AuthUtils.setToken(newToken);
   };
 
   const getDecodedToken = () => {
@@ -50,11 +49,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem("token", token);
+      AuthUtils.setToken(token);
     } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("token");
+      AuthUtils.removeToken();
     }
   }, [token]);
 

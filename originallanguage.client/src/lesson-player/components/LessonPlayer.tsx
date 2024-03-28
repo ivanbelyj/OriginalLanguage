@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useLessonTasks } from "../hooks/useLessonTasks";
-import { ITask, ITaskAnswer } from "../models/models";
-import { Input, Button, Alert, Typography } from "antd";
-import ComposeElements from "./tasks/ComposeElements";
+import React from "react";
+import { ITask } from "../types/models";
+import { Button, Alert, Typography } from "antd";
 
 import "../lesson-player.css";
 import { useNavigate } from "react-router-dom";
+import { useTasksPlay } from "../hooks/useTasksPlay";
+import { TaskRenderer } from "./TaskRenderer";
 
 const { Paragraph } = Typography;
 
@@ -14,45 +14,26 @@ interface ILessonPlayerProps {
   tasks: ITask[];
 }
 
-const LessonPlayer: React.FC<ILessonPlayerProps> = ({
+export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
   lessonId,
   tasks,
-}: ILessonPlayerProps) => {
-  const { checkAnswer, completeLesson } = useLessonTasks();
-  const [currentTaskIndex, setCurrentTaskIndex] = useState<number>(0);
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
-  const [currentAnswer, setCurrentAnswer] = useState<string>("");
-  const [answers, setAnswers] = useState<ITaskAnswer[]>(
-    tasks.map((task) => ({ task, answer: "" }))
-  );
+}) => {
+  const {
+    currentTaskIndex,
+    isAnswerCorrect,
+    setIsAnswerCorrect,
+    currentAnswer,
+    setCurrentAnswer,
+    handleCheckAnswer,
+    handleNextTask,
+  } = useTasksPlay(lessonId, tasks);
+
   const navigate = useNavigate();
-
-  const handleCheckAnswer = async (answer: string) => {
-    const result = await checkAnswer({ task: tasks[currentTaskIndex], answer });
-    console.log("check answer result", result);
-    setIsAnswerCorrect(result.isCorrect);
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      updatedAnswers[currentTaskIndex].answer = answer;
-      return updatedAnswers;
-    });
-  };
-
-  const handleNextTask = () => {
-    if (currentTaskIndex < tasks.length - 1) {
-      setCurrentTaskIndex(currentTaskIndex + 1);
-    } else {
-      console.log("complete lesson");
-      completeLesson(lessonId, answers).then((lessonCompletionResult) => {
-        console.log(lessonCompletionResult);
-      });
-    }
-  };
 
   const handleButtonClick = () => {
     if (isAnswerCorrect === null) {
       // Check answer
-      handleCheckAnswer(currentAnswer).then(() => {});
+      handleCheckAnswer(currentAnswer);
     } else {
       // Move next
       handleNextTask();
@@ -61,40 +42,24 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
     }
   };
 
-  console.log("task", tasks[currentTaskIndex]);
-
-  return tasks.length == 0 ? (
+  return tasks.length === 0 ? (
     <div>
       <div>The lesson is not filled with content yet (</div>
       <Button
         type="primary"
         style={{ marginTop: 16 }}
-        onClick={() => {
-          navigate(-1);
-        }}
+        onClick={() => navigate(-1)}
       >
         Go back
       </Button>
     </div>
   ) : (
     <div>
-      <Paragraph>
-        <div>{tasks[currentTaskIndex].question}</div>
-      </Paragraph>
-      <Paragraph>
-        <Input.TextArea
-          placeholder="Enter your answer here"
-          value={currentAnswer}
-          onChange={(e) => {
-            setCurrentAnswer(e.target.value);
-          }}
-        />
-      </Paragraph>
-
-      <Paragraph>
-        <ComposeElements />
-      </Paragraph>
-
+      <TaskRenderer
+        task={tasks[currentTaskIndex]}
+        currentAnswer={currentAnswer}
+        setCurrentAnswer={setCurrentAnswer}
+      />
       {isAnswerCorrect !== null && (
         <Paragraph>
           <Alert
@@ -104,7 +69,6 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
           />
         </Paragraph>
       )}
-
       <Paragraph>
         <Button
           type="primary"
@@ -117,5 +81,3 @@ const LessonPlayer: React.FC<ILessonPlayerProps> = ({
     </div>
   );
 };
-
-export default LessonPlayer;

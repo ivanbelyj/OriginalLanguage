@@ -16,7 +16,7 @@ import UserProfilePage from "../../user/pages/UserProfilePage";
 import ManageCoursePage from "../../courses/pages/ManageCoursePage";
 import EditLanguagePage from "../../languages/pages/EditLanguagePage";
 import Logout from "../../auth/pages/LogoutPage";
-import LessonPlayerPage from "../../courses/pages/LessonPlayerPage";
+import LessonPlayerPage from "../../lesson-player/pages/LessonPlayerPage";
 import CoursePage from "../../courses/pages/CoursePage";
 import CourseFullInfo from "../../courses/components/CourseFullInfo";
 

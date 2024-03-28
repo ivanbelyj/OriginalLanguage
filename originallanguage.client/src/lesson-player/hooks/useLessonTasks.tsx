@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ITask, ITaskAnswer } from "../models/models";
+import { ITask, ITaskAnswer } from "../types/models";
 
 export interface ICheckAnswerResult {
   isCorrect: boolean;
@@ -10,24 +10,24 @@ export interface ILessonCompletionResult {
   isSucceeded: boolean;
 }
 
-async function generateLessonTasks(lessonId: string): Promise<ITask[]> {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}lessons/${lessonId}/generate-tasks`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
 axios.interceptors.request.use((req) => {
   console.log(req);
   return req;
 });
 
 export function useLessonTasks() {
+  async function generateLessonTasks(lessonId: string): Promise<ITask[]> {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}lessons/${lessonId}/generate-tasks`
+      );
+      console.log("generate tasks response", response);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async function checkAnswer(answer: ITaskAnswer): Promise<ICheckAnswerResult> {
     try {
       console.log("checking ", answer);

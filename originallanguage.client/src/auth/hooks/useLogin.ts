@@ -14,6 +14,7 @@ export function useLogin() {
           grant_type: "password",
           username,
           password: password,
+          scope: "offline_access content_write courses_learn",
           // scope: "openid profile",
         },
         {
