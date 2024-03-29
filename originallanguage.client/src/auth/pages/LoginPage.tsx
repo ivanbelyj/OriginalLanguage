@@ -3,10 +3,10 @@ import { Form, Input, Button, Card, Checkbox } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Center from "../../common/components/Center";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { useLogin } from "../hooks/useLogin";
+import { useLoginLogout } from "../hooks/useLoginLogout";
 
 const LoginPage: React.FC = () => {
-  const { login } = useLogin();
+  const { login } = useLoginLogout();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");

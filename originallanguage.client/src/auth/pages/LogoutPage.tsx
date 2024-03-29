@@ -1,7 +1,7 @@
-import useLogout from "../hooks/useLogout";
+import { useLoginLogout } from "../hooks/useLoginLogout";
 
 const Logout = () => {
-  const { logout } = useLogout();
+  const { logout } = useLoginLogout();
   logout();
 
   return null;

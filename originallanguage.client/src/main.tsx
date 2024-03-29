@@ -8,7 +8,7 @@ import "antd/dist/reset.css";
 import AuthUtils from "./auth/auth-utils.ts";
 import React from "react";
 
-AuthUtils.updateAxiosDefaults();
+await AuthUtils.initAppAxios();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>

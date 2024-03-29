@@ -2,12 +2,12 @@ import React from "react";
 import { Layout, Button } from "antd";
 
 import UserProfile from "../components/UserProfile";
-import useLogout from "../../auth/hooks/useLogout";
+import { useLoginLogout } from "../../auth/hooks/useLoginLogout";
 
 const { Content } = Layout;
 
 const UserProfilePage: React.FC = () => {
-  const { logout } = useLogout();
+  const { logout } = useLoginLogout();
 
   return (
     <Layout style={{ minHeight: "100%" }}>
