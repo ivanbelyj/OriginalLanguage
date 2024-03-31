@@ -1,4 +1,6 @@
-﻿using OriginalLanguage.Services.LessonProgresses;
+﻿using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Services.LessonProgresses;
+using OriginalLanguage.Services.LessonProgresses.Models;
 using OriginalLanguage.Services.TaskAnswerChecker;
 using OriginalLanguage.Services.TaskAnswerChecker.Models;
 using System;
@@ -22,6 +24,7 @@ public class LessonCompletionService : ILessonCompletionService
     }
 
     public async Task<LessonCompletionResult> TryCompleteLesson(
+        Guid userId,
         int lessonId,
         IEnumerable<TaskAnswer> answers)
     {
@@ -31,12 +34,36 @@ public class LessonCompletionService : ILessonCompletionService
                 return LessonCompletionResult.Failed;
         }
 
-        // All answers are correct
-        await lessonProgressesService.TryIncrementLessonProgress(lessonId);
+        await HandleSuccessfulCompletion(lessonId, userId);
 
         return new()
         {
             IsSucceeded = true
         };
+    }
+
+    private async Task HandleSuccessfulCompletion(int lessonId, Guid userId)
+    {
+        var existingProgress = await lessonProgressesService
+            .TryGetByUserAndLessonIds(userId, lessonId);
+        if (existingProgress == null)
+        {
+            await CreateLessonProgress(lessonId, userId);
+        } else
+        {
+            await lessonProgressesService
+                .IncrementLessonProgress(existingProgress.Id);
+        }
+    }
+
+    private async Task CreateLessonProgress(int lessonId, Guid userId)
+    {
+        AddLessonProgressModel model = new()
+        {
+            LessonId = lessonId,
+            ProgressLevel = Constants.MinProgressLevel,
+            UserId = userId
+        };
+        await lessonProgressesService.AddLessonProgress(model);
     }
 }

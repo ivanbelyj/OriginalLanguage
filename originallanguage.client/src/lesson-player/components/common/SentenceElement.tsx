@@ -1,27 +1,17 @@
 import React from "react";
-import { Draggable } from "react-beautiful-dnd";
 
-interface ElementProps {
-  id: string;
+interface IElementProps {
   content: string;
-  index: number;
+  onClick: () => void;
 }
 
-const SentenceElement: React.FC<ElementProps> = ({ id, content, index }) => {
+export const SentenceElement: React.FC<IElementProps> = ({
+  content,
+  onClick,
+}) => {
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <div
-          className="sentence-element"
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          {content}
-        </div>
-      )}
-    </Draggable>
+    <div className="sentence-element" onClick={onClick}>
+      {content}
+    </div>
   );
 };
-
-export default SentenceElement;

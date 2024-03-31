@@ -11,8 +11,9 @@ public interface ILessonProgressesService
     Task<IEnumerable<LessonProgressModel>> GetLessonProgresses(int offset = 0,
         int limit = 10);
     Task<LessonProgressModel> GetLessonProgress(int id);
+    Task<LessonProgressModel?> TryGetByUserAndLessonIds(Guid userId, int lessonId);
     Task<LessonProgressModel> AddLessonProgress(AddLessonProgressModel model);
     Task UpdateLessonProgress(int id, UpdateLessonProgressModel model);
     Task DeleteLessonProgress(int id);
-    Task TryIncrementLessonProgress(int id);
+    Task IncrementLessonProgress(int id);
 }

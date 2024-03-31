@@ -146,7 +146,7 @@ public class LessonsController : AppControllerBase
         [FromRoute] int id)
     {
         // Todo: get user`s progress level and pass it
-        return await taskGenerator.GenerateLessonTasks(id, 10);
+        return await taskGenerator.GenerateLessonTasks(id, 0);
     }
 
     [ProducesResponseType(typeof(CheckAnswerResult), 200)]
@@ -161,11 +161,20 @@ public class LessonsController : AppControllerBase
     [ProducesResponseType(typeof(LessonCompletionResult), 200)]
     [Authorize(AppScopes.CoursesLearn)]
     [HttpPost("{id}/complete")]
-    public async Task<LessonCompletionResult> CheckTaskAnswer(
-        [FromRoute] int lessonId,
+    public async Task<IActionResult> CheckTaskAnswer(
+        [FromRoute] int id,
         [FromBody] IEnumerable<TaskAnswer> answers)
     {
-        return await lessonCompletionService.TryCompleteLesson(lessonId, answers);
+        Guid? userId = GetUserId();
+
+        if (userId == null)
+            return Challenge();
+
+        var res = await lessonCompletionService.TryCompleteLesson(
+            userId.Value,
+            id,
+            answers);
+        return Ok(res);
     }
 
     private async Task<IActionResult?> ForbidExistingNotOwnedLesson(int lessonId)

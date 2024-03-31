@@ -1,13 +1,13 @@
 import React from "react";
-import { ITask } from "../types/models";
-import { Button, Alert, Typography } from "antd";
 
 import "../lesson-player.css";
-import { useNavigate } from "react-router-dom";
 import { useTasksPlay } from "../hooks/useTasksPlay";
 import { TaskRenderer } from "./TaskRenderer";
-
-const { Paragraph } = Typography;
+import { ITask } from "../models/models";
+import { EmptyLesson } from "./EmptyLesson";
+import LessonCompleted from "./LessonCompleted";
+import { PlayerControl } from "./PlayerControl";
+import { CompletionBar } from "./CompletionBar";
 
 interface ILessonPlayerProps {
   lessonId: string;
@@ -20,64 +20,54 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
 }) => {
   const {
     currentTaskIndex,
-    isAnswerCorrect,
-    setIsAnswerCorrect,
     currentAnswer,
     setCurrentAnswer,
     handleCheckAnswer,
     handleNextTask,
+    completion,
+    checkAnswerResult,
+    setCheckAnswerResult,
   } = useTasksPlay(lessonId, tasks);
 
-  const navigate = useNavigate();
-
   const handleButtonClick = () => {
-    if (isAnswerCorrect === null) {
-      // Check answer
+    if (checkAnswerResult === null) {
       handleCheckAnswer(currentAnswer);
     } else {
       // Move next
       handleNextTask();
       setCurrentAnswer("");
-      setIsAnswerCorrect(null);
+      setCheckAnswerResult(null);
     }
   };
 
-  return tasks.length === 0 ? (
-    <div>
-      <div>The lesson is not filled with content yet (</div>
-      <Button
-        type="primary"
-        style={{ marginTop: 16 }}
-        onClick={() => navigate(-1)}
-      >
-        Go back
-      </Button>
-    </div>
-  ) : (
-    <div>
-      <TaskRenderer
-        task={tasks[currentTaskIndex]}
-        currentAnswer={currentAnswer}
-        setCurrentAnswer={setCurrentAnswer}
-      />
-      {isAnswerCorrect !== null && (
-        <Paragraph>
-          <Alert
-            message={isAnswerCorrect ? "Correct!" : "Incorrect."}
-            type={isAnswerCorrect ? "success" : "error"}
-            showIcon
-          />
-        </Paragraph>
-      )}
-      <Paragraph>
-        <Button
-          type="primary"
-          style={{ marginTop: 16 }}
+  if (completion) {
+    return <LessonCompleted result={completion} />;
+  }
+
+  const lessonBody =
+    tasks.length === 0 ? (
+      <EmptyLesson />
+    ) : (
+      <div>
+        <TaskRenderer
+          task={tasks[currentTaskIndex]}
+          currentAnswer={currentAnswer}
+          setCurrentAnswer={setCurrentAnswer}
+        />
+        <PlayerControl
+          checkAnswerResult={checkAnswerResult}
           onClick={handleButtonClick}
-        >
-          {isAnswerCorrect === null ? "Check" : "Next"}
-        </Button>
-      </Paragraph>
+        />
+      </div>
+    );
+
+  return (
+    <div>
+      <CompletionBar
+        tasksCount={tasks.length}
+        currentTaskIndex={currentTaskIndex}
+      />
+      <div>{lessonBody}</div>
     </div>
   );
 };

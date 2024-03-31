@@ -1,14 +1,28 @@
-.element-area {
-  display: flex;
-  align-items: flex-start;
+.compose-elements {
+  display: grid;
+  grid-row-gap: 1.5em;
+  grid-auto-rows: 1fr;
+}
 
-  background-color: #aaa;
+.elements-area {
+}
+
+.elements-area__elements {
+  display: flex;
+}
+
+.elements-area__element {
+  height: 3.25em;
 }
 
 .sentence-element {
-  padding: 0.5em;
   display: inline-block;
+  padding: 0.5em;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 6px;
+
   background-color: #f9f9f9;
+
+  user-select: none;
+  cursor: pointer;
 }

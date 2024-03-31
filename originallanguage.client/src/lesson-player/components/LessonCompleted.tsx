@@ -1,12 +1,21 @@
 import React from "react";
+import { Typography } from "antd";
+import { ILessonCompletionResult } from "../hooks/useLessonTasks";
+const { Title } = Typography;
 
-const CompletionPage: React.FC = () => {
+interface ILessonCompletedProps {
+  result: ILessonCompletionResult;
+}
+
+const LessonCompleted: React.FC<ILessonCompletedProps> = ({ result }) => {
   return (
     <div>
-      <h1>Congratulations!</h1>
-      <p>You have completed the lesson.</p>
+      <Title level={4}>Congratulations!</Title>
+      <div>
+        The lesson was {result.isSucceeded ? "successful" : "not successful"}
+      </div>
     </div>
   );
 };
 
-export default CompletionPage;
+export default LessonCompleted;

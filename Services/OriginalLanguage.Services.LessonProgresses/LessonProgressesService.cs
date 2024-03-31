@@ -55,8 +55,19 @@ public class LessonProgressesService : ILessonProgressesService
     public async Task<LessonProgressModel> GetLessonProgress(int id)
     {
         using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        var lessonProg = dbContext.LessonProgresses.FirstOrDefault(x => x.Id == id);
+        var lessonProg = dbContext.LessonProgresses.First(x => x.Id == id);
         return mapper.Map<LessonProgressModel>(lessonProg);
+    }
+
+    public async Task<LessonProgressModel?> TryGetByUserAndLessonIds(
+        Guid userId,
+        int lessonId)
+    {
+        using var dbContext = await dbContextFactory.CreateDbContextAsync();
+        var lessonProg = dbContext
+            .LessonProgresses
+            .FirstOrDefault(x => x.LessonId == lessonId && x.UserId == userId);
+        return mapper.Map<LessonProgressModel?>(lessonProg);
     }
 
     public async Task<IEnumerable<LessonProgressModel>> GetLessonProgresses(
@@ -83,14 +94,12 @@ public class LessonProgressesService : ILessonProgressesService
         dbContext.SaveChanges();
     }
 
-    public async Task TryIncrementLessonProgress(int id)
+    public async Task IncrementLessonProgress(int id)
     {
         var lessonProgress = await GetLessonProgress(id);
 
         var updateModel = mapper.Map<UpdateLessonProgressModel>(lessonProgress);
         updateModel.ProgressLevel++;
-        if (updateModel.ProgressLevel > Constants.MaxProgressLevel)
-            return;
 
         await UpdateLessonProgress(id, updateModel);
     }

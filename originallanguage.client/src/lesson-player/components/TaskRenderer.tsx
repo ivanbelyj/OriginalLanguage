@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ITaskProps } from "../models/ITaskProps";
 import { TaskType } from "../models/TaskType";
 import ComposeElementsTask from "./tasks/ComposeElementsTask";
@@ -18,12 +19,15 @@ export const TaskRenderer: React.FC<ITaskProps> = ({
   setCurrentAnswer,
 }) => {
   const TaskComponent = taskComponentMap[task.taskType];
+
   return TaskComponent ? (
-    <TaskComponent
-      task={task}
-      currentAnswer={currentAnswer}
-      setCurrentAnswer={setCurrentAnswer}
-    />
+    <div>
+      <TaskComponent
+        task={task}
+        currentAnswer={currentAnswer}
+        setCurrentAnswer={setCurrentAnswer}
+      />
+    </div>
   ) : (
     <div>Unknown task type (</div>
   );

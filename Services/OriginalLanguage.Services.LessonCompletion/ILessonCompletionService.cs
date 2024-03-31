@@ -9,6 +9,7 @@ namespace OriginalLanguage.Services.LessonCompletion;
 public interface ILessonCompletionService
 {
     Task<LessonCompletionResult> TryCompleteLesson(
+        Guid userId,
         int lessonId,
         IEnumerable<TaskAnswer> answers);
 }

@@ -1,47 +1,30 @@
 import React from "react";
-import { Droppable } from "react-beautiful-dnd";
-import SentenceElement from "./SentenceElement";
-import _ from "lodash";
+import { SentenceElement } from "./SentenceElement";
 
 interface ElementAreaProps {
-  droppableId: string;
-  items: { id: string; content: string }[];
+  items: string[];
+  onElementClick: (index: number) => void;
 }
 
-export const getElementsAreaRowLength = () => 4;
-
-const ElementsArea: React.FC<ElementAreaProps> = ({ droppableId, items }) => {
-  const rows = _.chunk(items, getElementsAreaRowLength());
-
+export const ElementsArea: React.FC<ElementAreaProps> = ({
+  items,
+  onElementClick,
+}) => {
   return (
-    <div>
-      {rows.map((row, rowIndex) => (
-        <Droppable
-          key={rowIndex}
-          droppableId={`${droppableId}-${rowIndex}`}
-          direction="horizontal"
-        >
-          {(provided, snapshot) => (
-            <div
-              className="element-area"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {row.map((item, index) => (
-                <SentenceElement
-                  key={item.id}
-                  id={item.id}
-                  content={item.content}
-                  index={index}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      ))}
+    <div className="elements-area">
+      <div className="elements-area__elements">
+        {items.map((item, index) => (
+          <div key={index} className="elements-area__element">
+            <SentenceElement
+              key={index}
+              content={item}
+              onClick={() => {
+                onElementClick(index);
+              }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
-
-export default ElementsArea;

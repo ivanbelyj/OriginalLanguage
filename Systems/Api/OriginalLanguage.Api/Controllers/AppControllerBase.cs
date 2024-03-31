@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OriginalLanguage.Api.Auth;
+using OriginalLanguage.Api.Helpers;
 using OriginalLanguage.Api.ResourceBasedAuth;
 using OriginalLanguage.Consts;
 
@@ -13,6 +14,11 @@ public class AppControllerBase : ControllerBase
     public AppControllerBase(IAuthorizationService authorizationService)
     {
         this.authorizationService = authorizationService;
+    }
+
+    protected Guid? GetUserId()
+    {
+        return UserUtils.GetUserId(HttpContext.User);
     }
 
     /// <summary>

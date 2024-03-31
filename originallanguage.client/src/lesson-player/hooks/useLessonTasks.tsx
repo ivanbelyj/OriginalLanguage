@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ITask, ITaskAnswer } from "../types/models";
+import { ITask, ITaskAnswer } from "../models/models";
 
 export interface ICheckAnswerResult {
   isCorrect: boolean;
@@ -47,6 +47,7 @@ export function useLessonTasks() {
     lessonId: string,
     answers: ITaskAnswer[]
   ): Promise<ILessonCompletionResult> {
+    console.log("complete lessons", lessonId, answers);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}lessons/${lessonId}/complete`,

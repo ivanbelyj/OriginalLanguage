@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ITask } from "../types/models";
 import { useLessonTasks } from "../hooks/useLessonTasks";
 import { LessonPlayer } from "../components/LessonPlayer";
+import { ITask } from "../models/models";
 
 const LessonPlayerPage: React.FC = () => {
   const { id: lessonId } = useParams();
