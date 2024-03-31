@@ -1,16 +1,33 @@
-import { useEffect } from "react";
 import { ITaskProps } from "../models/ITaskProps";
 import { TaskType } from "../models/TaskType";
 import ComposeElementsTask from "./tasks/ComposeElementsTask";
 import EnterTextTask from "./tasks/EnterTextTask";
 import FillInElementToText from "./tasks/FillInElementToText";
+import { Typography } from "antd";
+
+const { Title } = Typography;
 
 const taskComponentMap = {
-  [TaskType.ElementsToTranslation]: ComposeElementsTask,
-  [TaskType.ElementsToText]: ComposeElementsTask,
-  [TaskType.FillInElementToText]: FillInElementToText,
-  [TaskType.TextToTranslation]: EnterTextTask,
-  [TaskType.TranslationToText]: EnterTextTask,
+  [TaskType.ElementsToTranslation]: {
+    component: ComposeElementsTask,
+    title: "Compose a translation from the elements",
+  },
+  [TaskType.ElementsToText]: {
+    component: ComposeElementsTask,
+    title: "Compose a text from the elements",
+  },
+  [TaskType.FillInElementToText]: {
+    component: FillInElementToText,
+    title: "Fill in the element",
+  },
+  [TaskType.TextToTranslation]: {
+    component: EnterTextTask,
+    title: "Translate the text",
+  },
+  [TaskType.TranslationToText]: {
+    component: EnterTextTask,
+    title: "Translate the text",
+  },
 };
 
 export const TaskRenderer: React.FC<ITaskProps> = ({
@@ -18,10 +35,11 @@ export const TaskRenderer: React.FC<ITaskProps> = ({
   currentAnswer,
   setCurrentAnswer,
 }) => {
-  const TaskComponent = taskComponentMap[task.taskType];
+  const { component: TaskComponent, title } = taskComponentMap[task.taskType];
 
   return TaskComponent ? (
     <div>
+      <Title level={4}>{title}</Title>
       <TaskComponent
         task={task}
         currentAnswer={currentAnswer}

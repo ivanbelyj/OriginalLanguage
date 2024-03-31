@@ -35,8 +35,11 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
     } else {
       // Move next
       handleNextTask();
-      setCurrentAnswer("");
-      setCheckAnswerResult(null);
+
+      if (currentTaskIndex < tasks.length - 1) {
+        setCurrentAnswer("");
+        setCheckAnswerResult(null);
+      }
     }
   };
 
@@ -57,6 +60,10 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
         <PlayerControl
           checkAnswerResult={checkAnswerResult}
           onClick={handleButtonClick}
+          isLastTaskCompleted={
+            currentTaskIndex == tasks.length - 1 && !!checkAnswerResult
+          }
+          canCheck={!!currentAnswer}
         />
       </div>
     );
@@ -66,6 +73,7 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
       <CompletionBar
         tasksCount={tasks.length}
         currentTaskIndex={currentTaskIndex}
+        isCurrentTaskCompleted={!!checkAnswerResult}
       />
       <div>{lessonBody}</div>
     </div>
