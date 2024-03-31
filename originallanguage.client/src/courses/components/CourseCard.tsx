@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Avatar, Card, Typography } from "antd";
 import ICourse from "../models/ICourse";
+import LanguageFlag from "../../languages/components/LanguageFlag";
+import { UserOutlined } from "@ant-design/icons";
 
-const { Text, Paragraph } = Typography;
 const { Meta } = Card;
 
 export const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
@@ -10,19 +11,24 @@ export const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
     <Card
       title={
         <>
-          {/* Todo: get language name*/}
+          {/* Todo: get language name and flag*/}
+          <LanguageFlag />{" "}
           <Link to={"/courses/" + course.id}>
             {course.title ?? "Course title"}
           </Link>
         </>
       }
     >
-      <Paragraph>Added: {course.dateTimeAdded?.toLocaleString()}</Paragraph>
-      <Meta
-        avatar={<Avatar>U</Avatar>}
-        title="User name"
-        description="Some description"
-      />
+      <Link to="/">
+        <Meta
+          avatar={
+            <Avatar>
+              <UserOutlined />
+            </Avatar>
+          }
+          title="User name"
+        />
+      </Link>
     </Card>
   );
 };

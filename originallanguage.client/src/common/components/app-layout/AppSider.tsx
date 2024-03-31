@@ -1,4 +1,4 @@
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu, MenuProps, Tooltip } from "antd";
 
 import {
   BookOutlined,
@@ -6,13 +6,15 @@ import {
   UserOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguages } from "../../../languages/hooks/useLanguages";
 import { useCourses } from "../../../courses/hooks/useCourses";
 import { useUserLanguages } from "../../../user/hooks/useUserLanguages";
 import { useJwtToken } from "../../../auth/AuthProvider";
 import { useUserCourses } from "../../../user/hooks/useUserCourses";
+import LanguageUtils from "../../../languages/language-utils";
+import CourseUtils from "../../../courses/course-utils";
 
 const { Sider } = Layout;
 
@@ -33,10 +35,7 @@ function createItem(
 }
 
 const AppSider = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  //   const {
-  //     token: { colorBgContainer, borderRadiusLG },
-  //   } = theme.useToken();
+  const [collapsed, setCollapsed] = useState(true);
 
   const { postLanguage } = useLanguages();
   const { postCourse } = useCourses();
@@ -44,7 +43,6 @@ const AppSider = () => {
   const { getDecodedToken } = useJwtToken();
 
   const decodedToken = getDecodedToken();
-  // console.log("user id from token:", decodedToken);
   const userId = decodedToken?.sub;
 
   const { userLanguages, addLanguage } = useUserLanguages({
@@ -55,21 +53,32 @@ const AppSider = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      )
+        return;
+
+      if (event.code === "Backquote") {
+        setCollapsed((prev) => !prev);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [collapsed]);
+
   async function onAddLanguageClick() {
-    const lang = await postLanguage({
-      authorId: userId,
-      name: "New Language",
-      conlangData: {
-        type: "notSpecified",
-        origin: "notSpecified",
-        articulation: "common",
-        subjectiveComplexity: "notSpecified",
-        developmentStatus: "notSpecified",
-        settingOrigin: "notSpecified",
-        notHumanoidSpeakers: false,
-        furrySpeakers: false,
-      },
-    });
+    if (!userId) return;
+
+    const lang = await postLanguage(
+      LanguageUtils.defaultCreateLanguageModel(userId)
+    );
 
     addLanguage(lang);
 
@@ -79,10 +88,9 @@ const AppSider = () => {
   async function onAddCourseClick() {
     if (!userId) return;
 
-    const course = await postCourse({
-      authorId: userId,
-      title: "New Course",
-    });
+    const course = await postCourse(
+      CourseUtils.defaultCreateCourseModel(userId)
+    );
 
     addCourse(course);
 
@@ -124,12 +132,27 @@ const AppSider = () => {
   return (
     <Sider
       theme="light"
-      // trigger={null}
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
+      style={{
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        zIndex: 10,
+      }}
     >
-      <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
+      <Menu
+        defaultSelectedKeys={["1"]}
+        mode="inline"
+        items={items}
+        style={{
+          paddingBottom: "3em",
+        }}
+      />
     </Sider>
   );
 };

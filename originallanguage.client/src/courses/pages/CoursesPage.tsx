@@ -5,13 +5,14 @@ import { Card, List } from "antd";
 import Title from "antd/es/typography/Title";
 import ICourse from "../models/ICourse";
 import { CourseCard } from "../components/CourseCard";
+import LanguageFlag from "../../languages/components/LanguageFlag";
 
 const CoursesPage: React.FC = () => {
   const { courses } = useCourses();
   console.log("courses", courses);
 
   return (
-    <Card>
+    <div>
       <Title level={2}>Courses</Title>
       <List
         itemLayout="vertical"
@@ -23,7 +24,7 @@ const CoursesPage: React.FC = () => {
           </List.Item>
         )}
       />
-    </Card>
+    </div>
   );
 };
 

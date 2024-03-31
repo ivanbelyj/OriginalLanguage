@@ -1,49 +1,22 @@
 import React, { useState } from "react";
 import LanguageCard from "../components/LanguageCard";
 import { useLanguages } from "../hooks/useLanguages";
-import { Typography, Select, Card, List } from "antd";
-
-const conlangOptionValue = "conlang";
-const notConlangOptionValue = "notConlang";
+import { Typography, List } from "antd";
+import { LanguageFilter } from "../components/LanguageFilter";
 
 const LanguagesPage: React.FC = () => {
   const [isConlang, setIsConlang] = useState<boolean | null>(null);
   const { languages } = useLanguages({ isConlang });
 
-  // function handleCreateLanguage(newLanguage: ILanguage) {
-  //   console.log("created language", newLanguage);
-  // }
-
-  function toArtificialityOptionValue(value: boolean | null) {
-    if (value === null) return "";
-    return value ? conlangOptionValue : notConlangOptionValue;
-  }
-
-  function fromArtificialityOptionValue(value: string) {
-    return value === conlangOptionValue
-      ? true
-      : value === notConlangOptionValue
-      ? false
-      : null;
-  }
-
   const { Title } = Typography;
-  const { Option } = Select;
 
   return (
-    <Card>
+    <div>
       <Title level={2}>Languages</Title>
-      <Select
-        value={toArtificialityOptionValue(isConlang)}
-        onChange={(value) => {
-          setIsConlang(fromArtificialityOptionValue(value));
-        }}
-        style={{ width: "100%" }}
-      >
-        <Option value="">Any</Option>
-        <Option value={conlangOptionValue}>Conlang</Option>
-        <Option value={notConlangOptionValue}>Not Conlang</Option>
-      </Select>
+      <LanguageFilter
+        isConlang={isConlang}
+        setIsConlang={(isConlang) => setIsConlang(isConlang)}
+      />
 
       <List
         dataSource={languages}
@@ -53,7 +26,7 @@ const LanguagesPage: React.FC = () => {
           </List.Item>
         )}
       />
-    </Card>
+    </div>
   );
 };
 

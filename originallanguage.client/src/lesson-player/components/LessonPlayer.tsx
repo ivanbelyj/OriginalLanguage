@@ -52,6 +52,11 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
       <EmptyLesson />
     ) : (
       <div>
+        <CompletionBar
+          tasksCount={tasks.length}
+          currentTaskIndex={currentTaskIndex}
+          isCurrentTaskCompleted={!!checkAnswerResult}
+        />
         <TaskRenderer
           task={tasks[currentTaskIndex]}
           currentAnswer={currentAnswer}
@@ -70,11 +75,6 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
 
   return (
     <div>
-      <CompletionBar
-        tasksCount={tasks.length}
-        currentTaskIndex={currentTaskIndex}
-        isCurrentTaskCompleted={!!checkAnswerResult}
-      />
       <div>{lessonBody}</div>
     </div>
   );

@@ -3,6 +3,8 @@ import ILanguage from "../models/ILanguage";
 import LanguageFlag from "./LanguageFlag";
 import { Link } from "react-router-dom";
 import React from "react";
+import StringUtils from "../../common/string-utils";
+import { StarOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
@@ -10,11 +12,6 @@ const { Paragraph } = Typography;
 interface ILanguageInfoProps {
   language: ILanguage;
   style?: React.CSSProperties;
-}
-
-function cropWithEllipsis(str: string) {
-  const maxLength = 200;
-  return str.slice(0, maxLength) + (str.length - 3 > maxLength ? "..." : "");
 }
 
 export default function LanguageCard({ language, style }: ILanguageInfoProps) {
@@ -30,14 +27,17 @@ export default function LanguageCard({ language, style }: ILanguageInfoProps) {
       }
     >
       <Paragraph>
-        {language.about ? cropWithEllipsis(language.about) : ""}
+        {language.about
+          ? StringUtils.cropWithEllipsis(language.about, 200)
+          : ""}
       </Paragraph>
 
-      <Meta
-        avatar={<Avatar>U</Avatar>}
-        title="User name"
-        description="Some description"
-      />
+      <Link to="/">
+        <Meta
+          avatar={<Avatar icon={<UserOutlined />}>U</Avatar>}
+          title="User name"
+        />
+      </Link>
     </Card>
   );
 }
