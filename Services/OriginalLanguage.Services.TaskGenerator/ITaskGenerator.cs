@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.TaskGenerator;
+
+/// <summary>
+/// Generates a set of lesson tasks based on the progress level
+/// </summary>
 public interface ITaskGenerator
 {
     Task<IEnumerable<LessonTask>> GenerateLessonTasks(

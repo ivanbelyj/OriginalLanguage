@@ -9,10 +9,11 @@
 
 .elements-area__elements {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .elements-area__element {
-  height: 3.25em;
+  /* height: 3.25em; */
 }
 
 .sentence-element {

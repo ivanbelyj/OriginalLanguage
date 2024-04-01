@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OriginalLanguage.Services.TaskGenerator;
+namespace OriginalLanguage.Services.TaskGenerator.Utils;
 public class TaskTypeUtils
 {
     public static LanguageRole GetQuestionLanguageRole(TaskType taskType)
@@ -34,7 +34,7 @@ public class TaskTypeUtils
 
         // Todo: define task type by progress level
         return progressLevel <= 5
-            ? TaskType.ElementsToTranslation
+            ? TaskType.ElementsToText
             : TaskType.TranslationToText;
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OriginalLanguage.Services.TaskGenerator;
-internal static class ListExtensions
+namespace OriginalLanguage.Services.TaskGenerator.Utils;
+internal static class CollectionExtensions
 {
     public static List<T> Shuffled<T>(
-        this List<T> list,
+        this IEnumerable<T> list,
         Random? random = null)
     {
         random ??= Random.Shared;
@@ -24,7 +24,7 @@ internal static class ListExtensions
         if (!list.Any())
             throw new InvalidOperationException(nameof(list));
 
-        int index = random.Next(list.Count());
+        int index = random.Next(list.Count);
         return list[index];
     }
 }

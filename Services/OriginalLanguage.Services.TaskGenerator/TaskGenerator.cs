@@ -6,6 +6,7 @@ using OriginalLanguage.Services.LessonSamples.Models;
 using OriginalLanguage.Services.Sentences;
 using OriginalLanguage.Services.Sentences.Models;
 using OriginalLanguage.Services.TaskGenerator.Models;
+using OriginalLanguage.Services.TaskGenerator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.TaskGenerator;
+
 public class TaskGenerator : ITaskGenerator
 {
     internal const int MaxTasksPerLesson = 20;
 
     private readonly ILessonsService lessonsService;
     private readonly ILessonSamplesService lessonSamplesService;
-    private readonly ISentencesService sentencesService;
+    private readonly TaskGeneratorCore taskGeneratorCore;
 
     public TaskGenerator(
         ILessonsService lessonsService,
         ILessonSamplesService lessonSamplesService,
-        ISentencesService sentencesService)
+        TaskGeneratorCore taskGeneratorCore)
     {
         this.lessonsService = lessonsService;
         this.lessonSamplesService = lessonSamplesService;
-        this.sentencesService = sentencesService;
+        this.taskGeneratorCore = taskGeneratorCore;
     }
 
     public async Task<IEnumerable<LessonTask>> GenerateLessonTasks(
@@ -64,7 +66,7 @@ public class TaskGenerator : ITaskGenerator
         Stack<LessonSampleModel> shuffledLessonSamples = new();
         for (int i = 0; i < attemptsCount; i++)
         {
-            var lessonTask = await GenerateLessonTask(
+            var lessonTask = await taskGeneratorCore.GenerateLessonTask(
                 GetRandomLessonSample(lessonSamples, shuffledLessonSamples),
                 progressLevel);
             
@@ -88,44 +90,10 @@ public class TaskGenerator : ITaskGenerator
         }
     }
 
-    private int GetRecommendedTasksCount(int lessonSamplesCount)
+    private static int GetRecommendedTasksCount(int lessonSamplesCount)
     {
         return Math.Min(
             MaxTasksPerLesson,
             (int)Math.Round(lessonSamplesCount * 1.5f));
-    }
-
-    private async Task<LessonTask?> GenerateLessonTask(
-        LessonSampleModel lessonSampleModel,
-        int progressLevel)
-    {
-        TaskType taskType = TaskTypeUtils
-            .GetRandomTaskTypeByProgressLevel(progressLevel);
-        bool isSentenceLanguageHasTargetRole = TaskTypeUtils
-            .IsQuestionLanguageHasTargetRole(taskType);
-            
-        string? sentence = await GetTaskSentenceByLessonSample(
-            lessonSampleModel,
-            isSentenceLanguageHasTargetRole);
-        return sentence == null ? null : new LessonTask()
-        {
-            LessonSampleId = lessonSampleModel.Id,
-            Question = sentence,
-            TaskType = taskType
-        };
-    }
-
-    private async Task<string?> GetTaskSentenceByLessonSample(
-        LessonSampleModel sample,
-        bool isSentenceLanguageHasTargetRole)
-    {
-        var sentence = await sentencesService
-            .TryGetMainSentenceVariantOrFirst(sample);
-        if (sentence == null)
-            return null;
-
-        return isSentenceLanguageHasTargetRole
-            ? sentence.Text
-            : sentence.Translation;
     }
 }
