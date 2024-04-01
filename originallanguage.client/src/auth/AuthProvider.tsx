@@ -1,4 +1,3 @@
-import axios from "axios";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import {
   ReactNode,
@@ -10,6 +9,7 @@ import {
 } from "react";
 import AuthUtils from "./auth-utils";
 
+// Todo: in the current implementation logic of geting / setting token is inconsistent
 interface AuthContextType {
   token: string | null;
   setToken: (newToken: string | null) => void;
@@ -31,10 +31,10 @@ const AuthContext = createContext<AuthContextType>({
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setTokenCore] = useState<string | null>(AuthUtils.getToken());
+
   const setToken = (newToken: string | null) => {
+    AuthUtils.setToken(newToken);
     setTokenCore(newToken);
-    if (newToken === null) AuthUtils.removeToken();
-    else AuthUtils.setToken(newToken);
   };
 
   const getDecodedToken = () => {
@@ -48,11 +48,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (token) {
-      AuthUtils.setToken(token);
-    } else {
-      AuthUtils.removeToken();
-    }
+    AuthUtils.setToken(token);
   }, [token]);
 
   const contextValue = useMemo(
@@ -69,7 +65,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useJwtToken = () => {
+export const useAuth = () => {
   return useContext(AuthContext);
 };
 

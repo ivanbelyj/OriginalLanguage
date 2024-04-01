@@ -1,9 +1,9 @@
-import { useJwtToken } from "../AuthProvider";
+import { useAuth } from "../AuthProvider";
 import AuthUtils from "../auth-utils";
 import { useNavigate } from "react-router-dom";
 
 export function useLoginLogout() {
-  const { setToken } = useJwtToken();
+  const { token, setToken } = useAuth();
   const navigate = useNavigate();
 
   const login = async (username: string, password: string) => {
@@ -23,6 +23,8 @@ export function useLoginLogout() {
 
   const logout = () => {
     setToken(null);
+    AuthUtils.clearTokens();
+
     navigate("/", { replace: true });
   };
 

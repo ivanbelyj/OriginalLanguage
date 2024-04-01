@@ -27,9 +27,8 @@ public static class Bootstrapper
         services.AddScoped<IMessagesService, MessagesService>();
 
         // Cofigure JWT for SignalR
-        services.TryAddEnumerable(
-            ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>,
-            ConfigureJwtBearerOptions>());
+        services.TryAddEnumerable(ServiceDescriptor
+            .Singleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>());
 
         return services;
     }

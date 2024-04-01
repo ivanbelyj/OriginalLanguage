@@ -13,7 +13,7 @@ import { IUpdateLanguage, useLanguages } from "../hooks/useLanguages";
 import { useParams } from "react-router-dom";
 import React from "react";
 
-import { useJwtToken } from "../../auth/AuthProvider";
+import { useAuth } from "../../auth/AuthProvider";
 
 import "../styles/edit-language.css";
 
@@ -30,7 +30,7 @@ export function EditLanguage() {
   const languageName = useWatch("name", form);
   const [isConlang, setIsConlang] = useState(false);
 
-  const { getDecodedToken } = useJwtToken();
+  const { getDecodedToken } = useAuth();
   const decodedToken = getDecodedToken();
   const userId = decodedToken?.sub;
 

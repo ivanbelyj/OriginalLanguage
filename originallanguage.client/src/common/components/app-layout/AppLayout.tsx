@@ -3,19 +3,20 @@ import { Layout } from "antd";
 import AppHeader from "./AppHeader";
 import { Link, Outlet } from "react-router-dom";
 import AppSider from "./AppSider";
-import { useJwtToken } from "../../../auth/AuthProvider";
+import { useAuth } from "../../../auth/AuthProvider";
 
 const { Footer, Content } = Layout;
 
 export default function AppLayout() {
-  const { token } = useJwtToken();
+  const { token } = useAuth();
 
   const currentYear = new Date().getFullYear();
+  const isSiderActive = !!token;
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {token && <AppSider />}
+      {isSiderActive && <AppSider />}
 
-      <Layout style={{ marginLeft: "80px" }}>
+      <Layout style={{ marginLeft: isSiderActive ? 80 : 0 }}>
         <AppHeader />
 
         <Content style={{ padding: "1.5em" }}>

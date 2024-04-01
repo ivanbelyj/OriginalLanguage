@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using OriginalLanguage.Common.Utils;
 using OriginalLanguage.Services.Chats.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.Chats;
+
+[Authorize]
 public class ChatHub : Hub
 {
     private readonly IMessagesService messagesService;
@@ -46,13 +50,6 @@ public class ChatHub : Hub
         await Clients.Group(groupId).SendAsync("ReceiveMessage", messageResponse);
     }
 
-    private string? GetUserId()
-    {
-        Claim? userIdClaim = Context
-            .User
-            ?.Claims
-            .FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
-
-        return userIdClaim?.Value;
-    }
+    private string? GetUserId() => Context.User == null
+        ? null : UserUtils.GetUserIdClaimValue(Context.User);
 }

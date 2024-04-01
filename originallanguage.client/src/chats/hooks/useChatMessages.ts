@@ -14,7 +14,20 @@ export function useChatMessages(groupId: string) {
 
   useEffect(() => {
     console.log("connection", connection);
+    if (connection?.state === "Connected") initChat();
+    else if (connection?.state === "Disconnected")
+      connection?.start().then(() => initChat());
+
+    return () => {
+      if (connection) {
+        connection.off("ReceiveMessage");
+      }
+    };
+  }, [connection, groupId]);
+
+  function initChat() {
     if (connection) {
+      console.log("Connection state: ", connection.state);
       console.log("Connection state: ", connection.state);
 
       connection.on("ReceiveMessage", (message: IMessage) => {
@@ -24,15 +37,9 @@ export function useChatMessages(groupId: string) {
         }
       });
 
-      setTimeout(() => joinGroup(groupId), 1000);
+      joinGroup(groupId);
     }
-
-    return () => {
-      if (connection) {
-        connection.off("ReceiveMessage");
-      }
-    };
-  }, [connection, groupId]);
+  }
 
   async function getMessages(idLimit: number | null, limit: number) {
     try {

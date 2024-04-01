@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
-import { useJwtToken } from "../auth/AuthProvider";
+import { useAuth } from "../auth/AuthProvider";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
@@ -34,7 +34,7 @@ interface SignalRProviderProps {
 export const SignalRProvider: React.FC<SignalRProviderProps> = ({
   children,
 }: SignalRProviderProps) => {
-  const { token } = useJwtToken();
+  const { token } = useAuth();
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
@@ -54,12 +54,10 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
 
     setConnection(newConnection);
 
-    newConnection.start().catch((err) => console.error(err.toString()));
-
     return () => {
       newConnection.stop();
     };
-  }, []);
+  }, [token]);
 
   const sendMessage = async (groupId: string, message: string) => {
     console.log("Sending message...", message, "to group", groupId);

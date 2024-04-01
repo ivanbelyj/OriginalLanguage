@@ -1,17 +1,27 @@
 import { Avatar, Button, Menu } from "antd";
-import { Link } from "react-router-dom";
-import { useJwtToken } from "../../../auth/AuthProvider";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../../auth/AuthProvider";
+
+const mainLinkKey = "main";
 
 export default function AppHeader() {
-  const { token } = useJwtToken();
+  const { token } = useAuth();
+  const location = useLocation();
 
-  const links = [
-    <Link to="/">Main</Link>,
-    <Link to="/about">About</Link>,
-
-    <Link to="/languages">Languages</Link>,
-    <Link to="/courses">Courses</Link>,
+  const items = [
+    { key: mainLinkKey, label: <Link to="/">Main</Link> },
+    { key: "about", label: <Link to="/about">About</Link> },
+    { key: "languages", label: <Link to="/languages">Languages</Link> },
+    { key: "courses", label: <Link to="/courses">Courses</Link> },
   ];
+
+  const getCurrentItemKeys = () => {
+    let locationName = location.pathname.substring(1);
+    if (locationName === "") locationName = mainLinkKey;
+
+    const currentItem = items.find((x) => x.key === locationName);
+    return currentItem ? [currentItem.key] : [];
+  };
 
   return (
     <div
@@ -32,7 +42,9 @@ export default function AppHeader() {
       <Menu
         mode="horizontal"
         style={{ backgroundColor: "#fff", flexGrow: 1 }}
-        items={links.map((item, index) => ({ key: index, label: item }))}
+        items={items}
+        selectedKeys={getCurrentItemKeys()}
+        // items={links.map((item, index) => ({ key: index, label: item }))}
       ></Menu>
       {token ? (
         <Link to="profile/">

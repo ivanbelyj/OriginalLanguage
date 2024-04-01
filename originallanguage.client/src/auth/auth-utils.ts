@@ -5,25 +5,29 @@ export default class AuthUtils {
   public static getToken() {
     return localStorage.getItem("token");
   }
-  private static setToken(newToken: string | null) {
-    if (!newToken) AuthUtils.removeToken();
+  public static setToken(newToken: string | null) {
+    if (!newToken) localStorage.removeItem("token");
     else {
       localStorage.setItem("token", newToken);
-      AuthUtils.updateAxiosDefaults();
     }
-  }
-  private static removeToken() {
-    localStorage.removeItem("token");
     AuthUtils.updateAxiosDefaults();
   }
 
   private static getRefreshToken() {
     return localStorage.getItem("refreshToken");
   }
-  private static setRefreshToken(newToken: string) {
-    localStorage.setItem("refreshToken", newToken);
+  private static setRefreshToken(newToken: string | null) {
+    if (!newToken) localStorage.removeItem("refreshToken");
+    else {
+      localStorage.setItem("refreshToken", newToken);
+    }
   }
   // #endregion
+
+  public static clearTokens() {
+    AuthUtils.setToken(null);
+    AuthUtils.setRefreshToken(null);
+  }
 
   public static async fetchTokens(username: string, password: string) {
     const response = await axios.post(
@@ -88,6 +92,7 @@ export default class AuthUtils {
   public static async initAppAxios() {
     AuthUtils.updateAxiosDefaults();
     AuthUtils.useAxiosRefreshTokenInterceptor();
+    AuthUtils.useDebugInterceptor();
   }
 
   private static setAuthorizationHeader(request: any) {
@@ -152,8 +157,16 @@ export default class AuthUtils {
 
   private static updateAxiosDefaults() {
     const token = AuthUtils.getToken();
+    console.log("update axios defaults", token);
     if (token)
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     else delete axios.defaults.headers.common["Authorization"];
+  }
+
+  private static useDebugInterceptor() {
+    axios.interceptors.request.use((req) => {
+      console.log(req);
+      return req;
+    });
   }
 }

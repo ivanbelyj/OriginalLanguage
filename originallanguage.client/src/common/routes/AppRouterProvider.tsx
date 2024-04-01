@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useJwtToken } from "../../auth/AuthProvider";
+import { useAuth } from "../../auth/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../pages/MainPage";
 import AboutPage from "../pages/AboutPage";
@@ -21,7 +21,7 @@ import CoursePage from "../../courses/pages/CoursePage";
 import CourseFullInfo from "../../courses/components/CourseFullInfo";
 
 const AppRouterProvider = () => {
-  const { token } = useJwtToken();
+  const { token } = useAuth();
 
   const routesForPublic = [
     {

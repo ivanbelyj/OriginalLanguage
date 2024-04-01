@@ -10,11 +10,6 @@ export interface ILessonCompletionResult {
   isSucceeded: boolean;
 }
 
-axios.interceptors.request.use((req) => {
-  console.log(req);
-  return req;
-});
-
 export function useLessonTasks() {
   async function generateLessonTasks(lessonId: string): Promise<ITask[]> {
     try {

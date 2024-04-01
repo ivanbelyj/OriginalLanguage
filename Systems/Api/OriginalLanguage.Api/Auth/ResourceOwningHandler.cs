@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using OriginalLanguage.Api.Helpers;
+using OriginalLanguage.Common.Utils;
 using OriginalLanguage.Context.Entities;
 using System.Security.Claims;
 
@@ -13,7 +14,7 @@ public class ResourceOwningHandler
         ResourceOwningRequirement requirement,
         string resourceOwnerId)
     {
-        var userId = UserUtils.GetUserIdClaim(context.User);
+        var userId = UserUtils.GetUserIdClaimValue(context.User);
 
         if (userId == resourceOwnerId)
         {
