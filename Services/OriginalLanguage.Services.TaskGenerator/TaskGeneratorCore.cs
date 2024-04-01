@@ -1,5 +1,8 @@
-﻿using OriginalLanguage.Services.LessonSamples.Models;
-using OriginalLanguage.Services.Sentences;
+﻿using OriginalLanguage.Context.Entities;
+using OriginalLanguage.Services.LessonSamples.Models;
+using OriginalLanguage.Services.TaskGenerator.GenerationHandlers;
+using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
+using OriginalLanguage.Services.TaskGenerator.Helpers;
 using OriginalLanguage.Services.TaskGenerator.Models;
 using OriginalLanguage.Services.TaskGenerator.Utils;
 using System;
@@ -15,69 +18,48 @@ namespace OriginalLanguage.Services.TaskGenerator;
 /// </summary>
 public class TaskGeneratorCore
 {
-    private readonly ISentencesService sentencesService;
-    private readonly QuestionGenerator questionGenerator;
+    private readonly ElementsToTranslationHandler elementsToTranslationHandler;
+    private readonly ElementsToTextHandler elementsToTextHandler;
+    private readonly FillInElementToTextHandler fillInElementToTextHandler;
 
     public TaskGeneratorCore(
-        ISentencesService sentencesService,
-        QuestionGenerator questionGenerator)
+        ElementsToTranslationHandler elementsToTranslationHandler,
+        ElementsToTextHandler elementsToTextHandler,
+        FillInElementToTextHandler fillInElementToTextHandler)
     {
-        this.sentencesService = sentencesService;
-        this.questionGenerator = questionGenerator;
+        this.elementsToTranslationHandler = elementsToTranslationHandler;
+        this.elementsToTextHandler = elementsToTextHandler;
+        this.fillInElementToTextHandler = fillInElementToTextHandler;
     }
 
-    public async Task<LessonTask?> GenerateLessonTask(
-        LessonSampleModel lessonSampleModel,
-        int progressLevel)
-    {
-        var (taskType, sentence) = await GetTaskTypeAndSentence(
-            lessonSampleModel,
-            progressLevel);
-
-        if (sentence == null)
-            return null;
-
-        string question = await questionGenerator.GenerateQuestion(
-            lessonSampleModel.LessonId,
-            taskType,
-            progressLevel,
-            sentence);
-
-        return new LessonTask()
-        {
-            LessonSampleId = lessonSampleModel.Id,
-            Question = question,
-            TaskType = taskType
-        };
-    }
-
-    private async Task<(TaskType, string?)> GetTaskTypeAndSentence(
-        LessonSampleModel lessonSampleModel,
+    public async Task<LessonTask> GenerateLessonTask(
+        LessonSampleModel lessonSample,
         int progressLevel)
     {
         TaskType taskType = TaskTypeUtils
             .GetRandomTaskTypeByProgressLevel(progressLevel);
-        bool isSentenceLanguageHasTargetRole = TaskTypeUtils
-            .IsQuestionLanguageHasTargetRole(taskType);
+        GenerationContext context = new()
+        {
+            LessonSample = lessonSample,
+            ProgressLevel = progressLevel
+        };
 
-        string? sentence = await GetTaskSentenceByLessonSample(
-            lessonSampleModel,
-            isSentenceLanguageHasTargetRole);
+        IGenerationHandler? handler = GetHandlerByTaskType(taskType);
 
-        return (taskType, sentence);
+        return await handler.GenerateLessonTask(context);
     }
 
-    private async Task<string?> GetTaskSentenceByLessonSample(
-        LessonSampleModel sample,
-        bool isSentenceLanguageHasTargetRole)
+    private IGenerationHandler GetHandlerByTaskType(
+        TaskType taskType)
     {
-        var sentence = await sentencesService
-            .TryGetMainSentenceVariantOrFirst(sample);
-        if (sentence == null)
-            return null;
-
-        return isSentenceLanguageHasTargetRole
-            ? sentence.Text
-            : sentence.Translation;
+        return taskType switch
+        {
+            TaskType.ElementsToTranslation => elementsToTranslationHandler,
+            TaskType.ElementsToText => elementsToTextHandler,
+            TaskType.FillInElementToText => fillInElementToTextHandler,
+            //TaskType.TextToTranslation => null,
+            //TaskType.TranslationToText => null,
+            _ => throw new ArgumentException("Invalid task type", nameof(taskType)),
+        };
     }
 }

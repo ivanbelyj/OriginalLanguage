@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator.Utils;
 public class TaskTypeUtils
 {
-    public static LanguageRole GetQuestionLanguageRole(TaskType taskType)
+    public static LanguageRole GetAnswerLanguageRole(TaskType taskType)
     {
         return taskType switch
         {
-            TaskType.ElementsToTranslation
-                or TaskType.ElementsToText
+            TaskType.ElementsToText
                 or TaskType.FillInElementToText
-                or TaskType.TextToTranslation
+                or TaskType.ElementsToText
                 => LanguageRole.Target,
-            TaskType.TranslationToText
+            TaskType.ElementsToTranslation
+                or TaskType.TextToTranslation
                 => LanguageRole.Source,
             _ => throw new NotImplementedException("Not supported task type")
         };
     }
 
-    public static bool IsQuestionLanguageHasTargetRole(TaskType taskType)
-        => GetQuestionLanguageRole(taskType) == LanguageRole.Target;
+    public static bool IsAnswerLanguageHasTargetRole(TaskType taskType)
+        => GetAnswerLanguageRole(taskType) == LanguageRole.Target;
 
     public static TaskType GetRandomTaskTypeByProgressLevel(
         int progressLevel,

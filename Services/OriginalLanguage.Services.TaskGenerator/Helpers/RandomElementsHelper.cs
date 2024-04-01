@@ -1,4 +1,5 @@
-﻿using OriginalLanguage.Context.Entities;
+﻿using OriginalLanguage.Common.Lessons;
+using OriginalLanguage.Context.Entities;
 using OriginalLanguage.Services.Courses;
 using OriginalLanguage.Services.Languages;
 using OriginalLanguage.Services.Lessons;
@@ -15,16 +16,13 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator.Helpers;
 public class RandomElementsHelper
 {
-    private readonly ILessonsService lessonsService;
     private readonly ILessonSamplesService lessonSamplesService;
     private readonly ISentencesService sentencesService;
 
     public RandomElementsHelper(
-        ILessonsService lessonsService,
         ILessonSamplesService lessonSamplesService,
         ISentencesService sentencesService)
     {
-        this.lessonsService = lessonsService;
         this.lessonSamplesService = lessonSamplesService;
         this.sentencesService = sentencesService;
     }
@@ -35,8 +33,8 @@ public class RandomElementsHelper
         int limit)
     {
         var sentences = await GetLessonSentences(lessonId);
-        var elements = sentences
-            .SelectMany(x => SentenceUtils.SplitToElements(getProperty(x)));
+        var elements = sentences.SelectMany(
+            x => SentenceUtils.SplitToElements(SentenceUtils.Normalize(getProperty(x))));
         return elements
             .Shuffled()
             .Take(limit)

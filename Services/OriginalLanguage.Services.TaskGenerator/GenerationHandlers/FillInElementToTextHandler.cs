@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OriginalLanguage.Services.Sentences;
+using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 
 namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers;
-internal class FillInElementToTextHandler : GenerationHandlerBase
+public class FillInElementToTextHandler : GenerationHandlerBase
 {
-    public FillInElementToTextHandler(int progressLevel) : base(progressLevel)
+    public FillInElementToTextHandler(ISentencesService sentencesService)
+        : base(sentencesService)
     {
-        
     }
 
-    public override async Task<string> GenerateQuestion(string[] elements)
+    protected override Task<LessonTask> GenerateLessonTaskCore(GenerationContext context)
     {
-        return string.Join(", ", elements);
+        throw new NotImplementedException();
     }
 }

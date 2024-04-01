@@ -1,5 +1,7 @@
-﻿using OriginalLanguage.Services.TaskGenerator.Helpers;
-using OriginalLanguage.Services.TaskGenerator.Utils;
+﻿using OriginalLanguage.Services.Sentences;
+using OriginalLanguage.Services.Sentences.Models;
+using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
+using OriginalLanguage.Services.TaskGenerator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,29 +9,28 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers;
-internal class ElementsToTextHandler : GenerationHandlerBase
+public class ElementsToTextHandler : ComposeElementsHandler
 {
-    private readonly int lessonId;
-    private readonly RandomElementsHelper randomElementsHelper;
-
     public ElementsToTextHandler(
-        int lessonId,
-        RandomElementsHelper randomElementsHelper,
-        int progressLevel) : base(progressLevel)
+        ISentencesService sentencesService,
+        RandomElementsHelper randomElementsHelper)
+        : base(sentencesService, randomElementsHelper)
     {
-        this.lessonId = lessonId;
-        this.randomElementsHelper = randomElementsHelper;
     }
 
-    public override async Task<string> GenerateQuestion(string[] elements)
+    protected override async Task<LessonTask> GenerateLessonTaskCore(
+        GenerationContext context)
     {
-        var res = new List<string>();
-        res.AddRange(elements.Select(x => x.ToLower()));
-
-        var randomElements = await randomElementsHelper
-            .GetRandomElements(lessonId, x => x.Text, 10);
-        res.AddRange(randomElements);
-
-        return string.Join(" ", res.Distinct().Shuffled());
+        SentenceModel sentence = await GetMainSentence();
+        string given = await GenerateGiven(
+            sentence,
+            sentence => sentence.Text);
+        return new()
+        {
+            Given = given,
+            LessonSampleId = Context.LessonSample.Id,
+            TaskType = Models.TaskType.ElementsToText,
+            Question = sentence.Translation
+        };
     }
 }

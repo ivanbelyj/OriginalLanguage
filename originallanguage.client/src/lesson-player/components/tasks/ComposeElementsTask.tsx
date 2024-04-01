@@ -26,7 +26,7 @@ const ComposeElementsTask: React.FC<ITaskProps> = ({
 
   function getInitialElements() {
     return {
-      initialGiven: splitSentence(task.question),
+      initialGiven: splitSentence(task.given),
       initialResult: [],
     };
   }
@@ -41,6 +41,7 @@ const ComposeElementsTask: React.FC<ITaskProps> = ({
 
   return (
     <div className="compose-elements">
+      <div>{task.question}</div>
       <div>
         <ElementsArea
           items={resultElements}

@@ -1,4 +1,5 @@
-﻿using OriginalLanguage.Common.Validator;
+﻿using OriginalLanguage.Common.Lessons;
+using OriginalLanguage.Common.Validator;
 using OriginalLanguage.Services.LessonSamples;
 using OriginalLanguage.Services.LessonSamples.Models;
 using OriginalLanguage.Services.Sentences;
@@ -75,13 +76,15 @@ public class TaskAnswerChecker : ITaskAnswerChecker
     }
 
     private bool AreEqualNormalized(string str1, string str2) 
-        => SentenceNormalizer.Normalize(str1) == SentenceNormalizer.Normalize(str2);
+        => SentenceUtils.Normalize(str1) == SentenceUtils.Normalize(str2);
 
     private string? GetAnswerByTaskType(
         SentenceModel sentence,
         TaskType taskType)
     {
-        return !TaskTypeUtils.IsQuestionLanguageHasTargetRole(taskType)
+        bool isAnswerLanguageHasTargetRole = TaskTypeUtils
+            .IsAnswerLanguageHasTargetRole(taskType);
+        return isAnswerLanguageHasTargetRole
             ? sentence.Text
             : sentence.Translation;
     }

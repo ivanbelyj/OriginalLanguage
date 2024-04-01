@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Typography } from "antd";
-import { ITaskProps } from "../../types/ITaskProps";
+import { ITaskProps } from "../../models/ITaskProps";
 
 const { Paragraph } = Typography;
 

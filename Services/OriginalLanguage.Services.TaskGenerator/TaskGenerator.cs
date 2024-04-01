@@ -66,8 +66,9 @@ public class TaskGenerator : ITaskGenerator
         Stack<LessonSampleModel> shuffledLessonSamples = new();
         for (int i = 0; i < attemptsCount; i++)
         {
+            var sample = GetRandomLessonSample(lessonSamples, shuffledLessonSamples);
             var lessonTask = await taskGeneratorCore.GenerateLessonTask(
-                GetRandomLessonSample(lessonSamples, shuffledLessonSamples),
+                sample,
                 progressLevel);
             
             if (lessonTask != null)
