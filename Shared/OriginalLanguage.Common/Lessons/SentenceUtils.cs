@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Common.Lessons;
 public static class SentenceUtils
 {
+    //public static string Normalize(string s)
+    //{
+    //    return Regex.Replace(s.Trim().ToLower(), @"\s+", " ");
+    //}
+
+    private static readonly Regex SpaceRegex = new Regex(@"\s+", RegexOptions.Compiled);
+
     public static string Normalize(string s)
     {
-        return Regex.Replace(s.Trim().ToLower(), @"\s+", " ");
+        return SpaceRegex.Replace(s.Trim().ToLower(), " ");
     }
 
     public static string[] SplitToElements(string sentence)

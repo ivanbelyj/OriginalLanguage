@@ -57,10 +57,10 @@ public class TaskAnswerChecker : ITaskAnswerChecker
         => new CheckAnswerResult()
         {
             IsCorrect = isCorrect,
-            CorrectAnswer = await GetCorrectAnswer(lessonTask)
+            CorrectAnswer = await GetMainCorrectAnswer(lessonTask)
         };
 
-    private async Task<TaskAnswer?> GetCorrectAnswer(LessonTask lessonTask)
+    private async Task<TaskAnswer?> GetMainCorrectAnswer(LessonTask lessonTask)
     {
         LessonSampleModel lessonSample = await lessonSamplesService
             .GetLessonSample(lessonTask.LessonSampleId);

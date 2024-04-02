@@ -16,7 +16,7 @@ public static class SentenceServiceExtensions
     {
         var sampleSentences = await sentencesService
             .GetLessonSampleSentences(sample.Id);
-        if (sampleSentences.Count() == 0)
+        if (!sampleSentences.Any())
             return null;
 
         return sample.MainSentenceVariantId == null

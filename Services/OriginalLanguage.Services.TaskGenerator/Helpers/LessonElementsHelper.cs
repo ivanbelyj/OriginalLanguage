@@ -14,12 +14,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OriginalLanguage.Services.TaskGenerator.Helpers;
-public class RandomElementsHelper
+public class LessonElementsHelper
 {
     private readonly ILessonSamplesService lessonSamplesService;
     private readonly ISentencesService sentencesService;
 
-    public RandomElementsHelper(
+    public LessonElementsHelper(
         ILessonSamplesService lessonSamplesService,
         ISentencesService sentencesService)
     {
@@ -27,17 +27,14 @@ public class RandomElementsHelper
         this.sentencesService = sentencesService;
     }
 
-    public async Task<IEnumerable<string>> GetRandomElements(
+    public async Task<IEnumerable<string>> GetAllLessonElements(
         int lessonId,
-        Func<SentenceModel, string> getProperty,
-        int limit)
+        Func<SentenceModel, string?> getProperty)
     {
         var sentences = await GetLessonSentences(lessonId);
         var elements = sentences.SelectMany(
             x => SentenceUtils.SplitToElements(SentenceUtils.Normalize(getProperty(x))));
         return elements
-            .Shuffled()
-            .Take(limit)
             .Select(x => x.ToLower())
             .ToList();
     }
@@ -45,14 +42,9 @@ public class RandomElementsHelper
     private async Task<List<SentenceModel>> GetLessonSentences(int lessonId)
     {
         var samples = await lessonSamplesService.GetSamplesOfLesson(lessonId);
-        List<SentenceModel> sentences = new();
-        foreach (var sample in samples)
-        {
-            var sentence = await sentencesService
-                .TryGetMainSentenceVariantOrFirst(sample);
-            if (sentence != null)
-                sentences.Add(sentence);
-        }
-        return sentences;
+
+        var tasks = samples
+            .Select(x => sentencesService.TryGetMainSentenceVariantOrFirst(x));
+        return (await Task.WhenAll(tasks)).Where(x => x != null).ToList()!;
     }
 }

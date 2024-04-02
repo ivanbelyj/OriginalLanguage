@@ -18,18 +18,18 @@ namespace OriginalLanguage.Services.TaskGenerator;
 /// </summary>
 public class TaskGeneratorCore
 {
-    private readonly ElementsToTranslationHandler elementsToTranslationHandler;
-    private readonly ElementsToTextHandler elementsToTextHandler;
+    private readonly ComposeElementsHandler composeElementsHandler;
     private readonly FillInElementToTextHandler fillInElementToTextHandler;
+    private readonly TranslationHandler translationHandler;
 
     public TaskGeneratorCore(
-        ElementsToTranslationHandler elementsToTranslationHandler,
-        ElementsToTextHandler elementsToTextHandler,
-        FillInElementToTextHandler fillInElementToTextHandler)
+        ComposeElementsHandler composeElementsHandler,
+        FillInElementToTextHandler fillInElementToTextHandler,
+        TranslationHandler translationHandler)
     {
-        this.elementsToTranslationHandler = elementsToTranslationHandler;
-        this.elementsToTextHandler = elementsToTextHandler;
+        this.composeElementsHandler = composeElementsHandler;
         this.fillInElementToTextHandler = fillInElementToTextHandler;
+        this.translationHandler = translationHandler;
     }
 
     public async Task<LessonTask> GenerateLessonTask(
@@ -40,6 +40,7 @@ public class TaskGeneratorCore
             .GetRandomTaskTypeByProgressLevel(progressLevel);
         GenerationContext context = new()
         {
+            TaskType = taskType,
             LessonSample = lessonSample,
             ProgressLevel = progressLevel
         };
@@ -54,11 +55,11 @@ public class TaskGeneratorCore
     {
         return taskType switch
         {
-            TaskType.ElementsToTranslation => elementsToTranslationHandler,
-            TaskType.ElementsToText => elementsToTextHandler,
+            TaskType.ElementsToTranslation => composeElementsHandler,
+            TaskType.ElementsToText => composeElementsHandler,
             TaskType.FillInElementToText => fillInElementToTextHandler,
-            //TaskType.TextToTranslation => null,
-            //TaskType.TranslationToText => null,
+            TaskType.TextToTranslation => translationHandler,
+            TaskType.TranslationToText => translationHandler,
             _ => throw new ArgumentException("Invalid task type", nameof(taskType)),
         };
     }

@@ -14,7 +14,7 @@ public class TaskTypeUtils
         {
             TaskType.ElementsToText
                 or TaskType.FillInElementToText
-                or TaskType.ElementsToText
+                or TaskType.TranslationToText
                 => LanguageRole.Target,
             TaskType.ElementsToTranslation
                 or TaskType.TextToTranslation
@@ -26,15 +26,37 @@ public class TaskTypeUtils
     public static bool IsAnswerLanguageHasTargetRole(TaskType taskType)
         => GetAnswerLanguageRole(taskType) == LanguageRole.Target;
 
+    // Debug version
     public static TaskType GetRandomTaskTypeByProgressLevel(
         int progressLevel,
         Random? random = null)
     {
-        random ??= Random.Shared;
+        random ??= new Random();
 
-        // Todo: define task type by progress level
-        return progressLevel <= 5
-            ? TaskType.ElementsToText
-            : TaskType.TranslationToText;
+        TaskType[] values = Enum.GetValues<TaskType>();
+        return values.GetRandomElement(random);
     }
+
+    //public static TaskType GetRandomTaskTypeByProgressLevel(
+    //    int progressLevel,
+    //    Random? random = null)
+    //{
+    //    random ??= new Random();
+
+    //    return progressLevel switch
+    //    {
+    //        <= 2 => new[] {
+    //            TaskType.FillInElementToText,
+    //            TaskType.ElementsToTranslation,
+    //        }.GetRandomElement(random),
+    //        <= 5 => new[] {
+    //            TaskType.FillInElementToText,
+    //            TaskType.ElementsToTranslation,
+    //        }.GetRandomElement(random),
+    //        _ => new[] {
+    //            TaskType.TextToTranslation,
+    //            TaskType.TranslationToText
+    //        }.GetRandomElement(random)
+    //    };
+    //}
 }

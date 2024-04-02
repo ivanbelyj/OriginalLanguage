@@ -8,23 +8,23 @@ namespace OriginalLanguage.Services.TaskGenerator.Utils;
 internal static class CollectionExtensions
 {
     public static List<T> Shuffled<T>(
-        this IEnumerable<T> list,
+        this IEnumerable<T> seq,
         Random? random = null)
     {
         random ??= Random.Shared;
-        return list.OrderBy(x => random.Next()).ToList();
+        return seq.OrderBy(x => random.Next()).ToList();
     }
 
     public static T GetRandomElement<T>(
-        this List<T> list,
+        this IEnumerable<T> seq,
         Random? random = null)
     {
         random ??= new Random();
 
-        if (!list.Any())
-            throw new InvalidOperationException(nameof(list));
+        if (!seq.Any())
+            throw new InvalidOperationException(nameof(seq));
 
-        int index = random.Next(list.Count);
-        return list[index];
+        int index = random.Next(seq.Count());
+        return seq.ElementAt(index);
     }
 }

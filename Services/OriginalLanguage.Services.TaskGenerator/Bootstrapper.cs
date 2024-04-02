@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OriginalLanguage.Services.TaskGenerator.GenerationHandlers;
+using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 using OriginalLanguage.Services.TaskGenerator.Helpers;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,15 @@ public static class Bootstrapper
     public static IServiceCollection AddTaskGenerator(
         this IServiceCollection services)
     {
-        services.AddSingleton<RandomElementsHelper>();
-        services.AddSingleton<TaskGeneratorCore>();
+        services.AddScoped<IRandomElementsProvider, RandomElementsProvider>();
+        services.AddScoped<LessonElementsHelper>();
+        services.AddScoped<TaskGeneratorCore>();
 
-        services.AddSingleton<ElementsToTextHandler>();
-        services.AddSingleton<ElementsToTranslationHandler>();
-        services.AddSingleton<FillInElementToTextHandler>();
+        services.AddScoped<ComposeElementsHandler>();
+        services.AddScoped<FillInElementToTextHandler>();
+        services.AddScoped<TranslationHandler>();
 
-        services.AddSingleton<ITaskGenerator, TaskGenerator>();
+        services.AddScoped<ITaskGenerator, TaskGenerator>();
         return services;
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator;
 public class GenerationContext
 {
+    public TaskType TaskType { get; set; }
     public int ProgressLevel {  get; set; }
     public LessonSampleModel LessonSample { get; set; }
 }

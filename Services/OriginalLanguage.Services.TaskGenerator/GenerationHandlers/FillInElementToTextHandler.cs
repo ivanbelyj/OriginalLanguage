@@ -14,8 +14,15 @@ public class FillInElementToTextHandler : GenerationHandlerBase
     {
     }
 
-    protected override Task<LessonTask> GenerateLessonTaskCore(GenerationContext context)
+    protected override async Task<LessonTask> GenerateLessonTaskCore(
+        GenerationContext context)
     {
-        throw new NotImplementedException();
+        return new LessonTask()
+        {
+            TaskType = Models.TaskType.FillInElementToText,
+            LessonSampleId = context.LessonSample.Id,
+            Given = "Todo",
+            Question = "Todo",
+        };
     }
 }
