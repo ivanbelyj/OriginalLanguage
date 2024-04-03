@@ -1,15 +1,16 @@
 import { Alert, Button, Typography } from "antd";
 import { ICheckAnswerResult } from "../hooks/useLessonTasks";
+import { useEffect, useRef } from "react";
 const { Paragraph } = Typography;
 
 interface IPlayerControlProps {
   checkAnswerResult: ICheckAnswerResult | null;
-  onClick: () => void;
+  onPerformAction: () => void;
   isLastTaskCompleted: boolean;
   canCheck: boolean;
 }
 
-enum ButtonState {
+enum ActionType {
   MoveNext,
   CheckAnswer,
   Finish,
@@ -17,25 +18,45 @@ enum ButtonState {
 
 export const PlayerControl: React.FC<IPlayerControlProps> = ({
   checkAnswerResult,
-  onClick,
+  onPerformAction,
   isLastTaskCompleted,
   canCheck,
 }) => {
-  const getButtonState = () => {
-    if (checkAnswerResult === null) return ButtonState.CheckAnswer;
-    else if (isLastTaskCompleted) return ButtonState.Finish;
-    else return ButtonState.MoveNext;
+  const getCurrentAction = () => {
+    if (checkAnswerResult === null) return ActionType.CheckAnswer;
+    else if (isLastTaskCompleted) return ActionType.Finish;
+    else return ActionType.MoveNext;
   };
   const getButtonText = () => {
-    switch (getButtonState()) {
-      case ButtonState.MoveNext:
+    switch (getCurrentAction()) {
+      case ActionType.MoveNext:
         return "Next";
-      case ButtonState.CheckAnswer:
+      case ActionType.CheckAnswer:
         return "Check";
-      case ButtonState.Finish:
+      case ActionType.Finish:
         return "Finish";
     }
   };
+
+  const isActionAllowed = () => {
+    return getCurrentAction() !== ActionType.CheckAnswer || canCheck;
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === "Enter") {
+        if (!event.shiftKey && isActionAllowed()) {
+          event.preventDefault();
+          onPerformAction();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onPerformAction]);
 
   return (
     <div>
@@ -43,8 +64,8 @@ export const PlayerControl: React.FC<IPlayerControlProps> = ({
         <Button
           type="primary"
           style={{ marginTop: 16 }}
-          onClick={onClick}
-          disabled={getButtonState() === ButtonState.CheckAnswer && !canCheck}
+          onClick={onPerformAction}
+          disabled={!isActionAllowed()}
         >
           {getButtonText()}
         </Button>

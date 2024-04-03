@@ -29,7 +29,7 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
     setCheckAnswerResult,
   } = useTasksPlay(lessonId, tasks);
 
-  const handleButtonClick = () => {
+  const handlePerformAction = () => {
     if (checkAnswerResult === null) {
       handleCheckAnswer(currentAnswer);
     } else {
@@ -64,7 +64,7 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
         />
         <PlayerControl
           checkAnswerResult={checkAnswerResult}
-          onClick={handleButtonClick}
+          onPerformAction={handlePerformAction}
           isLastTaskCompleted={
             currentTaskIndex == tasks.length - 1 && !!checkAnswerResult
           }

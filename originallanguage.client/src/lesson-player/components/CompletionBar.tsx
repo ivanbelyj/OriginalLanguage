@@ -19,7 +19,7 @@ export const CompletionBar: React.FC<ICompletionBarProps> = ({
     "100%": "#87d068",
   };
   const calculatePercent = () => {
-    return (
+    return Math.round(
       ((currentTaskIndex + (isCurrentTaskCompleted ? 1 : 0)) / tasksCount) * 100
     );
   };

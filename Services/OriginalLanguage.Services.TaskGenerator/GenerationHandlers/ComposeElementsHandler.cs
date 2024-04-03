@@ -42,14 +42,13 @@ public class ComposeElementsHandler : GenerationHandlerBase
         return string.Join(" ", res.Distinct().Shuffled());
     }
 
-    protected override async Task<LessonTask> GenerateLessonTaskCore(
-        GenerationContext context)
+    protected override async Task<LessonTask> GenerateLessonTaskCore()
     {
         SentenceModel sentence = await GetMainSentence();
 
         string given = await GenerateGiven(
             sentence,
-            ElementOriginPropertyUtils.ByTaskType(context.TaskType));
+            ElementOriginPropertyUtils.ByTaskType(Context.TaskType));
 
         return new()
         {

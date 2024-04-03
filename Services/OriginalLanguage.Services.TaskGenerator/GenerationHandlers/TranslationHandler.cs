@@ -14,13 +14,12 @@ public class TranslationHandler : GenerationHandlerBase
     {
     }
 
-    protected override async Task<LessonTask> GenerateLessonTaskCore(
-        GenerationContext context)
+    protected override async Task<LessonTask> GenerateLessonTaskCore()
     {
         return new LessonTask()
         {
-            TaskType = context.TaskType,
-            LessonSampleId = context.LessonSample.Id,
+            TaskType = Context.TaskType,
+            LessonSampleId = Context.LessonSample.Id,
             Given = "",
             Question = await GetQuestion()
         };

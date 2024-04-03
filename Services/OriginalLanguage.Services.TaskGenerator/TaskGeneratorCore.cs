@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator;
 
 /// <summary>
-/// Generation of a lesson task based on a certain lesson sample and progress level
+/// Generates a lesson task based on a certain lesson sample and progress level
 /// </summary>
 public class TaskGeneratorCore
 {

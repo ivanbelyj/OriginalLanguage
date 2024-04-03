@@ -14,13 +14,12 @@ public class FillInElementToTextHandler : GenerationHandlerBase
     {
     }
 
-    protected override async Task<LessonTask> GenerateLessonTaskCore(
-        GenerationContext context)
+    protected override async Task<LessonTask> GenerateLessonTaskCore()
     {
         return new LessonTask()
         {
             TaskType = Models.TaskType.FillInElementToText,
-            LessonSampleId = context.LessonSample.Id,
+            LessonSampleId = Context.LessonSample.Id,
             Given = "Todo",
             Question = "Todo",
         };

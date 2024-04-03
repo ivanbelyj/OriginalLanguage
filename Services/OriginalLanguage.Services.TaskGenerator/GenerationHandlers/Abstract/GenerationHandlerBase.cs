@@ -22,11 +22,11 @@ public abstract class GenerationHandlerBase : IGenerationHandler
         this.sentencesService = sentencesService;
     }
 
-    protected abstract Task<LessonTask> GenerateLessonTaskCore(GenerationContext context);
+    protected abstract Task<LessonTask> GenerateLessonTaskCore();
     public Task<LessonTask> GenerateLessonTask(GenerationContext context)
     {
         Context = context;
-        return GenerateLessonTaskCore(context);
+        return GenerateLessonTaskCore();
     }
 
     protected string[] GetElements(string sentence)
