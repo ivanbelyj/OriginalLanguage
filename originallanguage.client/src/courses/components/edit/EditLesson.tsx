@@ -58,7 +58,7 @@ const EditLesson = ({
               </List.Item>
             )}
           />
-          <Button type="primary" onClick={onAddLessonSampleClicked}>
+          <Button type="default" onClick={onAddLessonSampleClicked}>
             <PlusOutlined /> Add sample
           </Button>
           <PopconfirmButton

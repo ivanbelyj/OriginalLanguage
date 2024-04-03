@@ -94,10 +94,10 @@ const EditLessonSample = ({
         </Form.Item>
       </Form>
       <div style={{ marginBottom: "1.5em" }}>
-        <Collapse accordion items={items} />
+        <Collapse items={items} />
       </div>
 
-      <Button type="primary" onClick={handleAddSentence}>
+      <Button type="text" onClick={handleAddSentence}>
         <PlusOutlined /> Add sentence variant
       </Button>
       <PopconfirmButton

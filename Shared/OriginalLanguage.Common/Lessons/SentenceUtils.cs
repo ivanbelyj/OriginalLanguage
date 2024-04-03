@@ -8,20 +8,38 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Common.Lessons;
 public static class SentenceUtils
 {
-    //public static string Normalize(string s)
-    //{
-    //    return Regex.Replace(s.Trim().ToLower(), @"\s+", " ");
-    //}
+    private static readonly char[] separators = {
+        ' ', '\t', '`', '!', '\"', '-', ':', ';', '\'', ',', '.', '?'
+    };
 
-    private static readonly Regex SpaceRegex = new Regex(@"\s+", RegexOptions.Compiled);
+    private static HashSet<char> separatorsSet = new HashSet<char>(separators);
 
     public static string Normalize(string s)
     {
-        return SpaceRegex.Replace(s.Trim().ToLower(), " ");
+        return string.Join(' ', SplitToElements(s));
     }
 
-    public static string[] SplitToElements(string sentence)
+    public static List<string> SplitToElements(string sentence)
     {
-        return sentence.Split(" ");
+        var res = new List<string>();
+        var currentWord = new StringBuilder();
+        
+        for (int i = 0; i < sentence.Length; i++)
+        {
+            bool isWordContinuing = !separatorsSet.Contains(sentence[i]);
+
+            if (isWordContinuing)
+            {
+                currentWord.Append(char.ToLower(sentence[i]));
+            }
+
+            if ((!isWordContinuing || i == sentence.Length - 1) 
+                && currentWord.Length > 0)
+            {
+                res.Add(currentWord.ToString());
+                currentWord.Clear();
+            }
+        }
+        return res;
     }
 }

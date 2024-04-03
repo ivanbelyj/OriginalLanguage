@@ -45,7 +45,7 @@ public class TaskGeneratorCore
             ProgressLevel = progressLevel
         };
 
-        IGenerationHandler? handler = GetHandlerByTaskType(taskType);
+        IGenerationHandler handler = GetHandlerByTaskType(taskType);
 
         return await handler.GenerateLessonTask(context);
     }

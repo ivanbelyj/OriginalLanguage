@@ -12,8 +12,19 @@ namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 public abstract class GenerationHandlerBase : IGenerationHandler
 {
     private readonly ISentencesService sentencesService;
+    private GenerationContext? context;
 
-    protected GenerationContext Context { get; private set; }
+    protected GenerationContext Context {
+        get
+        {
+            if (context == null)
+                throw new InvalidOperationException("Using not initialized "
+                    + "generation handler");
+            else return context;
+        }
+        private set => context = value;
+    }
+
     protected int LessonId => Context.LessonSample.LessonId;
 
     public GenerationHandlerBase(
@@ -29,9 +40,9 @@ public abstract class GenerationHandlerBase : IGenerationHandler
         return GenerateLessonTaskCore();
     }
 
-    protected string[] GetElements(string sentence)
+    protected List<string> GetElements(string sentence)
     {
-        return SentenceUtils.SplitToElements(SentenceUtils.Normalize(sentence));
+        return SentenceUtils.SplitToElements(sentence);
     }
 
     protected async Task<SentenceModel> GetMainSentence()

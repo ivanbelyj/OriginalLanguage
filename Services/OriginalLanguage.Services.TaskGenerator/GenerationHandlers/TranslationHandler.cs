@@ -21,7 +21,7 @@ public class TranslationHandler : GenerationHandlerBase
             TaskType = Context.TaskType,
             LessonSampleId = Context.LessonSample.Id,
             Given = "",
-            Question = await GetQuestion()
+            Question = await GetQuestion() ?? ""
         };
     }
 

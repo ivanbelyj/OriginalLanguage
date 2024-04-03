@@ -30,7 +30,7 @@ public class ComposeElementsHandler : GenerationHandlerBase
         ElementOriginProperty elementOriginProperty)
     {
         var getProperty = ElementOriginPropertyUtils.ToFunc(elementOriginProperty);
-        var res = GetElements(getProperty(sentence)).ToList();
+        var res = GetElements(getProperty(sentence) ?? "").ToList();
 
         int extraWordsCount = GetRecommendedExtraWordsCount();
         var randomElements = await randomElementsProvider.GetRandomElements(
@@ -55,7 +55,7 @@ public class ComposeElementsHandler : GenerationHandlerBase
             TaskType = Context.TaskType,
             LessonSampleId = Context.LessonSample.Id,
             Given = given,
-            Question = GetQuestion(sentence)
+            Question = GetQuestion(sentence) ?? ""
         };
     }
 
