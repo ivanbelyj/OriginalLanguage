@@ -1,6 +1,7 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { Progress, ProgressProps } from "antd";
 import { useNavigate } from "react-router-dom";
+import { CloseButton } from "../../common/components/CloseButton";
 
 interface ICompletionBarProps {
   tasksCount: number;
@@ -30,15 +31,14 @@ export const CompletionBar: React.FC<ICompletionBarProps> = ({
         display: "flex",
       }}
     >
-      <div
-        onClick={onClose}
-        style={{
-          padding: "0.4em 0.6em",
-          cursor: "pointer",
-        }}
-      >
-        <CloseOutlined />
-      </div>
+      <CloseButton
+        onClose={onClose}
+        closeModalTitle="Exit lesson"
+        closeModalContent={
+          "Are you sure you want to exit the lesson? " +
+          "Current lesson passing data will be lost."
+        }
+      />
 
       <Progress
         percent={calculatePercent()}
