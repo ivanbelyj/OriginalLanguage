@@ -34,6 +34,7 @@ public class RandomElementsProvider : IRandomElementsProvider
             lessonElements = (await randomElementsHelper.GetAllLessonElements(
                 lessonId,
                 ElementOriginPropertyUtils.ToFunc(property)))
+                .Distinct()
                 .ToList();
             elementsByLessonId.Add((lessonId, property), lessonElements);
         }
@@ -43,6 +44,4 @@ public class RandomElementsProvider : IRandomElementsProvider
             .Take(limit)
             .ToList();
     }
-
-    
 }

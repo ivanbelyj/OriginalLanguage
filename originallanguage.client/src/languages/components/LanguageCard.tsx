@@ -3,8 +3,8 @@ import ILanguage from "../models/ILanguage";
 import LanguageFlag from "./LanguageFlag";
 import { Link } from "react-router-dom";
 import React from "react";
-import StringUtils from "../../common/string-utils";
-import { StarOutlined, UserOutlined } from "@ant-design/icons";
+import StringUtils from "../../common/utils/string-utils";
+import { UserOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 const { Paragraph } = Typography;

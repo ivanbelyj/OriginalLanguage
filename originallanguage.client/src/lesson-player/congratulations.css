@@ -1,0 +1,17 @@
+.congrats {
+  text-align: center;
+  position: relative;
+}
+
+.blob {
+  /* display: block; */
+  height: 60px;
+  width: 60px;
+  top: 45%;
+  right: 45%;
+
+  color: #ffcc00;
+  position: absolute;
+  z-index: 1;
+  font-size: 30px;
+}

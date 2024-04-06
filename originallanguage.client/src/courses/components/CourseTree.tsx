@@ -1,6 +1,5 @@
 import React from "react";
-import { List } from "antd";
-import { CourseLessonItem } from "./CourseLessonItem"; // Импортируйте новый компонент
+import { CourseLessonItem } from "./CourseLessonItem";
 import ILesson from "../models/ILesson";
 import _ from "lodash";
 

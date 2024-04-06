@@ -27,3 +27,17 @@
   user-select: none;
   cursor: pointer;
 }
+
+.sentence {
+  cursor: default;
+  font-size: 1rem;
+}
+
+.sentence__word {
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+
+.sentence__word_with-hint {
+  border-bottom: 1.5px dashed #000;
+}

@@ -33,7 +33,9 @@ public class TaskTypeUtils
     {
         random ??= new Random();
 
-        TaskType[] values = Enum.GetValues<TaskType>();
+        TaskType[] values = new[] {
+            TaskType.ElementsToText, TaskType.ElementsToTranslation
+        }; // Enum.GetValues<TaskType>();
         return values.GetRandomElement(random);
     }
 

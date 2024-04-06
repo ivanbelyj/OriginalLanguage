@@ -23,5 +23,24 @@ internal class SentenceUtilsTests
         Assert.AreEqual(expected, SentenceUtils.SplitToElements(s2));
         Assert.AreEqual(expected, SentenceUtils.SplitToElements(s3));
         Assert.AreEqual(expected, SentenceUtils.SplitToElements(s4));
+
+        Assert.AreEqual(new List<string>(), SentenceUtils.SplitToElements(""));
+    }
+
+    [Test]
+    public void ExplicitlySeparatedTests()
+    {
+        Assert.AreEqual(
+            "one/two three",
+            SentenceUtils.ExplicitlySeparated("one/two three"));
+        Assert.AreEqual(
+            "one/two/three",
+            SentenceUtils.ExplicitlySeparated(" one    two three"));
+        Assert.AreEqual(
+            "one",
+            SentenceUtils.ExplicitlySeparated("one"));
+        Assert.AreEqual(
+            "",
+            SentenceUtils.ExplicitlySeparated(""));
     }
 }

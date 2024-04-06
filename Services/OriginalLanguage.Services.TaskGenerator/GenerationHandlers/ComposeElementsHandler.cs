@@ -25,6 +25,25 @@ public class ComposeElementsHandler : GenerationHandlerBase
         this.randomElementsProvider = randomElementsProvider;
     }
 
+    protected override async Task<LessonTask> GenerateLessonTaskCore()
+    {
+        SentenceModel sentence = await GetMainSentence();
+
+        string given = await GenerateGiven(
+            sentence,
+            ElementOriginPropertyUtils.ByTaskType(Context.TaskType));
+
+        return new()
+        {
+            TaskType = Context.TaskType,
+            LessonSampleId = Context.LessonSample.Id,
+            Given = given,
+            Question = GetQuestion(sentence),
+            Hint = GetHint(sentence),
+            Glosses = GetGlosses(sentence),
+        };
+    }
+
     protected async Task<string> GenerateGiven(
         SentenceModel sentence,
         ElementOriginProperty elementOriginProperty)
@@ -39,32 +58,34 @@ public class ComposeElementsHandler : GenerationHandlerBase
             extraWordsCount);
         res.AddRange(randomElements);
 
-        return string.Join(" ", res.Distinct().Shuffled());
+        return string.Join(" ", res.Shuffled());
     }
 
-    protected override async Task<LessonTask> GenerateLessonTaskCore()
+    private string? GetHint(SentenceModel sentence)
     {
-        SentenceModel sentence = await GetMainSentence();
+        string? value = sentence.LiteralTranslation;
+        return value == null || Context.TaskType != TaskType.ElementsToTranslation
+            ? null : SentenceUtils.ExplicitlySeparated(value);
+    }
 
-        string given = await GenerateGiven(
-            sentence,
-            ElementOriginPropertyUtils.ByTaskType(Context.TaskType));
+    private string? GetGlosses(SentenceModel sentence)
+    {
+        return sentence.Glosses == null
+            || Context.TaskType != TaskType.ElementsToTranslation
+            ? null : SentenceUtils.ExplicitlySeparated(sentence.Glosses);
+    }
 
-        return new()
+    private string? GetQuestion(SentenceModel sentence)
+    {
+        var question = Context.TaskType switch
         {
-            TaskType = Context.TaskType,
-            LessonSampleId = Context.LessonSample.Id,
-            Given = given,
-            Question = GetQuestion(sentence) ?? ""
+            TaskType.ElementsToTranslation => sentence.Text,
+            TaskType.ElementsToText => sentence.Translation,
+            _ => throw new InvalidOperationException("Not supported task type")
         };
+        return question == null
+            ? null : SentenceUtils.ExplicitlySeparated(question);
     }
-
-    private string? GetQuestion(SentenceModel sentence) => Context.TaskType switch
-    {
-        TaskType.ElementsToTranslation => sentence.Text,
-        TaskType.ElementsToText => sentence.Translation,
-        _ => throw new InvalidOperationException("Not supported task type")
-    };
 
     private int GetRecommendedExtraWordsCount()
     {

@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { ITaskProps } from "../../models/ITaskProps";
 import { useElementsState } from "../../hooks/useElementsState";
 import { ElementsArea } from "../common/ElementsArea";
+import SentenceUtils from "../../../common/utils/sentence-utils";
+import { SentenceElement } from "../common/SentenceElement";
+import SentenceWithHints from "../common/SentenceWithHints";
 
 const ComposeElementsTask: React.FC<ITaskProps> = ({
   task,
@@ -26,7 +29,7 @@ const ComposeElementsTask: React.FC<ITaskProps> = ({
 
   function getInitialElements() {
     return {
-      initialGiven: splitSentence(task.given),
+      initialGiven: !!task.given ? splitSentence(task.given) : [],
       initialResult: [],
     };
   }
@@ -41,7 +44,7 @@ const ComposeElementsTask: React.FC<ITaskProps> = ({
 
   return (
     <div className="compose-elements">
-      <div>{task.question}</div>
+      <SentenceWithHints task={task} />
       <div>
         <ElementsArea
           items={resultElements}
