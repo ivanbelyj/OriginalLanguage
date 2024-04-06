@@ -8,10 +8,7 @@ import {
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditLesson from "./EditLesson.tsx";
-import {
-  ICreateLesson,
-  ILessonIdAndNumber
-} from "../../hooks/useLessons.ts";
+import { ICreateLesson, ILessonIdAndNumber } from "../../hooks/useLessons.ts";
 import ILesson from "../../models/ILesson.ts";
 
 export interface EditLessonsProps {
@@ -31,17 +28,11 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
   updateLessonNumbers,
   deleteLesson,
 }: EditLessonsProps) => {
-  // const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
-  //   useLessons(courseId!);
-
-  console.log("render course lessons ");
-
   const sortedLessons = courseLessons.sort((a, b) => a.number - b.number);
 
   const handleAddLesson = async () => {
     if (!courseId) return;
 
-    console.log("Add lesson");
     await postLesson({
       courseId: courseId,
       number:
@@ -66,7 +57,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
 
   const ItemRenderer = ({
     item,
-    dragHandleProps
+    dragHandleProps,
   }: {
     item: ILesson;
     index: number;

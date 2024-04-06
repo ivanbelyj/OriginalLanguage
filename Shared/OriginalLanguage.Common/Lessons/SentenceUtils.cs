@@ -26,7 +26,7 @@ public static class SentenceUtils
 
     public static string Normalize(string s)
     {
-        return string.Join(' ', SplitToElements(s));
+        return string.Join(' ', SplitToElements(s, true));
     }
 
     public static List<string> SplitToElements(

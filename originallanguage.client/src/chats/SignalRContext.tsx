@@ -95,7 +95,6 @@ export const SignalRProvider: React.FC<SignalRProviderProps> = ({
     [connection]
   );
 
-  console.log("ctx", contextValue);
   return (
     <SignalRContext.Provider value={contextValue}>
       {children}

@@ -1,13 +1,13 @@
 import React from "react";
 
 import "../lesson-player.css";
-import { useTasksPlay } from "../hooks/useTasksPlay";
+import { LessonPlayerState, useTasksPlay } from "../hooks/useTasksPlay";
 import { TaskRenderer } from "./TaskRenderer";
-import { ITask } from "../models/models";
 import { EmptyLesson } from "./EmptyLesson";
 import LessonCompleted from "./LessonCompleted";
 import { PlayerControl } from "./PlayerControl";
 import { CompletionBar } from "./CompletionBar";
+import { ITask } from "../models/models";
 
 interface ILessonPlayerProps {
   lessonId: string;
@@ -15,36 +15,40 @@ interface ILessonPlayerProps {
 }
 
 export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
-  lessonId,
   tasks,
+  lessonId,
 }) => {
   const {
-    currentTaskIndex,
+    currentTask,
     currentAnswer,
     setCurrentAnswer,
     handleCheckAnswer,
-    handleNextTask,
-    completion,
+    completionResult,
     checkAnswerResult,
-    setCheckAnswerResult,
+    completedTasksCount,
+    playerState,
+    moveToNextTask,
+    handleCompleteLesson,
   } = useTasksPlay(lessonId, tasks);
 
-  const handlePerformAction = () => {
-    if (checkAnswerResult === null) {
-      handleCheckAnswer(currentAnswer);
-    } else {
-      // Move next
-      handleNextTask();
-
-      if (currentTaskIndex < tasks.length - 1) {
-        setCurrentAnswer("");
-        setCheckAnswerResult(null);
-      }
+  const handlePerformAction = async () => {
+    switch (playerState) {
+      case LessonPlayerState.NoAnswer:
+        break;
+      case LessonPlayerState.AnswerGiven:
+        await handleCheckAnswer(currentAnswer);
+        break;
+      case LessonPlayerState.AnswerChecked:
+        await moveToNextTask();
+        break;
+      case LessonPlayerState.LessonFinished:
+        await handleCompleteLesson();
+        break;
     }
   };
 
-  if (completion) {
-    return <LessonCompleted result={completion} />;
+  if (completionResult) {
+    return <LessonCompleted result={completionResult} />;
   }
 
   const lessonBody =
@@ -54,21 +58,17 @@ export const LessonPlayer: React.FC<ILessonPlayerProps> = ({
       <div>
         <CompletionBar
           tasksCount={tasks.length}
-          currentTaskIndex={currentTaskIndex}
-          isCurrentTaskCompleted={!!checkAnswerResult}
+          completedTasksCount={completedTasksCount}
         />
         <TaskRenderer
-          task={tasks[currentTaskIndex]}
+          task={currentTask}
           currentAnswer={currentAnswer}
           setCurrentAnswer={setCurrentAnswer}
         />
         <PlayerControl
           checkAnswerResult={checkAnswerResult}
           onPerformAction={handlePerformAction}
-          isLastTaskCompleted={
-            currentTaskIndex == tasks.length - 1 && !!checkAnswerResult
-          }
-          canCheck={!!currentAnswer}
+          playerState={playerState}
         />
       </div>
     );

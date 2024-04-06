@@ -52,10 +52,12 @@ public class ComposeElementsHandler : GenerationHandlerBase
         var res = GetElements(getProperty(sentence) ?? "").ToList();
 
         int extraWordsCount = GetRecommendedExtraWordsCount();
-        var randomElements = await randomElementsProvider.GetRandomElements(
+        var randomElements = (await randomElementsProvider.GetRandomElements(
             LessonId,
             elementOriginProperty,
-            extraWordsCount);
+            extraWordsCount))
+            .Except(res)
+            .ToList();
         res.AddRange(randomElements);
 
         return string.Join(" ", res.Shuffled());

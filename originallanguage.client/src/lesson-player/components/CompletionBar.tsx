@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 interface ICompletionBarProps {
   tasksCount: number;
-  currentTaskIndex: number;
-  isCurrentTaskCompleted: boolean;
+  completedTasksCount: number;
 }
 export const CompletionBar: React.FC<ICompletionBarProps> = ({
-  currentTaskIndex,
   tasksCount,
-  isCurrentTaskCompleted,
+  completedTasksCount,
 }) => {
   const navigate = useNavigate();
 
@@ -19,16 +17,13 @@ export const CompletionBar: React.FC<ICompletionBarProps> = ({
     "100%": "#87d068",
   };
   const calculatePercent = () => {
-    return Math.round(
-      ((currentTaskIndex + (isCurrentTaskCompleted ? 1 : 0)) / tasksCount) * 100
-    );
+    return Math.round((completedTasksCount / tasksCount) * 100);
   };
 
   const onClose = () => {
     navigate(-1);
   };
 
-  console.log(calculatePercent());
   return (
     <div
       style={{

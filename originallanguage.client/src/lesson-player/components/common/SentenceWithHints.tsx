@@ -1,8 +1,7 @@
 import React from "react";
 import { Tooltip } from "antd";
 import SentenceUtils from "../../../common/utils/sentence-utils";
-import { ITask } from "../../models/models";
-import { TaskType } from "../../models/TaskType";
+import { ITask, TaskType } from "../../models/models";
 
 const SentenceWithHints: React.FC<{ task: ITask }> = ({ task }) => {
   const words = SentenceUtils.splitSeparatedSentence(task.question || "");
@@ -45,7 +44,6 @@ const SentenceWithHints: React.FC<{ task: ITask }> = ({ task }) => {
     );
   };
 
-  console.log("task", task);
   return (
     <div className="sentence">
       {words.map((word, index) =>
@@ -58,7 +56,7 @@ const SentenceWithHints: React.FC<{ task: ITask }> = ({ task }) => {
             {renderItemContent(word, index)}
           </Tooltip>
         ) : (
-          <span>{renderItemContent(word, index)}</span>
+          <span key={index}>{renderItemContent(word, index)}</span>
         )
       )}
     </div>

@@ -33,7 +33,7 @@ public class LessonElementsHelper
     {
         var sentences = await GetLessonSentences(lessonId);
         var elements = sentences.SelectMany(
-            x => SentenceUtils.SplitToElements(getProperty(x) ?? ""));
+            x => SentenceUtils.SplitToElements(getProperty(x) ?? "", false));
         return elements
             .Select(x => x.ToLower())
             .ToList();

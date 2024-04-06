@@ -34,7 +34,6 @@ const PopconfirmButton: React.FC<IPopconfirmButtonProps> = (props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showPopconfirm = () => {
-    console.log("show popconfirm");
     setOpen(true);
   };
 
@@ -52,7 +51,6 @@ const PopconfirmButton: React.FC<IPopconfirmButtonProps> = (props) => {
   delete buttonProps?.onClick;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("handle click");
     showPopconfirm();
     if (externalOnClick) {
       externalOnClick(event);
@@ -60,7 +58,6 @@ const PopconfirmButton: React.FC<IPopconfirmButtonProps> = (props) => {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
     if (onCancel) {
       onCancel();

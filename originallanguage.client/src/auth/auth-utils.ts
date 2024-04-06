@@ -92,7 +92,7 @@ export default class AuthUtils {
   public static async initAppAxios() {
     AuthUtils.updateAxiosDefaults();
     AuthUtils.useAxiosRefreshTokenInterceptor();
-    AuthUtils.useDebugInterceptor();
+    // AuthUtils.useDebugInterceptor();
   }
 
   private static setAuthorizationHeader(request: any) {

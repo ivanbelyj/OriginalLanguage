@@ -1,45 +1,35 @@
 import { Alert, Button, Typography } from "antd";
 import { ICheckAnswerResult } from "../hooks/useLessonTasks";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { LessonPlayerState } from "../hooks/useTasksPlay";
 const { Paragraph } = Typography;
 
 interface IPlayerControlProps {
   checkAnswerResult: ICheckAnswerResult | null;
   onPerformAction: () => void;
-  isLastTaskCompleted: boolean;
-  canCheck: boolean;
-}
-
-enum ActionType {
-  MoveNext,
-  CheckAnswer,
-  Finish,
+  playerState: LessonPlayerState;
 }
 
 export const PlayerControl: React.FC<IPlayerControlProps> = ({
   checkAnswerResult,
   onPerformAction,
-  isLastTaskCompleted,
-  canCheck,
+  playerState,
 }) => {
-  const getCurrentAction = () => {
-    if (checkAnswerResult === null) return ActionType.CheckAnswer;
-    else if (isLastTaskCompleted) return ActionType.Finish;
-    else return ActionType.MoveNext;
-  };
-  const getButtonText = () => {
-    switch (getCurrentAction()) {
-      case ActionType.MoveNext:
-        return "Next";
-      case ActionType.CheckAnswer:
+  const getButtonText = (): string => {
+    switch (playerState) {
+      case LessonPlayerState.NoAnswer:
         return "Check";
-      case ActionType.Finish:
+      case LessonPlayerState.AnswerGiven:
+        return "Check";
+      case LessonPlayerState.AnswerChecked:
+        return "Next";
+      case LessonPlayerState.LessonFinished:
         return "Finish";
     }
   };
 
-  const isActionAllowed = () => {
-    return getCurrentAction() !== ActionType.CheckAnswer || canCheck;
+  const isActionAllowed = (): boolean => {
+    return playerState !== LessonPlayerState.NoAnswer;
   };
 
   useEffect(() => {
@@ -70,7 +60,7 @@ export const PlayerControl: React.FC<IPlayerControlProps> = ({
           {getButtonText()}
         </Button>
       </Paragraph>
-      {checkAnswerResult !== null && (
+      {playerState === LessonPlayerState.AnswerChecked && (
         <Paragraph>
           <Alert
             message={

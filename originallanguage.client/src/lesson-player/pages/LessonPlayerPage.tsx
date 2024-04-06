@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useLessonTasks } from "../hooks/useLessonTasks";
+import { generateLessonTasks, useLessonTasks } from "../hooks/useLessonTasks";
 import { LessonPlayer } from "../components/LessonPlayer";
-import { ITask } from "../models/models";
+import { ITask } from "../models/ITaskAnswer";
 
 const LessonPlayerPage: React.FC = () => {
   const { id: lessonId } = useParams();
-  const [tasks, setTasks] = useState<ITask[] | null>();
 
-  // Todo: handle when lessonId is falsy
-  const { generateLessonTasks } = useLessonTasks();
+  const { tasks, setTasks } = useLessonTasks();
 
   useEffect(() => {
     if (lessonId) {
       generateLessonTasks(lessonId).then((tasks: ITask[]) => {
         setTasks(tasks);
-        console.log("lessonId", lessonId);
-        console.log("generated tasks: ", tasks);
       });
     }
   }, [lessonId]);

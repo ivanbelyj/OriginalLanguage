@@ -32,7 +32,6 @@ const EditLessonSample = ({
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
-    console.log("on delete sentence click");
   };
 
   const items: CollapseProps["items"] = lessonSampleSentences.map(

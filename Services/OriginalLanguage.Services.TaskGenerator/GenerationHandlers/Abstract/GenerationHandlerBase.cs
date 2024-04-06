@@ -42,7 +42,7 @@ public abstract class GenerationHandlerBase : IGenerationHandler
 
     protected List<string> GetElements(string sentence)
     {
-        return SentenceUtils.SplitToElements(sentence);
+        return SentenceUtils.SplitToElements(sentence, false);
     }
 
     protected async Task<SentenceModel> GetMainSentence()

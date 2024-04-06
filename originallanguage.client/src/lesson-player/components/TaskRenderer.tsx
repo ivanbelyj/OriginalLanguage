@@ -1,5 +1,5 @@
 import { ITaskProps } from "../models/ITaskProps";
-import { TaskType } from "../models/TaskType";
+import { TaskType } from "../models/models";
 import ComposeElementsTask from "./tasks/ComposeElementsTask";
 import EnterTextTask from "./tasks/EnterTextTask";
 import FillInElementToText from "./tasks/FillInElementToText";
