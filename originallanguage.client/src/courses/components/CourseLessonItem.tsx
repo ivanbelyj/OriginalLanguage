@@ -1,7 +1,8 @@
 import React from "react";
-import { Avatar, List, Steps, Typography } from "antd";
+import { Avatar, List, Steps, Tooltip, Typography } from "antd";
 import { Link } from "react-router-dom";
 import ILesson from "../models/ILesson";
+import CourseUtils from "../course-utils";
 
 const { Title } = Typography;
 
@@ -14,20 +15,28 @@ export const CourseLessonItem: React.FC<ICourseLessonItemProps> = ({
 }) => {
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <Tooltip title={lesson.description} placement="bottom">
         <Link to={`/lessons/${lesson.id}/player`}>
-          <Avatar
-            size={64}
+          <div
             style={{
-              borderStyle: "solid",
-              borderColor: "#555",
-              borderWidth: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-          />
+          >
+            <Avatar
+              size={64}
+              style={{
+                borderStyle: "solid",
+                borderColor: "#555",
+                borderWidth: 4,
+              }}
+            />
 
-          <Title level={5}>Lesson {lesson.number}</Title>
+            <Title level={5}>{CourseUtils.getLessonTitle(lesson)}</Title>
+          </div>
         </Link>
-      </div>
+      </Tooltip>
       {/* <Steps
         direction="vertical"
         size="small"

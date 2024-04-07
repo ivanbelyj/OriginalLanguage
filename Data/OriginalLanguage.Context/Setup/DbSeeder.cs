@@ -144,8 +144,13 @@ public static class DbSeeder
                 var entity = new LessonSample()
                 {
                     MinimalProgressLevel = rnd.Next(3),
-                    LessonId = addedLessons[i].Id
-                    //Lesson = addedLessons[i],
+                    LessonId = addedLessons[i].Id,
+                    MainText = "Demo text",
+                    MainTranslation = "Demo translation",
+                    TextHints = "Demo text hints",
+                    TranslationHints = "Demo translation hints",
+                    Glosses = "Demo glosses",
+                    Transcription = "Demo transcription",
                 };
                 addedLessonSamples.Add(entity);
                 dbContext.LessonSamples.Add(entity);
@@ -159,12 +164,8 @@ public static class DbSeeder
             {
                 var entity = new Sentence()
                 {
-                    //LessonSample = addedLessonSamples[i],
                     LessonSampleId = addedLessonSamples[i].Id,
-                    Glosses = "Test glosses",
-                    LiteralTranslation = "Literal translation",
                     Text = "Текст предложения",
-                    Transcription = "Transcription",
                     Translation = "The text of the sentence",
                 };
                 dbContext.Sentences.Add(entity);
@@ -179,7 +180,6 @@ public static class DbSeeder
                 var entity = new LessonProgress()
                 {
                     ProgressLevel = rnd.Next(5),
-                    /*Lesson = addedLessons[i],*/
                     LessonId = addedLessons[i].Id,
                     UserId = userId,
                 };

@@ -176,12 +176,6 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
                 .OnDelete(DeleteBehavior.Cascade);
 
             entity
-                .HasOne(l => l.MainSentenceVariant)
-                .WithOne()
-                .HasForeignKey<LessonSample>(l => l.MainSentenceVariantId)
-                .IsRequired(false);
-
-            entity
                 .HasOne(ls => ls.Lesson)
                 .WithMany(lesson => lesson.LessonSamples)
                 .HasForeignKey(ls => ls.LessonId)
@@ -191,8 +185,6 @@ public class MainDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid
         modelBuilder.Entity<Sentence>(entity =>
         {
             entity.ToTable("sentences");
-            //entity.HasOne(s => s.LessonSample)
-            //    .WithMany(ls => ls.SentenceVariants);
         });
 
         modelBuilder.Entity<ChatMessage>(chatMessage =>

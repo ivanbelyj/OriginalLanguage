@@ -13,11 +13,6 @@ public class UpdateSentenceModel
     public string? Text { get; set; }
     public string? Translation { get; set; }
 
-    public string? LiteralTranslation { get; set; }
-
-    public string? Glosses { get; set; }
-    public string? Transcription { get; set; }
-
     public int LessonSampleId { get; set; }
 }
 

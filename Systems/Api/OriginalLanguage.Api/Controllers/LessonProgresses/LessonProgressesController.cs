@@ -36,24 +36,6 @@ public class LessonProgressesController : AppControllerBase
         this.mapper = mapper;
     }
 
-    //[HttpGet("{id}")]
-    //[ProducesResponseType(typeof(LessonProgressResponse), 200)]
-    //public async Task<LessonProgressResponse> GetLessonProgress([FromRoute] int id)
-    //{
-    //    return mapper.Map<LessonProgressResponse>(await lessonProgressesService.GetLessonProgress(id));
-    //}
-
-    //[HttpGet("")]
-    //[ProducesResponseType(typeof(IEnumerable<LessonProgressResponse>), 200)]
-    //public async Task<IEnumerable<LessonProgressResponse>> GetLessonProgress(
-    //    [FromQuery] int offset = 0,
-    //    [FromQuery] int limit = 10)
-    //{
-    //    return mapper.Map<IEnumerable<LessonProgressResponse>>(
-    //        await lessonProgressesService.GetLessonProgresses(offset, limit));
-    //}
-
-    
     [ProducesResponseType(typeof(LessonProgressResponse), 200)]
     [Authorize(AppScopes.CoursesLearn)]
     [HttpPost("")]

@@ -55,7 +55,7 @@ export function useTasksPlay(lessonId: string, tasks: ITask[]) {
     setCheckAnswerResult(result);
 
     setPlayerState(
-      isLastTask()
+      isLastTask() && result.isCorrect
         ? LessonPlayerState.LessonFinished
         : LessonPlayerState.AnswerChecked
     );

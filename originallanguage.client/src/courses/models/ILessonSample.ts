@@ -1,6 +1,11 @@
 export default interface ILessonSample {
   id: string;
   minimalProgressLevel: number;
-  mainSentenceVariantId: string;
   lessonId: string;
+  mainText?: string;
+  mainTranslation?: string;
+  textHints?: string;
+  translationHints?: string;
+  glosses?: string;
+  transcription?: string;
 }

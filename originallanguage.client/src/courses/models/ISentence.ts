@@ -4,7 +4,4 @@ export default interface ISentence {
 
   text?: string;
   translation?: string;
-  literalTranslation?: string;
-  glosses?: string;
-  transcription?: string;
 }

@@ -1,4 +1,6 @@
 ﻿using OriginalLanguage.Common.Lessons;
+using OriginalLanguage.Services.LessonSamples;
+using OriginalLanguage.Services.LessonSamples.Models;
 using OriginalLanguage.Services.Sentences;
 using OriginalLanguage.Services.Sentences.Models;
 using OriginalLanguage.Services.TaskGenerator.Utils;
@@ -11,7 +13,6 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 public abstract class GenerationHandlerBase : IGenerationHandler
 {
-    private readonly ISentencesService sentencesService;
     private GenerationContext? context;
 
     protected GenerationContext Context {
@@ -27,10 +28,9 @@ public abstract class GenerationHandlerBase : IGenerationHandler
 
     protected int LessonId => Context.LessonSample.LessonId;
 
-    public GenerationHandlerBase(
-        ISentencesService sentencesService)
+    public GenerationHandlerBase()
     {
-        this.sentencesService = sentencesService;
+        
     }
 
     protected abstract Task<LessonTask> GenerateLessonTaskCore();
@@ -43,14 +43,5 @@ public abstract class GenerationHandlerBase : IGenerationHandler
     protected List<string> GetElements(string sentence)
     {
         return SentenceUtils.SplitToElements(sentence, false);
-    }
-
-    protected async Task<SentenceModel> GetMainSentence()
-    {
-        var res = await sentencesService
-            .TryGetMainSentenceVariantOrFirst(Context.LessonSample);
-        if (res == null)
-            throw new InvalidOperationException();
-        else return res;
     }
 }

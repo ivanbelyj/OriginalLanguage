@@ -6,12 +6,16 @@ export interface ICreateLesson {
   theoryArticleId?: string;
   number: number;
   courseId: string;
+  title?: string;
+  description?: string;
 }
 
 export interface IUpdateLesson {
   theoryArticleId?: string;
   number: number;
   courseId: string;
+  title?: string;
+  description?: string;
 }
 
 export interface ILessonIdAndNumber {

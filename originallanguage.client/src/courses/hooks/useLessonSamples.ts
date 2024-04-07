@@ -4,14 +4,24 @@ import ILessonSample from "../models/ILessonSample";
 
 export interface ICreateLessonSample {
   minimalProgressLevel: number;
-  mainSentenceVariantId?: string;
   lessonId: string;
+  mainText?: string;
+  mainTranslation?: string;
+  textHints?: string;
+  translationHints?: string;
+  glosses?: string;
+  transcription?: string;
 }
 
 export interface IUpdateLessonSample {
   minimalProgressLevel: number;
-  mainSentenceVariantId?: string;
   lessonId: string;
+  mainText?: string;
+  mainTranslation?: string;
+  textHints?: string;
+  translationHints?: string;
+  glosses?: string;
+  transcription?: string;
 }
 
 export function useLessonSamples(lessonId: string) {

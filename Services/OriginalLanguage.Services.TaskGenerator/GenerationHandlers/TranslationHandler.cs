@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 public class TranslationHandler : GenerationHandlerBase
 {
-    public TranslationHandler(ISentencesService sentencesService)
-        : base(sentencesService)
+    public TranslationHandler() : base()
     {
     }
 
@@ -26,11 +25,10 @@ public class TranslationHandler : GenerationHandlerBase
     }
 
     private async Task<string?> GetQuestion() {
-        var mainSentence = await GetMainSentence();
         return Context.TaskType switch
         {
-            TaskType.TextToTranslation => mainSentence.Text,
-            TaskType.TranslationToText => mainSentence.Translation,
+            TaskType.TextToTranslation => Context.LessonSample.MainText,
+            TaskType.TranslationToText => Context.LessonSample.MainTranslation,
             _ => throw new InvalidOperationException("Unsupported task type")
         };
     }

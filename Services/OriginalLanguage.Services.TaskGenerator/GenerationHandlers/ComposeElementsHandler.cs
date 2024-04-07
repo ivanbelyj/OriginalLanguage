@@ -1,6 +1,6 @@
 ﻿using OriginalLanguage.Common.Lessons;
 using OriginalLanguage.Context.Entities;
-using OriginalLanguage.Services.Sentences;
+using OriginalLanguage.Services.LessonSamples.Models;
 using OriginalLanguage.Services.Sentences.Models;
 using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 using OriginalLanguage.Services.TaskGenerator.Helpers;
@@ -19,18 +19,16 @@ public class ComposeElementsHandler : GenerationHandlerBase
     private readonly IRandomElementsProvider randomElementsProvider;
 
     public ComposeElementsHandler(
-        ISentencesService sentencesService,
-        IRandomElementsProvider randomElementsProvider) : base(sentencesService)
+        IRandomElementsProvider randomElementsProvider) : base()
     {
         this.randomElementsProvider = randomElementsProvider;
     }
 
     protected override async Task<LessonTask> GenerateLessonTaskCore()
     {
-        SentenceModel sentence = await GetMainSentence();
-
+        LessonSampleModel lessonSample = Context.LessonSample;
         string given = await GenerateGiven(
-            sentence,
+            lessonSample,
             ElementOriginPropertyUtils.ByTaskType(Context.TaskType));
 
         return new()
@@ -38,18 +36,18 @@ public class ComposeElementsHandler : GenerationHandlerBase
             TaskType = Context.TaskType,
             LessonSampleId = Context.LessonSample.Id,
             Given = given,
-            Question = GetQuestion(sentence),
-            Hint = GetHint(sentence),
-            Glosses = GetGlosses(sentence),
+            Question = GetQuestion(lessonSample),
+            Hint = GetHint(lessonSample),
+            Glosses = GetGlosses(lessonSample),
         };
     }
 
     protected async Task<string> GenerateGiven(
-        SentenceModel sentence,
+        LessonSampleModel lessonSample,
         ElementOriginProperty elementOriginProperty)
     {
         var getProperty = ElementOriginPropertyUtils.ToFunc(elementOriginProperty);
-        var res = GetElements(getProperty(sentence) ?? "").ToList();
+        var res = GetElements(getProperty(lessonSample) ?? "").ToList();
 
         int extraWordsCount = GetRecommendedExtraWordsCount();
         var randomElements = (await randomElementsProvider.GetRandomElements(
@@ -63,26 +61,26 @@ public class ComposeElementsHandler : GenerationHandlerBase
         return string.Join(" ", res.Shuffled());
     }
 
-    private string? GetHint(SentenceModel sentence)
+    private string? GetHint(LessonSampleModel lessonSample)
     {
-        string? value = sentence.LiteralTranslation;
+        string? value = lessonSample.TextHints;
         return value == null || Context.TaskType != TaskType.ElementsToTranslation
             ? null : SentenceUtils.ExplicitlySeparated(value);
     }
 
-    private string? GetGlosses(SentenceModel sentence)
+    private string? GetGlosses(LessonSampleModel lessonSample)
     {
-        return sentence.Glosses == null
+        return lessonSample.Glosses == null
             || Context.TaskType != TaskType.ElementsToTranslation
-            ? null : SentenceUtils.ExplicitlySeparated(sentence.Glosses);
+            ? null : SentenceUtils.ExplicitlySeparated(lessonSample.Glosses);
     }
 
-    private string? GetQuestion(SentenceModel sentence)
+    private string? GetQuestion(LessonSampleModel sample)
     {
         var question = Context.TaskType switch
         {
-            TaskType.ElementsToTranslation => sentence.Text,
-            TaskType.ElementsToText => sentence.Translation,
+            TaskType.ElementsToTranslation => sample.MainText,
+            TaskType.ElementsToText => sample.MainTranslation,
             _ => throw new InvalidOperationException("Not supported task type")
         };
         return question == null

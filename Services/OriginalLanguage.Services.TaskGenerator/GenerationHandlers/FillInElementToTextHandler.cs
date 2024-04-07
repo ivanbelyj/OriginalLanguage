@@ -9,8 +9,7 @@ using OriginalLanguage.Services.TaskGenerator.GenerationHandlers.Abstract;
 namespace OriginalLanguage.Services.TaskGenerator.GenerationHandlers;
 public class FillInElementToTextHandler : GenerationHandlerBase
 {
-    public FillInElementToTextHandler(ISentencesService sentencesService)
-        : base(sentencesService)
+    public FillInElementToTextHandler() : base()
     {
     }
 

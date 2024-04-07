@@ -1,4 +1,12 @@
-import { Button, Collapse, CollapseProps, List } from "antd";
+import {
+  Button,
+  Collapse,
+  CollapseProps,
+  Form,
+  Input,
+  List,
+  Typography,
+} from "antd";
 import EditLessonSample from "./EditLessonSample";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
@@ -8,16 +16,22 @@ import {
   useLessonSamples,
 } from "../../hooks/useLessonSamples";
 import PopconfirmButton from "../../../common/components/PopconfirmButton";
+import { IUpdateLesson } from "../../hooks/useLessons";
+import CourseUtils from "../../course-utils";
+
+const { Title } = Typography;
 
 export interface IEditLessonProps {
   lesson: ILesson;
   dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
+  handleLessonChanged: (id: string, lesson: IUpdateLesson) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
 }
 
 const EditLesson = ({
   lesson,
   dragHandleProps,
+  handleLessonChanged,
   onDelete,
 }: IEditLessonProps) => {
   const {
@@ -27,6 +41,8 @@ const EditLesson = ({
     deleteLessonSample,
   } = useLessonSamples(lesson.id);
 
+  const [form] = Form.useForm();
+
   const onAddLessonSampleClicked = async () => {
     await postLessonSample({
       lessonId: lesson.id,
@@ -34,12 +50,33 @@ const EditLesson = ({
     });
   };
 
+  const handleBlur = () => {
+    const updateLesson: IUpdateLesson = {
+      ...lesson,
+      ...form.getFieldsValue(),
+    };
+    handleLessonChanged(lesson.id, updateLesson);
+  };
+
   const items: CollapseProps["items"] = [
     {
       key: "1",
-      label: <div {...dragHandleProps}>Lesson {lesson.number}</div>,
+      label: (
+        <div {...dragHandleProps}>{CourseUtils.getLessonTitle(lesson)}</div>
+      ),
       children: (
         <>
+          <Title level={4}>
+            {"Edit lesson" + (lesson.title ? ` "${lesson.title}"` : "")}
+          </Title>
+          <Form form={form} initialValues={lesson}>
+            <Form.Item name="title" label="Lesson Title">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="description" label="Description">
+              <Input.TextArea onBlur={handleBlur} />
+            </Form.Item>
+          </Form>
           <List
             itemLayout="vertical"
             dataSource={samplesOfLesson}

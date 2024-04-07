@@ -10,6 +10,8 @@ namespace OriginalLanguage.Services.Lessons.Models;
 public class LessonModel
 {
     public int Id { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
     public int? TheoryArticleId { get; set; }
     public int Number { get; set; }
     public int CourseId { get; set; }

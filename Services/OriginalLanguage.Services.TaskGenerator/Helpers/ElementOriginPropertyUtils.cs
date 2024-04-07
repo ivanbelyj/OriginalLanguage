@@ -1,4 +1,4 @@
-﻿using OriginalLanguage.Services.Sentences.Models;
+﻿using OriginalLanguage.Common.Lessons;
 using OriginalLanguage.Services.TaskGenerator.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Services.TaskGenerator.Helpers;
 public static class ElementOriginPropertyUtils
 {
-    public static Func<SentenceModel, string?> ToFunc(ElementOriginProperty property)
+    public static Func<ISentence, string?> ToFunc(ElementOriginProperty property)
     {
         return property switch
         {

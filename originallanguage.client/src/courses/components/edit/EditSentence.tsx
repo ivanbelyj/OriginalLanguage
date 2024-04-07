@@ -29,15 +29,6 @@ const EditSentence = ({
       <Form.Item name="translation" label="Translation">
         <Input onBlur={handleBlur} />
       </Form.Item>
-      <Form.Item name="literalTranslation" label="Literal Translation">
-        <Input onBlur={handleBlur} />
-      </Form.Item>
-      <Form.Item name="glosses" label="Glosses">
-        <Input onBlur={handleBlur} />
-      </Form.Item>
-      <Form.Item name="transcription" label="Transcription">
-        <Input onBlur={handleBlur} />
-      </Form.Item>
     </Form>
   );
 };

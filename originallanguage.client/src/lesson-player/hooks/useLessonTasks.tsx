@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ITask, ITaskAnswer } from "../models/ITaskAnswer";
 import { useState } from "react";
+import { ITask, ITaskAnswer } from "../models/models";
 
 export interface ICheckAnswerResult {
   isCorrect: boolean;
@@ -15,6 +15,7 @@ export async function checkAnswer(
   answer: ITaskAnswer
 ): Promise<ICheckAnswerResult> {
   try {
+    console.log("checking ", answer);
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}lessons/check-task-answer`,
       answer

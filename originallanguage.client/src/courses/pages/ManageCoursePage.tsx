@@ -9,8 +9,13 @@ import { useLessons } from "../hooks/useLessons";
 const ManageCoursePage = () => {
   const { id: courseId, activeTab } = useParams();
 
-  const { courseLessons, postLesson, updateLessonNumbers, deleteLesson } =
-    useLessons(courseId!);
+  const {
+    courseLessons,
+    postLesson,
+    updateLesson,
+    updateLessonNumbers,
+    deleteLesson,
+  } = useLessons(courseId!);
 
   const navigate = useNavigate();
 
@@ -26,6 +31,7 @@ const ManageCoursePage = () => {
               courseId={courseId!}
               courseLessons={courseLessons}
               postLesson={postLesson}
+              updateLesson={updateLesson}
               updateLessonNumbers={updateLessonNumbers}
               deleteLesson={deleteLesson}
             />

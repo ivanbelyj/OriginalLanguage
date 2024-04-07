@@ -8,13 +8,18 @@ import {
 } from "react-beautiful-dnd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditLesson from "./EditLesson.tsx";
-import { ICreateLesson, ILessonIdAndNumber } from "../../hooks/useLessons.ts";
+import {
+  ICreateLesson,
+  ILessonIdAndNumber,
+  IUpdateLesson,
+} from "../../hooks/useLessons.ts";
 import ILesson from "../../models/ILesson.ts";
 
 export interface EditLessonsProps {
   courseId: string;
   courseLessons: ILesson[];
   postLesson: (lesson: ICreateLesson) => Promise<ILesson>;
+  updateLesson: (id: string, lesson: IUpdateLesson) => Promise<void>;
   updateLessonNumbers: (
     lessonIdsAndNumbers: ILessonIdAndNumber[]
   ) => Promise<void>;
@@ -25,6 +30,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
   courseId,
   courseLessons,
   postLesson,
+  updateLesson,
   updateLessonNumbers,
   deleteLesson,
 }: EditLessonsProps) => {
@@ -68,6 +74,7 @@ const EditCourseLessons: React.FC<EditLessonsProps> = ({
         <EditLesson
           lesson={item}
           dragHandleProps={dragHandleProps}
+          handleLessonChanged={updateLesson}
           onDelete={(id: string) => deleteLesson(id)}
         />
       </div>

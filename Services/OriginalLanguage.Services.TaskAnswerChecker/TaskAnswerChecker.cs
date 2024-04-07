@@ -38,8 +38,11 @@ public class TaskAnswerChecker : ITaskAnswerChecker
     {
         taskAnswerValidator.Check(answer);
 
-        var sentences = await sentencesService
-            .GetLessonSampleSentences(answer.Task.LessonSampleId);
+        var lessonSample = await lessonSamplesService
+            .GetLessonSample(answer.Task.LessonSampleId);
+        var sentences = new List<ISentence>() { lessonSample };
+        sentences.AddRange(await sentencesService
+            .GetLessonSampleSentences(answer.Task.LessonSampleId));
 
         foreach (var sentence in sentences)
         {
@@ -64,14 +67,10 @@ public class TaskAnswerChecker : ITaskAnswerChecker
     {
         LessonSampleModel lessonSample = await lessonSamplesService
             .GetLessonSample(lessonTask.LessonSampleId);
-        SentenceModel? mainSentenceVariant = await sentencesService
-            .TryGetMainSentenceVariantOrFirst(lessonSample);
         return new TaskAnswer()
         {
             Task = lessonTask,
-            Answer = mainSentenceVariant == null
-                ? null
-                : GetAnswerByTaskType(mainSentenceVariant, lessonTask.TaskType)
+            Answer = GetAnswerByTaskType(lessonSample, lessonTask.TaskType)
         };
     }
 
@@ -79,7 +78,7 @@ public class TaskAnswerChecker : ITaskAnswerChecker
         => SentenceUtils.Normalize(str1) == SentenceUtils.Normalize(str2);
 
     private string? GetAnswerByTaskType(
-        SentenceModel sentence,
+        ISentence sentence,
         TaskType taskType)
     {
         bool isAnswerLanguageHasTargetRole = TaskTypeUtils

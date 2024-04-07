@@ -1,10 +1,22 @@
-import { Card, Form, Button, InputNumber, Collapse, CollapseProps } from "antd";
+import {
+  Card,
+  Form,
+  Button,
+  InputNumber,
+  Collapse,
+  CollapseProps,
+  Input,
+  Divider,
+  Typography,
+} from "antd";
 import EditSentence from "./EditSentence";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { IUpdateLessonSample } from "../../hooks/useLessonSamples";
 import ILessonSample from "../../models/ILessonSample";
 import { IUpdateSentence, useSentences } from "../../hooks/useSentences";
 import PopconfirmButton from "../../../common/components/PopconfirmButton";
+
+const { Title } = Typography;
 
 export interface IEditLessonSampleProps {
   lessonSample: ILessonSample;
@@ -32,6 +44,7 @@ const EditLessonSample = ({
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
+    console.log("on click delete variant");
   };
 
   const items: CollapseProps["items"] = lessonSampleSentences.map(
@@ -40,6 +53,16 @@ const EditLessonSample = ({
       label: (
         <div>
           {sentence.text ?? `Variant ${index + 1}`}
+          {/* <Button
+            type="text"
+            size="small"
+            style={{ marginLeft: "1em" }}
+            icon={<DeleteOutlined />}
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteSentence(sentence.id);
+            }}
+          ></Button> */}
           <PopconfirmButton
             onConfirm={() => deleteSentence(sentence.id)}
             buttonProps={{
@@ -79,39 +102,70 @@ const EditLessonSample = ({
 
   const getTitle = () => {
     const defaultTitle = `Lesson sample ${lessonSampleNumber}`;
-    // Todo: lesson sample title based on main sentence variant
-    const firstSentenceText =
-      lessonSampleSentences.length > 0 ? lessonSampleSentences[0].text : null;
-    return firstSentenceText ?? defaultTitle;
+    return (
+      lessonSample.mainText || lessonSample.mainTranslation || defaultTitle
+    );
   };
 
-  return (
-    <Card title={getTitle()}>
-      <Form form={form} initialValues={lessonSample}>
-        <Form.Item name="minimalProgressLevel" label="Minimal Progress Level">
-          <InputNumber min={0} max={10} onBlur={handleBlur} />
-        </Form.Item>
-      </Form>
-      <div style={{ marginBottom: "1.5em" }}>
-        <Collapse items={items} />
-      </div>
+  const rootItems: CollapseProps["items"] = [
+    {
+      key: "1",
+      label: getTitle(),
+      children: (
+        <>
+          <Title level={5}>Edit sample</Title>
+          <Form form={form} initialValues={lessonSample}>
+            <Form.Item
+              name="minimalProgressLevel"
+              label="Minimal Progress Level"
+            >
+              <InputNumber min={0} max={10} onBlur={handleBlur} />
+            </Form.Item>
+            <Divider />
 
-      <Button type="text" onClick={handleAddSentence}>
-        <PlusOutlined /> Add sentence variant
-      </Button>
-      <PopconfirmButton
-        onConfirm={() => onDelete(lessonSample.id)}
-        buttonProps={{
-          danger: true,
-          type: "text",
-          style: { marginLeft: "1em" },
-          icon: <DeleteOutlined />,
-        }}
-      >
-        Delete sample
-      </PopconfirmButton>
-    </Card>
-  );
+            <Form.Item name="mainText" label="Main Text">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="mainTranslation" label="Main Translation">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="textHints" label="Text Hints">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="translationHints" label="Translation Hints">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="glosses" label="Glosses">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+            <Form.Item name="transcription" label="Transcription">
+              <Input onBlur={handleBlur} />
+            </Form.Item>
+          </Form>
+          <div style={{ marginBottom: "1.5em" }}>
+            <Collapse items={items} />
+          </div>
+
+          <Button type="text" onClick={handleAddSentence}>
+            <PlusOutlined /> Add sentence variant
+          </Button>
+          <PopconfirmButton
+            onConfirm={() => onDelete(lessonSample.id)}
+            buttonProps={{
+              danger: true,
+              type: "text",
+              style: { marginLeft: "1em" },
+              icon: <DeleteOutlined />,
+            }}
+          >
+            Delete sample
+          </PopconfirmButton>
+        </>
+      ),
+    },
+  ];
+
+  return <Collapse items={rootItems} />;
 };
 
 export default EditLessonSample;

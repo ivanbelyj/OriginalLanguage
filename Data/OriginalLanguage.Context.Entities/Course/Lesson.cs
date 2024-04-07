@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace OriginalLanguage.Context.Entities;
 public class Lesson : EntityBase
 {
+    public string? Title { get; set; }
+    public string? Description { get; set; }
     public int? TheoryArticleId { get; set; }
     public virtual Article? TheoryArticle { get; set; }
 

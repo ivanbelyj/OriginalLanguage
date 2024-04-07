@@ -1,5 +1,5 @@
 import { ICreateCourse } from "./hooks/useCourses";
-import ICourse from "./models/ICourse";
+import ILesson from "./models/ILesson";
 
 export default class CourseUtils {
   static defaultCreateCourseModel(userId: string): ICreateCourse {
@@ -7,5 +7,9 @@ export default class CourseUtils {
       authorId: userId,
       title: "New Course",
     };
+  }
+
+  static getLessonTitle(lesson: ILesson) {
+    return lesson.title || `Lesson ${lesson.number}`;
   }
 }

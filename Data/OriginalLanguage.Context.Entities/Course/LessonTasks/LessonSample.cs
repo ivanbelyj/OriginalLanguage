@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OriginalLanguage.Context.Entities;
 /// <summary>
-/// LessonSample is the basis for generating practice tasks.
+/// LessonSample is the basis for generating lesson tasks.
 /// It represents all correct variants of the sentence and
 /// its correct variants of translation
 /// </summary>
@@ -17,8 +17,13 @@ public class LessonSample : EntityBase
     /// </summary>
     public int MinimalProgressLevel { get; set; }
 
-    public int? MainSentenceVariantId { get; set; }
-    public virtual Sentence? MainSentenceVariant { get; set; }
+    public string? MainText { get; set; }
+    public string? MainTranslation { get; set; }
+    public string? TextHints { get; set; }
+    public string? TranslationHints { get; set; }
+
+    public string? Glosses { get; set; }
+    public string? Transcription { get; set; }
 
     public virtual ICollection<Sentence> SentenceVariants { get; set; }
 
