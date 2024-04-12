@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OriginalLanguage.Api.Controllers.Articles.Models;
 using OriginalLanguage.Api.Controllers.Courses.Models;
 using OriginalLanguage.Api.Controllers.Languages.Models;
 using OriginalLanguage.Common.Responses;
+using OriginalLanguage.Services.Articles;
 using OriginalLanguage.Services.Courses;
 using OriginalLanguage.Services.Languages;
 using OriginalLanguage.Services.UserAccount;
@@ -24,16 +26,19 @@ public class AccountsController : ControllerBase
     private readonly IUserAccountService userAccountService;
     private readonly ICoursesService coursesService;
     private readonly ILanguagesService languagesService;
+    private readonly IArticleService articleService;
     private readonly IMapper mapper;
     public AccountsController(IMapper mapper, 
         IUserAccountService userAccountService,
         ICoursesService coursesService,
-        ILanguagesService languagesService)
+        ILanguagesService languagesService,
+        IArticleService articleService)
     {
         this.mapper = mapper;
         this.userAccountService = userAccountService;
         this.coursesService = coursesService;
         this.languagesService = languagesService;
+        this.articleService = articleService;
     }
 
     [HttpPost("")]
@@ -60,5 +65,13 @@ public class AccountsController : ControllerBase
     {
         var courses = await languagesService.GetUserLanguages(authorId);
         return mapper.Map<IEnumerable<LanguageResponse>>(courses);
+    }
+
+    [HttpGet("{authorId}/articles")]
+    public async Task<IEnumerable<ArticleResponse>> GetUserArticles(
+        [FromRoute] Guid authorId)
+    {
+        var articles = await articleService.GetUserArticles(authorId);
+        return mapper.Map<IEnumerable<ArticleResponse>>(articles);
     }
 }

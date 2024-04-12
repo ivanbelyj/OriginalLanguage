@@ -10,6 +10,7 @@ public interface IArticleService
 {
     Task<IEnumerable<ArticleModel>> GetArticles(int offset = 0, int limit = 10);
     Task<ArticleModel> GetArticle(int articleId);
+    Task<IEnumerable<ArticleModel>> GetUserArticles(Guid userId);
     Task<ArticleModel> AddArticle(AddArticleModel model);
     Task UpdateArticle(int articleId, UpdateArticleModel model);
     Task DeleteArticle(int articleId);

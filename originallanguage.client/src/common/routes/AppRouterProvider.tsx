@@ -10,8 +10,6 @@ import RegisterPage from "../../auth/pages/RegisterPage";
 import AppLayout from "../components/app-layout/AppLayout";
 import ContactPage from "../pages/ContactPage";
 import LanguageFullInfo from "../../languages/components/LanguageFullInfo";
-import ArticlesPage from "../pages/ArticlesPage";
-import ArticlePage from "../pages/ArticlePage";
 import UserProfilePage from "../../user/pages/UserProfilePage";
 import ManageCoursePage from "../../courses/pages/ManageCoursePage";
 import EditLanguagePage from "../../languages/pages/EditLanguagePage";
@@ -19,6 +17,8 @@ import Logout from "../../auth/pages/LogoutPage";
 import LessonPlayerPage from "../../lesson-player/pages/LessonPlayerPage";
 import CoursePage from "../../courses/pages/CoursePage";
 import CourseFullInfo from "../../courses/components/CourseFullInfo";
+import ManageArticlePage from "../../articles/pages/ManageArticlePage";
+import ArticlesPage from "../../articles/pages/ArticlesPage";
 
 const AppRouterProvider = () => {
   const { token } = useAuth();
@@ -31,6 +31,14 @@ const AppRouterProvider = () => {
     {
       path: "/about",
       element: <AboutPage />,
+    },
+    {
+      path: "/contact",
+      element: <ContactPage />,
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
     },
     {
       path: "/courses",
@@ -50,20 +58,8 @@ const AppRouterProvider = () => {
       element: <LanguageFullInfo />,
     },
     {
-      path: "/contact",
-      element: <ContactPage />,
-    },
-    {
-      path: "/register",
-      element: <RegisterPage />,
-    },
-    {
-      path: "/articles",
+      path: "/user/:id/articles",
       element: <ArticlesPage />,
-    },
-    {
-      path: "/article",
-      element: <ArticlePage />,
     },
   ];
 
@@ -97,8 +93,12 @@ const AppRouterProvider = () => {
           element: <LessonPlayerPage />,
         },
         {
-          path: "/course/:id/lessons/",
+          path: "/courses/:id/lessons/",
           element: <CoursePage />,
+        },
+        {
+          path: "/articles/:id/manage",
+          element: <ManageArticlePage />,
         },
       ],
     },

@@ -3,9 +3,7 @@ import { Button, Descriptions, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import Chat from "../../chats/components/Chat";
 import { ChatGroupUtils } from "../../chats/chat-group-utils";
-import {
-  PlayCircleOutlined,
-} from "@ant-design/icons";
+import { PlayCircleOutlined } from "@ant-design/icons";
 import { useCourses } from "../hooks/useCourses";
 import ICourse from "../models/ICourse";
 
@@ -53,7 +51,7 @@ export default function CourseFullInfo() {
           type="primary"
           size="middle"
           onClick={() => {
-            navigate(`/course/${courseId}/lessons/`);
+            navigate(`/courses/${courseId}/lessons/`);
           }}
         >
           <PlayCircleOutlined /> Learn the course

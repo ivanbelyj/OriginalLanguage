@@ -6,6 +6,7 @@ namespace OriginalLanguage.Api.Controllers.Articles.Models;
 
 public class UpdateArticleRequest
 {
+    public Guid AuthorId { get; set; }
     public virtual string? Title { get; set; }
     public virtual string? Content { get; set; }
 

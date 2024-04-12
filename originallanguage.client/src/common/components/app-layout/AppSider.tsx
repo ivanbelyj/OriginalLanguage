@@ -5,6 +5,7 @@ import {
   TranslationOutlined,
   UserOutlined,
   PlusCircleOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +16,9 @@ import { useAuth } from "../../../auth/AuthProvider";
 import { useUserCourses } from "../../../user/hooks/useUserCourses";
 import LanguageUtils from "../../../languages/language-utils";
 import CourseUtils from "../../../courses/course-utils";
+import { useUserArticles } from "../../../user/hooks/useUserArticles";
+import { useArticles } from "../../../articles/hooks/useArticles";
+import ArticleUtils from "../../../articles/article-utils";
 
 const { Sider } = Layout;
 
@@ -39,6 +43,7 @@ const AppSider = () => {
 
   const { postLanguage } = useLanguages();
   const { postCourse } = useCourses();
+  const { postArticle } = useArticles();
 
   const { getDecodedToken } = useAuth();
 
@@ -48,8 +53,8 @@ const AppSider = () => {
   const { userLanguages, addLanguage } = useUserLanguages({
     authorId: userId,
   });
-
   const { userCourses, addCourse } = useUserCourses({ authorId: userId });
+  const { userArticles, addArticle } = useUserArticles({ authorId: userId });
 
   const navigate = useNavigate();
 
@@ -79,7 +84,6 @@ const AppSider = () => {
     const lang = await postLanguage(
       LanguageUtils.defaultCreateLanguageModel(userId)
     );
-
     addLanguage(lang);
 
     navigate(`/edit-language/${lang.id}`);
@@ -91,10 +95,20 @@ const AppSider = () => {
     const course = await postCourse(
       CourseUtils.defaultCreateCourseModel(userId)
     );
-
     addCourse(course);
 
     navigate(`/manage-course/${course.id}`);
+  }
+
+  async function onAddArticleClick() {
+    if (!userId) return;
+
+    const article = await postArticle(
+      ArticleUtils.defaultCreateArticleModel(userId)
+    );
+    addArticle(article);
+
+    navigate(`/articles/${article.id}/manage`);
   }
 
   const items: MenuItem[] = [
@@ -124,6 +138,20 @@ const AppSider = () => {
         createItem(
           <Link to={`manage-course/${course.id}`}>{course.title}</Link>,
           "b" + (index + 1).toString()
+        )
+      ),
+    ]),
+    createItem("Articles", "sub3", <ReadOutlined />, [
+      createItem(
+        <div onClick={onAddArticleClick}>
+          <PlusCircleOutlined /> Add Article
+        </div>,
+        "c0"
+      ),
+      ...userArticles.map((article, index) =>
+        createItem(
+          <Link to={`articles/${article.id}/manage`}>{article.title}</Link>,
+          "c" + (index + 1).toString()
         )
       ),
     ]),

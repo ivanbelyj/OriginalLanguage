@@ -64,6 +64,18 @@ public class ArticleService : IArticleService
         return articleModel;
     }
 
+    public async Task<IEnumerable<ArticleModel>> GetUserArticles(Guid userId)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+        
+        var articles = await context
+            .Articles
+            .Where(x => x.AuthorId == userId)
+            .ToListAsync();
+
+        return mapper.Map<IEnumerable<ArticleModel>>(articles);
+    }
+
     public async Task DeleteArticle(int articleId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
