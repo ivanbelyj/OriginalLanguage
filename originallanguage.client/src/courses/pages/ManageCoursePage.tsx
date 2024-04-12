@@ -5,6 +5,7 @@ import { Tabs } from "antd";
 import CourseSettings from "../components/edit/CourseSettings";
 import { CourseTree } from "../components/CourseTree";
 import { useLessons } from "../hooks/useLessons";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const ManageCoursePage = () => {
   const { id: courseId, activeTab } = useParams();
@@ -52,7 +53,7 @@ const ManageCoursePage = () => {
   ];
 
   const navigateToTab = (newTabKey: string) => {
-    navigate(`/manage-course/${courseId}/${newTabKey}`);
+    navigate(RouteUtils.manageCourse(courseId, newTabKey));
   };
 
   const isActiveTabCorrect = () => {

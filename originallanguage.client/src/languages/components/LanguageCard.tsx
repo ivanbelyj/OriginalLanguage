@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 import StringUtils from "../../common/utils/string-utils";
 import { UserOutlined } from "@ant-design/icons";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
@@ -20,7 +21,7 @@ export default function LanguageCard({ language, style }: ILanguageInfoProps) {
       style={style}
       title={
         <>
-          <Link to={"/language/" + language.id}>
+          <Link to={RouteUtils.language(language.id)}>
             <LanguageFlag /> {language.name}
           </Link>
         </>

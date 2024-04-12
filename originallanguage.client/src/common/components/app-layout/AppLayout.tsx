@@ -4,6 +4,7 @@ import AppHeader from "./AppHeader";
 import { Link, Outlet } from "react-router-dom";
 import AppSider from "./AppSider";
 import { useAuth } from "../../../auth/AuthProvider";
+import RouteUtils from "../../routes/RouteUtils";
 
 const { Footer, Content } = Layout;
 
@@ -32,7 +33,7 @@ export default function AppLayout() {
           }}
         >
           Original Language ©2024{currentYear == 2024 ? "" : `-${currentYear}`}.
-          <Link to="/contact"> Contact us</Link>
+          <Link to={RouteUtils.contact()}> Contact us</Link>
         </Footer>
       </Layout>
     </Layout>

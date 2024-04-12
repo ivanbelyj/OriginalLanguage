@@ -1,13 +1,11 @@
 import React, { ReactNode } from "react";
-import {
-  Typography,
-  Button,
-} from "antd";
+import { Typography, Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import PopconfirmButton from "../../../common/components/PopconfirmButton";
 import { useCourses } from "../../hooks/useCourses";
 import { useNavigate } from "react-router-dom";
 import "../../styles/course-settings.css";
+import RouteUtils from "../../../common/routes/RouteUtils";
 
 const { Title } = Typography;
 
@@ -21,7 +19,7 @@ const CourseSettings: React.FC<ICourseSettingsProps> = ({ courseId }) => {
 
   const onDelete = async () => {
     await deleteCourse(courseId);
-    navigate("/", { replace: true });
+    navigate(RouteUtils.main(), { replace: true });
   };
 
   const getRow = (description: string, children: ReactNode) => {

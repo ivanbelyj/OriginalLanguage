@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Center from "../../common/components/Center";
 import axios from "axios";
 import IUser from "../../user/models/IUser";
+import RouteUtils from "../../common/routes/RouteUtils";
 const { Option } = Select;
 
 const RegisterPage: React.FC = () => {
@@ -110,7 +111,7 @@ const RegisterPage: React.FC = () => {
             </Button>
           </Form.Item>
 
-          <Link to="/login">Sign In</Link>
+          <Link to={RouteUtils.login()}>Sign In</Link>
         </Form>
       </Card>
     </Center>

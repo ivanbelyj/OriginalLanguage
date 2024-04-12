@@ -6,6 +6,7 @@ import { ChatGroupUtils } from "../../chats/chat-group-utils";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { useCourses } from "../hooks/useCourses";
 import ICourse from "../models/ICourse";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const { Title, Paragraph } = Typography;
 
@@ -51,7 +52,7 @@ export default function CourseFullInfo() {
           type="primary"
           size="middle"
           onClick={() => {
-            navigate(`/courses/${courseId}/lessons/`);
+            navigate(RouteUtils.courseLessons(courseId));
           }}
         >
           <PlayCircleOutlined /> Learn the course

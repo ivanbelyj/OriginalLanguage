@@ -3,6 +3,7 @@ import { Avatar, Card, Typography } from "antd";
 import ICourse from "../models/ICourse";
 import LanguageFlag from "../../languages/components/LanguageFlag";
 import { UserOutlined } from "@ant-design/icons";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const { Meta } = Card;
 
@@ -13,7 +14,7 @@ export const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
         <>
           {/* Todo: get language name and flag*/}
           <LanguageFlag />{" "}
-          <Link to={"/courses/" + course.id}>
+          <Link to={RouteUtils.course(course.id)}>
             {course.title ?? "Course title"}
           </Link>
         </>

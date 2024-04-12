@@ -1,6 +1,7 @@
 import { Avatar, Button, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthProvider";
+import RouteUtils from "../../routes/RouteUtils";
 
 const mainLinkKey = "main";
 
@@ -9,10 +10,13 @@ export default function AppHeader() {
   const location = useLocation();
 
   const items = [
-    { key: mainLinkKey, label: <Link to="/">Main</Link> },
-    { key: "about", label: <Link to="/about">About</Link> },
-    { key: "languages", label: <Link to="/languages">Languages</Link> },
-    { key: "courses", label: <Link to="/courses">Courses</Link> },
+    { key: mainLinkKey, label: <Link to={RouteUtils.main()}>Main</Link> },
+    { key: "about", label: <Link to={RouteUtils.about()}>About</Link> },
+    {
+      key: "languages",
+      label: <Link to={RouteUtils.languages()}>Languages</Link>,
+    },
+    { key: "courses", label: <Link to={RouteUtils.courses()}>Courses</Link> },
   ];
 
   const getCurrentItemKeys = () => {
@@ -47,14 +51,14 @@ export default function AppHeader() {
         // items={links.map((item, index) => ({ key: index, label: item }))}
       ></Menu>
       {token ? (
-        <Link to="profile/">
+        <Link to={RouteUtils.profile()}>
           <Avatar style={{ backgroundColor: "#e11", marginLeft: "auto" }}>
             U
           </Avatar>
         </Link>
       ) : (
         <Button type="primary" style={{ marginLeft: "auto" }}>
-          <Link to="/login">Login</Link>
+          <Link to={RouteUtils.login()}>Login</Link>
         </Button>
       )}
     </div>

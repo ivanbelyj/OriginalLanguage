@@ -3,6 +3,7 @@ import { Avatar, List, Steps, Tooltip, Typography } from "antd";
 import { Link } from "react-router-dom";
 import ILesson from "../models/ILesson";
 import CourseUtils from "../course-utils";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const { Title } = Typography;
 
@@ -16,7 +17,7 @@ export const CourseLessonItem: React.FC<ICourseLessonItemProps> = ({
   return (
     <>
       <Tooltip title={lesson.description} placement="bottom">
-        <Link to={`/lessons/${lesson.id}/player`}>
+        <Link to={RouteUtils.lessonPlayer(lesson.id)}>
           <div
             style={{
               display: "flex",

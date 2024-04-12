@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Center from "../../common/components/Center";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useLoginLogout } from "../hooks/useLoginLogout";
+import RouteUtils from "../../common/routes/RouteUtils";
 
 const LoginPage: React.FC = () => {
   const { login } = useLoginLogout();
@@ -16,7 +17,7 @@ const LoginPage: React.FC = () => {
     console.log(`Username: ${username}, Password: ${password}`);
     const loginResult = await login(username, password);
 
-    if (loginResult.isSucceeded) navigate("/", { replace: true });
+    if (loginResult.isSucceeded) navigate(RouteUtils.main(), { replace: true });
     else {
       console.log("failed to login", loginResult.data);
       setErrorMessage(
@@ -72,7 +73,7 @@ const LoginPage: React.FC = () => {
           </Form.Item>
 
           <Form.Item style={{ marginBottom: 0 }}>
-            <Link to="/register">Sign up</Link>
+            <Link to={RouteUtils.register()}>Sign up</Link>
           </Form.Item>
         </Form>
       </Card>

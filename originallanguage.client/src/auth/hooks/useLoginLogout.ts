@@ -1,3 +1,4 @@
+import RouteUtils from "../../common/routes/RouteUtils";
 import { useAuth } from "../AuthProvider";
 import AuthUtils from "../auth-utils";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,7 @@ export function useLoginLogout() {
     setToken(null);
     AuthUtils.clearTokens();
 
-    navigate("/", { replace: true });
+    navigate(RouteUtils.main(), { replace: true });
   };
 
   return { login, logout };

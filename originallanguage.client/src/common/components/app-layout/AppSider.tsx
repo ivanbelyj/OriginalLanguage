@@ -19,6 +19,7 @@ import CourseUtils from "../../../courses/course-utils";
 import { useUserArticles } from "../../../user/hooks/useUserArticles";
 import { useArticles } from "../../../articles/hooks/useArticles";
 import ArticleUtils from "../../../articles/article-utils";
+import RouteUtils from "../../routes/RouteUtils";
 
 const { Sider } = Layout;
 
@@ -86,7 +87,7 @@ const AppSider = () => {
     );
     addLanguage(lang);
 
-    navigate(`/edit-language/${lang.id}`);
+    navigate(RouteUtils.editLanguage(lang.id));
   }
 
   async function onAddCourseClick() {
@@ -97,7 +98,7 @@ const AppSider = () => {
     );
     addCourse(course);
 
-    navigate(`/manage-course/${course.id}`);
+    navigate(RouteUtils.manageCourse(course.id));
   }
 
   async function onAddArticleClick() {
@@ -108,11 +109,15 @@ const AppSider = () => {
     );
     addArticle(article);
 
-    navigate(`/articles/${article.id}/manage`);
+    navigate(RouteUtils.manageArticle(article.id));
   }
 
   const items: MenuItem[] = [
-    createItem(<Link to="/profile">Profile</Link>, "a0", <UserOutlined />),
+    createItem(
+      <Link to={RouteUtils.profile()}>Profile</Link>,
+      "a0",
+      <UserOutlined />
+    ),
     createItem("Languages", "sub1", <TranslationOutlined />, [
       createItem(
         <div onClick={onAddLanguageClick}>
@@ -122,7 +127,7 @@ const AppSider = () => {
       ),
       ...userLanguages.map((lang, index) =>
         createItem(
-          <Link to={`edit-language/${lang.id}`}>{lang.name}</Link>,
+          <Link to={RouteUtils.editLanguage(lang.id)}>{lang.name}</Link>,
           "a" + (index + 3).toString()
         )
       ),
@@ -136,7 +141,7 @@ const AppSider = () => {
       ),
       ...userCourses.map((course, index) =>
         createItem(
-          <Link to={`manage-course/${course.id}`}>{course.title}</Link>,
+          <Link to={RouteUtils.manageCourse(course.id)}>{course.title}</Link>,
           "b" + (index + 1).toString()
         )
       ),
@@ -150,7 +155,9 @@ const AppSider = () => {
       ),
       ...userArticles.map((article, index) =>
         createItem(
-          <Link to={`articles/${article.id}/manage`}>{article.title}</Link>,
+          <Link to={RouteUtils.manageArticle(article.id)}>
+            {article.title}
+          </Link>,
           "c" + (index + 1).toString()
         )
       ),

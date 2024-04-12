@@ -19,46 +19,46 @@ import CoursePage from "../../courses/pages/CoursePage";
 import CourseFullInfo from "../../courses/components/CourseFullInfo";
 import ManageArticlePage from "../../articles/pages/ManageArticlePage";
 import ArticlesPage from "../../articles/pages/ArticlesPage";
+import RouteUtils from "./RouteUtils";
 
 const AppRouterProvider = () => {
   const { token } = useAuth();
 
   const routesForPublic = [
     {
-      path: "/",
+      path: RouteUtils.main(),
       element: <MainPage />,
     },
     {
-      path: "/about",
+      path: RouteUtils.about(),
       element: <AboutPage />,
     },
     {
-      path: "/contact",
+      path: RouteUtils.contact(),
       element: <ContactPage />,
     },
     {
-      path: "/register",
+      path: RouteUtils.register(),
       element: <RegisterPage />,
     },
     {
-      path: "/courses",
+      path: RouteUtils.courses(),
       element: <CoursesPage />,
     },
-
     {
-      path: "/courses/:id",
+      path: RouteUtils.course(),
       element: <CourseFullInfo />,
     },
     {
-      path: "/languages",
+      path: RouteUtils.languages(),
       element: <LanguagesPage />,
     },
     {
-      path: "/language/:id",
+      path: RouteUtils.language(),
       element: <LanguageFullInfo />,
     },
     {
-      path: "/user/:id/articles",
+      path: RouteUtils.userArticles(),
       element: <ArticlesPage />,
     },
   ];
@@ -69,35 +69,35 @@ const AppRouterProvider = () => {
       element: <ProtectedRoute />,
       children: [
         {
-          path: "/profile",
+          path: RouteUtils.profile(),
           element: <UserProfilePage />,
         },
         {
-          path: "/logout",
+          path: RouteUtils.logout(),
           element: <Logout />,
         },
         {
-          path: "/manage-course/:id",
+          path: RouteUtils.manageCourseDefault(),
           element: <ManageCoursePage />,
         },
         {
-          path: "/manage-course/:id/:activeTab",
+          path: RouteUtils.manageCourse(),
           element: <ManageCoursePage />,
         },
         {
-          path: "/edit-language/:id",
+          path: RouteUtils.editLanguage(),
           element: <EditLanguagePage />,
         },
         {
-          path: "/lessons/:id/player/",
+          path: RouteUtils.lessonPlayer(),
           element: <LessonPlayerPage />,
         },
         {
-          path: "/courses/:id/lessons/",
+          path: RouteUtils.courseLessons(),
           element: <CoursePage />,
         },
         {
-          path: "/articles/:id/manage",
+          path: RouteUtils.manageArticle(),
           element: <ManageArticlePage />,
         },
       ],
@@ -106,7 +106,7 @@ const AppRouterProvider = () => {
 
   const routesForNotAuthenticatedOnly = [
     {
-      path: "/login",
+      path: RouteUtils.login(),
       element: <LoginPage />,
     },
   ];
